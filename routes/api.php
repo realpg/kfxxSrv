@@ -26,6 +26,9 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //获取七牛token
     Route::get('user/getQiniuToken', 'API\UserController@getQiniuToken');
 
+    //获取首页广告图信息
+    Route::get('ad/getADs', 'API\ADController@getADs');
+
     //根据id获取用户信息
     Route::get('user/getById', 'API\UserController@getUserById');
     //根据id获取用户信息带token
@@ -36,7 +39,8 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('user/login', 'API\UserController@login');
     //更新用户信息
     Route::post('user/updateById', 'API\UserController@updateUserById')->middleware('CheckToken');
-    //解密encryptedData
-    Route::post('user/encryptedData', 'API\UserController@encryptedData');
+    //发送验证码
+    Route::post('user/sendVertifyCode', 'API\UserController@sendVertifyCode');
+
 
 });

@@ -10,6 +10,7 @@
 namespace App\Components;
 
 use App\Models\User;
+use App\Models\Vertify;
 
 class UserManager
 {
@@ -97,8 +98,14 @@ class UserManager
      */
     public static function setUser($user, $data)
     {
+        if (array_key_exists('real_name', $data)) {
+            $user->real_name = array_get($data, 'real_name');
+        }
         if (array_key_exists('nick_name', $data)) {
             $user->nick_name = array_get($data, 'nick_name');
+        }
+        if (array_key_exists('birthday', $data)) {
+            $user->birthday = array_get($data, 'birthday');
         }
         if (array_key_exists('avatar', $data)) {
             $user->avatar = array_get($data, 'avatar');
@@ -142,12 +149,6 @@ class UserManager
     {
         //创建用户信息
         $user = new User;
-        //account是必填项目
-        if (array_key_exists('account_type', $data)) {
-            $user->account_type = array_get($data, 'account_type');
-        } else {
-            return null;
-        }
         $user = self::setUser($user, $data);
         $user->token = self::getGUID();
         $user->save();
@@ -208,4 +209,47 @@ class UserManager
             return $uuid;
         }
     }
+
+    /*
+     * 生成验证码
+     *
+     * By TerryQi
+     */
+    public static function sendVertify($phonenum)
+    {
+        $vertify_code = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);  //生成4位验证码
+        $vertify = new Vertify;
+        $vertify->phonenum = $phonenum;
+        $vertify->code = $vertify_code;
+        $vertify->save();
+        /*
+         * 预留，需要触发短信端口进行验证码下发
+         */
+        if ($vertify) {
+            return true;
+        }
+    }
+
+    /*
+     * 校验验证码
+     *
+     * By TerryQi
+     *
+     * 2017-11-28
+     */
+    public static function judgeVertifyCode($phonenum, $vertify_code)
+    {
+        $vertify = Vertify::where('phonenum', '=', $phonenum)
+            ->where('code', '=', $vertify_code)->where('status', '=', '0')->first();
+        if ($vertify) {
+            //验证码置为失效
+            $vertify->status = '1';
+            $vertify->save();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }

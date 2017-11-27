@@ -14,6 +14,7 @@ use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
 use App\Libs\wxDecode\WXBizDataCrypt;
+use App\Models\User;
 use App\Models\ViewModels\HomeView;
 use Illuminate\Http\Request;
 use App\Components\RequestValidator;
@@ -94,9 +95,16 @@ class UserController extends Controller
             //合规校验account_type
             $requestValidationResult = RequestValidator::validator($request->all(), [
                 'xcx_openid' => 'required',
+                'phonenum' => 'required',
+                'real_name' => 'required',
             ]);
             if ($requestValidationResult !== true) {
                 return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+            }
+            //判断验证码是否正确
+            $vertify_result = UserManager::judgeVertifyCode($data['phonenum'], $data['vertify_code']);
+            if (!$vertify_result) {
+                return ApiResponse::makeResponse(false, '验证码错误', ApiResponse::VERTIFY_ERROR);
             }
             //进行注册
             $user = UserManager::login($data);
@@ -186,6 +194,31 @@ class UserController extends Controller
             return ApiResponse::makeResponse(true, $user, ApiResponse::SUCCESS_CODE);
         } else {
             return ApiResponse::makeResponse(false, ApiResponse::$errorMassage[ApiResponse::NO_USER], ApiResponse::NO_USER);
+        }
+    }
+
+    /*
+     * 下发验证码
+     *
+     * By TerryQi
+     *
+     * 2017-11-28
+     *
+     */
+    public function sendVertifyCode(Request $request)
+    {
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'phonenum' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $data = $request->all();
+        $result = UserManager::sendVertify($data['phonenum']);
+        if ($result) {
+            return ApiResponse::makeResponse(true, '验证码发送成功', ApiResponse::SUCCESS_CODE);
+        } else {
+            return ApiResponse::makeResponse(false, ApiResponse::$errorMassage[ApiResponse::UNKNOW_ERROR], ApiResponse::UNKNOW_ERROR);
         }
     }
 

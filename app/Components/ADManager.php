@@ -14,6 +14,20 @@ use Qiniu\Auth;
 
 class ADManager
 {
+    /*
+     * 获取首页生效的广告轮播图信息
+     *
+     * By TerryQi
+     *
+     * 2017-11-27
+     *
+     */
+    public static function getADsForIndex()
+    {
+        $ads = AD::where('status', '=', '1')->get();
+        return $ads;
+    }
+
 
     /*
      * 设置广告信息，用于编辑、

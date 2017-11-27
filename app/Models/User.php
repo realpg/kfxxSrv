@@ -9,10 +9,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Model
 {
-    protected $table = 't_user_info';
+    use SoftDeletes;    //使用软删除
+    protected $table = 't_user_info';     //表明
+    public $timestamps = true;  //自动管理时间戳
+    protected $dates = ['deleted_at'];  //软删除
 
-    public $timestamps = true;
 }

@@ -9,10 +9,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AD extends Model
 {
-    protected $table = 't_ad_info';
-
-    public $timestamps = true;
+    use SoftDeletes;    //使用软删除
+    protected $table = 't_ad_info';     //表明
+    public $timestamps = true;  //自动管理时间戳
+    protected $dates = ['deleted_at'];  //软删除
 }
