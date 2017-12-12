@@ -16,6 +16,8 @@ class ApiResponse
     const UNKNOW_ERROR = 999;
     //缺少参数
     const MISSING_PARAM = 901;
+    //逻辑错误
+    const INNER_ERROR = 902;
 
     //成功
     const SUCCESS_CODE = 200;

@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>孵化器 | 管理后台</title>
+    <title>康复云平台 | 管理后台</title>
+    <link href="{{ URL::asset('img/favor.ico') }}" rel="shortcut icon" type="image/x-icon"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -18,6 +19,8 @@
     <link rel="stylesheet" href="{{ URL::asset('plugins/iCheck/square/blue.css') }}">
     <!-- common -->
     <link rel="stylesheet" href="{{ URL::asset('css/common.css') }}">
+    <!--login-->
+    <link rel="stylesheet" href="{{ URL::asset('css/login.css') }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -27,54 +30,50 @@
     <![endif]-->
     <style>
         body {
-            background-image: url("{{URL::asset('/img/logbg.png')}}") !important;
-            background-repeat: no-repeat !important;
-            background-size: 100% !important;
+            background: url("{{URL::asset('/img/web_login_bg.jpg')}}") no-repeat center;
+            background-size: cover;
+        }
+
+        #darkbannerwrap {
+            background: url("{{URL::asset('/img/aiwrap.png')}}");
+            width: 18px;
+            height: 10px;
+            margin: 0 0 20px -58px;
+            position: relative;
         }
 
     </style>
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-    <div class="login-logo">
-        <a href="">
-            <img src="{{URL::asset('img/logo.png')}}" style="width: 36px;height: 36px;">
-            <span style="color: white; font-family:'Microsoft YaHei' !important;">孵化器管理后台</span>
-        </a>
-    </div>
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <p class="login-box-msg">请输入手机号、密码登录，联系<a href="#">管理员</a></p>
+<body>
 
-        <form action="" method="post" onsubmit="return checkValid()">
-            {{csrf_field()}}
-            <div id="phonenum_div" class="form-group has-feedback">
-                <input id="phonenum" name="phonenum" type="phonenum" class="form-control" placeholder="手机号">
-                <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
-            </div>
-            <div id="password_div" class="form-group has-feedback">
-                <input id="password" name="password" type="password" class="form-control" placeholder="密码">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-            @if($msg)
-                <div id="error_msg" class="text-danger" style="margin-bottom: 15px;">
-                    *{{$msg}}
-                </div>
-            @endif
-            <div class="row">
-                <!-- /.col -->
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
-                </div>
-                <!-- /.col -->
-            </div>
-        </form>
+<div class="login">
+    <div class="message font-size-22 text-white">康复云平台-后台登录</div>
+    <div id="darkbannerwrap"></div>
 
-    </div>
-    <!-- /.login-box-body -->
+    <form action="" method="post" onsubmit="return checkValid()">
+        {{csrf_field()}}
+        <input id="phonenum" name="phonenum" placeholder="手机号" required="" type="text">
+        <hr class="hr15">
+        <input id="password" name="password" placeholder="密码" required="" type="password">
+        <hr class="hr15">
+        <input value="登录" style="width:100%;" type="submit">
+        <hr class="hr20">
+    </form>
+
+    @if($msg)
+        <div id="error_msg" class="text-danger">
+            *{{$msg}}
+        </div>
+    @endif
 </div>
-<!-- /.login-box -->
 
+<div class="copyright">© 2017-2018 by
+    <a href="http://www.puh3.net.cn/" target="_blank" style=" color: rgba(255, 255, 255, 0.85);">
+        北京大学第三医院</a>
+</div>
+
+</body>
+</html>
 <!-- jQuery 3 -->
 <script src="{{ URL::asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -86,36 +85,12 @@
 <!-- md5 -->
 <script src="{{ URL::asset('js/md5.js') }}"></script>
 <script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
-    });
-
     //进行表单校验
     function checkValid() {
-        //校验手机号
-        var phonenum = $("#phonenum").val();
-        console.log("phonenum:" + phonenum);
-        if (judgeIsNullStr(phonenum) || !isPoneAvailable(phonenum)) {
-            $("#phonenum_div").addClass("has-error");
-            return false;
-        } else {
-            $("#phonenum_div").removeClass("has-error");
-        }
-        //校验密码
         var password = $("#password").val();
-        if (judgeIsNullStr(password) || password.length < 6) {
-            $("#password_div").addClass("has-error");
-            return false;
-        } else {
-            $("#password_div").removeClass("has-error");
-        }
+        //对密码进行md5加密
         $("#password").val(hex_md5(password));
         return true;
     }
+
 </script>
-</body>
-</html>

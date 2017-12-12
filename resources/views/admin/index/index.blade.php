@@ -4,7 +4,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <small>系统配置面板-推荐使用最新版Chrome、QQ、FireFox、风行浏览器</small>
+            <small>推荐使用最新版Chrome、QQ、FireFox、风行浏览器</small>
         </h1>
         <ol class="breadcrumb">
 

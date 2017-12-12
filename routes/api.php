@@ -28,6 +28,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //获取首页广告图信息
     Route::get('ad/getADs', 'API\ADController@getADs');
+    Route::get('ad/getById', 'API\ADController@getADById');
 
     //根据id获取用户信息
     Route::get('user/getById', 'API\UserController@getUserById');
@@ -35,12 +36,21 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('user/getByIdWithToken', 'API\UserController@getUserInfoByIdWithToken')->middleware('CheckToken');
     //根据code获取openid
     Route::get('user/getXCXOpenId', 'API\UserController@getXCXOpenId');
-    //登录/注册
+    //登录
     Route::post('user/login', 'API\UserController@login');
+    //注册
+    Route::post('user/register', 'API\UserController@register');
     //更新用户信息
     Route::post('user/updateById', 'API\UserController@updateUserById')->middleware('CheckToken');
     //发送验证码
     Route::post('user/sendVertifyCode', 'API\UserController@sendVertifyCode');
 
+    //宣教相关
+    Route::get('xj/getXJTypes', 'API\XJController@getXJTypes');
+    Route::get('xj/getByCon', 'API\XJController@getXJList');
+    Route::get('xj/getXJInfoById', 'API\XJController@getXJInfoById');
+
+    //数据项相关
+    Route::get('sjx/getList', 'API\SJXController@getList');
 
 });

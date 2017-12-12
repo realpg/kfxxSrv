@@ -24,7 +24,35 @@ class ADManager
      */
     public static function getADsForIndex()
     {
-        $ads = AD::where('status', '=', '1')->get();
+        $ads = AD::where('status', '=', '1')->orderby('seq', 'desc')->get();
+        return $ads;
+    }
+
+    /*
+     * 根据id获取轮播图
+     *
+     * By TerryQi
+     *
+     * 2017-12-13
+     *
+     */
+    public static function getADById($id)
+    {
+        $ad = AD::where('id', '=', $id)->first();
+        return $ad;
+    }
+
+    /*
+     * 获取全部未删除的广告图
+     *
+     * By TerryQI
+     *
+     * 2017-12-04
+     *
+     */
+    public static function getAllADs()
+    {
+        $ads = AD::orderBy('seq', 'desc')->orderBy('id', 'desc')->paginate(10);
         return $ads;
     }
 
@@ -37,20 +65,17 @@ class ADManager
      */
     public static function setAD($ad, $data)
     {
-        if (array_key_exists('title', $data)) {
-            $ad->title = array_get($data, 'title');
+        if (array_key_exists('doctor_id', $data)) {
+            $ad->doctor_id = array_get($data, 'doctor_id');
         }
         if (array_key_exists('img', $data)) {
-            $ad->img = array_get($data, 'img');
+            $ad->image = array_get($data, 'img');
         }
-        if (array_key_exists('url', $data)) {
-            $ad->url = array_get($data, 'url');
+        if (array_key_exists('content', $data)) {
+            $ad->content = array_get($data, 'content');
         }
-        if (array_key_exists('type', $data)) {
-            $ad->type = array_get($data, 'type');
-        }
-        if (array_key_exists('seq', $data)) {
-            $ad->seq = array_get($data, 'seq');
+        if (array_key_exists('xj_id', $data)) {
+            $ad->xj_id = array_get($data, 'xj_id');
         }
         if (array_key_exists('status', $data)) {
             $ad->status = array_get($data, 'status');

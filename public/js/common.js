@@ -1,3 +1,26 @@
+// 接口部分
+//基本的ajax访问后端接口类
+function ajaxRequest(url, param, method, callBack) {
+    console.log("url:" + url + " param:" + JSON.stringify(param));
+    $.ajax({
+        type: method,  //提交方式
+        url: url,//路径
+        data: param,//数据，这里使用的是Json格式进行传输
+        success: function (ret) {//返回数据根据结果进行相应的处理
+            console.log("ret:" + JSON.stringify(ret));
+            callBack(ret)
+        },
+        error: function (err) {
+            console.log(JSON.stringify(err));
+        }
+    });
+}
+
+//根据id删除画册
+function getADById(url, param, callBack) {
+    ajaxRequest(url + "/api/ad/getById", param, "GET", callBack);
+}
+
 /*
  * 校验手机号js
  *

@@ -10,9 +10,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Components\ADManager;
+use App\Components\DateTool;
+use App\Components\DocTorManager;
 use App\Components\QNManager;
+use App\Components\XJManager;
 use App\Libs\CommonUtils;
 use App\Models\AD;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
@@ -26,9 +30,18 @@ class ADController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $ads = AD::orderBy('seq', 'desc')->orderBy('id', 'desc')->get();
-//        dd($ads);
-        return view('admin.ad.index', ['admin' => $admin, 'datas' => $ads]);
+        $ads = ADManager::getAllADs();
+        foreach ($ads as $ad) {
+            $ad->created_at_str = DateTool::formateData($ad->created_at, 1);
+            $ad->doctor = DoctorManager::getDoctorById($ad->doctor_id);
+            //是否有关联宣教信息
+            if ($ad->xj_id) {
+                $ad->xj = XJManager::getXJById($ad->xj_id);
+            }
+        }
+        //生成七牛token
+        $upload_token = QNManager::uploadToken();
+        return view('admin.ad.index', ['admin' => $admin, 'datas' => $ads, 'upload_token' => $upload_token]);
     }
 
 
@@ -57,7 +70,8 @@ class ADController
     //删除广告位
     public function del(Request $request, $id)
     {
-        if (is_numeric($id) !== true) {
+        //广告位id非数字
+        if (!is_numeric($id)) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数广告id$id']);
         }
         $ad = AD::find($id);
@@ -83,9 +97,10 @@ class ADController
     public function editPost(Request $request)
     {
         $data = $request->all();
+//        dd($data);
         $ad = new AD();
         //存在id是保存
-        if (array_key_exists('id', $data)) {
+        if (array_key_exists('id', $data) && $data['id'] != null) {
             $ad = AD::find($data['id']);
         }
         $ad = ADManager::setAD($ad, $data);

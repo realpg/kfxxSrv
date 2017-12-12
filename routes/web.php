@@ -28,10 +28,47 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     //错误页面
     Route::get('/error/500', 'Admin\IndexController@error');  //错误页面
 
+    //轮播管理
+    Route::get('/ad/index', 'Admin\ADController@index');  //轮播管理首页
+    Route::get('/ad/setStatus/{id}', 'Admin\ADController@setStatus');  //设置轮播状态
+    Route::get('/ad/del/{id}', 'Admin\ADController@del');  //删除轮播
+    Route::get('/ad/edit', 'Admin\ADController@edit');  //新建或编辑轮播
+    Route::post('/ad/edit', 'Admin\ADController@editPost');  //新建或编辑轮播
+
     //管理员管理
-    Route::get('/admin/index', 'Admin\AdminController@index');  //管理员管理首页
-    Route::get('/admin/del/{id}', 'Admin\AdminController@del');  //删除管理员
-    Route::get('/admin/edit', 'Admin\AdminController@edit');  //新建或编辑管理员
-    Route::post('/admin/edit', 'Admin\AdminController@editPost');  //新建或编辑管理员
+    Route::get('/doctor/index', 'Admin\DoctorController@index');  //管理员管理首页
+    Route::get('/doctor/del/{id}', 'Admin\DoctorController@del');  //删除管理员
+    Route::get('/doctor/edit', 'Admin\DoctorController@edit');  //新建或编辑管理员
+    Route::post('/doctor/edit', 'Admin\DoctorController@editPost');  //新建或编辑管理员
+
+    //宣教管理
+    Route::get('/xj/index', 'Admin\XJController@index');  //宣教管理首页
+    Route::get('/xj/setStatus/{id}', 'Admin\XJController@setStatus');  //设置宣教状态
+    Route::get('/xj/setStep/{id}', 'Admin\XJController@setStep');  //设置宣教图文
+    Route::post('/xj/setStep/{id}', 'Admin\XJController@setStepPost');  //编辑宣教步骤信息
+    Route::get('/xj/delStep/{id}', 'Admin\XJController@delStep');  //删除宣教步骤
+    Route::get('/xj/edit', 'Admin\XJController@edit');  //新建或编辑宣教
+    Route::post('/xj/edit', 'Admin\XJController@editPost');  //新建或编辑宣教
+    Route::get('/xj/del/{id}', 'Admin\XJController@del');  //删除宣教
+
+    //宣教分类管理
+    Route::get('/xjType/index', 'Admin\XJController@indexType');  //宣教分类管理首页
+    Route::get('/xjType/edit', 'Admin\XJController@editType');  //新建或编辑宣教分类
+    Route::post('/xjType/edit', 'Admin\XJController@editTypePost');  //新建或编辑宣教分类
+
+    //数据项管理
+    Route::get('/sjx/index', 'Admin\SJXController@index');  //数据项管理首页
+    Route::get('/sjx/edit', 'Admin\SJXController@edit');  //新建或编辑数据项
+    Route::post('/sjx/edit', 'Admin\SJXController@editPost');  //新建或编辑数据项
+
+    //康复模板管理
+    Route::get('/kfmb/index', 'Admin\KFMBController@index');  //康复模板管理首页
+    Route::get('/kfmb/edit', 'Admin\KFMBController@edit');  //康复模板管理
+    Route::post('/kfmb/edit', 'Admin\KFMBController@editPost');  //新建或编辑宣教分类
+    Route::get('/kfmb/setStep/{id}', 'Admin\KFMBController@setStep');  //设置康复模板
+    Route::post('/kfmb/setStep/{id}', 'Admin\KFMBController@setStepPost');  //编辑宣教步骤信息
+    Route::get('/kfmb/delStep/{id}', 'Admin\KFMBController@delStep');  //删除宣教步骤
+    Route::get('/kfmb/setStatus/{id}', 'Admin\KFMBController@setStatus');  //设置康复模板状态
+
 
 });

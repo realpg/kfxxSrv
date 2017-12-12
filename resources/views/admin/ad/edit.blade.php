@@ -4,10 +4,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <small>新建/编辑广告位</small>
+            <small>新建/编辑轮播</small>
         </h1>
         <ol class="breadcrumb">
-
+            <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+            <li class="active">轮播管理</li>
+            <li class="active">新建/编辑</li>
         </ol>
     </section>
 
@@ -23,35 +25,34 @@
                         {{csrf_field()}}
                         <div class="box-body">
                             <div class="form-group">
-                                <label for="id" class="col-sm-2 control-label">*id</label>
-
+                                <label for="title" class="col-sm-2 control-label">录入人</label>
                                 <div class="col-sm-10">
-                                    <input id="id" name="id" type="text" class="form-control"
-                                           placeholder="自动生成id" disabled
-                                           value="{{ isset($data->id) ? $data->id : '' }}">
+                                    <input type="text" class="form-control"
+                                           value="{{$admin->name}}" disabled>
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">*标题</label>
+                            <div class="form-group hidden">
+                                <label for="title" class="col-sm-2 control-label">录入人id</label>
                                 <div class="col-sm-10">
-                                    <input id="title" name="title" type="text" class="form-control"
-                                           placeholder="请输入标题" value="{{ isset($data->title) ? $data->title : '' }}">
+                                    <input id="doctor_id" name="doctor_id" type="text" class="form-control"
+                                           value="{{$admin->id}}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="seq" class="col-sm-2 control-label">序号</label>
+                                <label for="seq" class="col-sm-2 control-label">说明*</label>
 
                                 <div class="col-sm-10">
-                                    <input id="seq" name="seq" type="number" class="form-control"
-                                           value="{{ isset($data->seq) ? $data->seq : 0 }}">
+                                    <input id="content" name="content" type="text" class="form-control"
+                                           placeholder="轮播图说明"
+                                           value="{{ isset($data->content) ? $data->content : '' }}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="img" class="col-sm-2 control-label">*图片</label>
+                                <label for="img" class="col-sm-2 control-label">图片*</label>
 
                                 <div class="col-sm-10">
-                                    <input id="img" name="img" type="text" class="form-control" placeholder="图片网路链接地址"
+                                    <input id="img" name="img" type="text" class="form-control"
+                                           placeholder="图片网路链接地址"
                                            value="{{ isset($data->img) ? $data->img : '' }}">
                                 </div>
                             </div>
@@ -59,7 +60,7 @@
                                 <div id="container">
                                     <img id="pickfiles"
                                          src="{{ isset($data->img) ? $data->img.'?imageView2/2/w/500/h/300/interlace/1/q/75|imageslim' : URL::asset('/img/upload.png')}}"
-                                         style="width: 240px;">
+                                         style="width: 350px;">
                                 </div>
                                 <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传350*200尺寸图片</div>
                             </div>
@@ -75,6 +76,7 @@
             </div>
             <!--/.col (right) -->
             <div class="col-md-6">
+
             </div>
         </div>
     </section>
@@ -88,10 +90,10 @@
 
         //合规校验
         function checkValid() {
-            var title = $("#title").val();
+            var content = $("#content").val();
             //合规校验
-            if (judgeIsNullStr(title)) {
-                $("#title").focus();
+            if (judgeIsNullStr(content)) {
+                $("#content").focus();
                 return false;
             }
             var img = $("#img").val();

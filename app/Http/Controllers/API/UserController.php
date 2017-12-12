@@ -23,8 +23,8 @@ use Qiniu\Auth;
 class UserController extends Controller
 {
 
-    const APPID = "wxd3a3b21f912b6c89";
-    const APPSECRET = "23e85428d04d7507377a5a01960d074e";
+    const APPID = "wx3cd6d8d4b71e14d3";
+    const APPSECRET = "a4826dae40bfd28396d5e6fcc48dee3f";
 
     /**
      * @param Request $request
@@ -37,7 +37,7 @@ class UserController extends Controller
 
         $auth = new Auth($accessKey, $secretKey);
 
-        $bucket = 'dsyy';
+        $bucket = 'dsyy';   //存储域名
         $upToken = $auth->uploadToken($bucket);
 
         return ApiResponse::makeResponse(true, $upToken, ApiResponse::SUCCESS_CODE);
@@ -70,6 +70,33 @@ class UserController extends Controller
         return ApiResponse::makeResponse(true, $ret_val, ApiResponse::SUCCESS_CODE);
     }
 
+    /*
+     * 根据openid判断用户是否已经注册过
+     *
+     * By TerryQi
+     *
+     * 2017-12-05
+     */
+    public function login(Request $request)
+    {
+        $data = $request->all();
+        //合规校验openid
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'account_type' => 'required',
+            'xcx_openid' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $user = UserManager::getUserByXCXOpenId($data['xcx_openid']);
+        //存在用户
+        if ($user) {
+            return ApiResponse::makeResponse(true, $user, ApiResponse::SUCCESS_CODE);
+        } else {
+            return ApiResponse::makeResponse(false, "未找到该用户", ApiResponse::INNER_ERROR);
+        }
+    }
+
 
     /*
      * 用户登录
@@ -79,7 +106,7 @@ class UserController extends Controller
      * By TerryQi
      *
      */
-    public function login(Request $request)
+    public function register(Request $request)
     {
         $data = $request->all();    //request转array
         $user = null;          //返回user信息
@@ -96,7 +123,7 @@ class UserController extends Controller
             $requestValidationResult = RequestValidator::validator($request->all(), [
                 'xcx_openid' => 'required',
                 'phonenum' => 'required',
-                'real_name' => 'required',
+                'vertify_code' => 'required'
             ]);
             if ($requestValidationResult !== true) {
                 return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
@@ -106,8 +133,14 @@ class UserController extends Controller
             if (!$vertify_result) {
                 return ApiResponse::makeResponse(false, '验证码错误', ApiResponse::VERTIFY_ERROR);
             }
-            //进行注册
-            $user = UserManager::login($data);
+            //当前openid是否已经注册
+            $user = UserManager::getUserByXCXOpenId($data['xcx_openid']);
+            if ($user) {
+                //如果该用户已经注册
+            } else {
+                //进行注册
+                $user = UserManager::register($data);
+            }
         }
         //如果注册失败，返回失败
         if ($user == null) {
