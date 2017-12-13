@@ -115,6 +115,15 @@
 
                                         <a href="{{URL::asset('/admin/kfmb/setStep/')}}/{{$data->id}}?tw_id={{$step->id}}"
                                            class="btn btn-warning btn-xs pull-right">编辑</a>
+
+                                        <span onclick="clickDel({{$step->id}})"
+                                              class="btn btn-danger btn-xs pull-right"
+                                              style="margin-left: 10px;">关联宣教</span>
+
+                                        <span onclick="clickDel({{$step->id}})"
+                                              class="btn btn-danger btn-xs pull-right"
+                                              style="margin-left: 10px;">关联采集</span>
+
                                     </div>
                                 </div>
                             </div>
