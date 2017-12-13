@@ -16,10 +16,16 @@ function ajaxRequest(url, param, method, callBack) {
     });
 }
 
-//根据id删除画册
+//根据id获取轮播图信息
 function getADById(url, param, callBack) {
     ajaxRequest(url + "/api/ad/getById", param, "GET", callBack);
 }
+
+//根据id获取康复模板信息
+function getKFMBById(url, param, callBack) {
+    ajaxRequest(url + "/api/kfmb/getKFMBById", param, "GET", callBack);
+}
+
 
 /*
  * 校验手机号js

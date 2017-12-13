@@ -53,4 +53,8 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //数据项相关
     Route::get('sjx/getList', 'API\SJXController@getList');
 
+    //康复模板相关
+    Route::get('kfmb/getKFMBById', 'API\KFMBController@getKFMBById');
+
+
 });

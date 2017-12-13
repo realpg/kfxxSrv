@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Components\ADManager;
 use App\Components\DateTool;
-use App\Components\DocTorManager;
+use App\Components\DoctorManager;
 use App\Components\QNManager;
 use App\Components\XJManager;
 use App\Libs\CommonUtils;

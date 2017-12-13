@@ -4,12 +4,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <small>新建/编辑轮播</small>
+            <small>设置图文</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-            <li class="active">轮播管理</li>
-            <li class="active">新建/编辑</li>
+            <li class="active">康复模板</li>
+            <li class="active">设置图文</li>
         </ol>
     </section>
 
@@ -19,66 +19,133 @@
             <!-- left column -->
             <div class="col-md-6">
                 <!-- Horizontal Form -->
-                <div class="box box-info">
+                <div class="box box-default">
+                    <!-- form start -->
                     <!-- form start -->
                     <form action="" method="post" class="form-horizontal" onsubmit="return checkValid();">
                         {{csrf_field()}}
                         <div class="box-body">
-                            <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">录入人</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control"
-                                           value="{{$admin->name}}" disabled>
-                                </div>
-                            </div>
                             <div class="form-group hidden">
-                                <label for="title" class="col-sm-2 control-label">录入人id</label>
-                                <div class="col-sm-10">
-                                    <input id="doctor_id" name="doctor_id" type="text" class="form-control"
-                                           value="{{$admin->id}}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="seq" class="col-sm-2 control-label">说明*</label>
+                                <label for="f_id" class="col-sm-2 control-label">父id</label>
 
                                 <div class="col-sm-10">
-                                    <input id="content" name="content" type="text" class="form-control"
-                                           placeholder="轮播图说明"
-                                           value="{{ isset($data->content) ? $data->content : '' }}">
+                                    <input id="f_id" name="f_id" type="text" class="form-control" placeholder="父id"
+                                           value="{{ $data->id }}">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="img" class="col-sm-2 control-label">图片*</label>
+                        </div>
+                        <div class="form-group hidden">
+                            <label for="id" class="col-sm-2 control-label">id</label>
+                            <div class="col-sm-10">
+                                <input id="id" name="id" type="text" class="form-control" placeholder="id"
+                                       value="{{ isset($tw->id) ? $tw->id : '' }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="text" class="col-sm-2 control-label">文字</label>
+                            <div class="col-sm-10">
+                                    <textarea id="text" name="text" class="form-control" rows="3"
+                                              placeholder="请输入 ...">{{ isset($tw->text) ? $tw->text : '' }}</textarea>
+                            </div>
+                        </div>
 
-                                <div class="col-sm-10">
-                                    <input id="img" name="img" type="text" class="form-control"
-                                           placeholder="图片网路链接地址"
-                                           value="{{ isset($data->img) ? $data->img : '' }}">
-                                </div>
-                            </div>
-                            <div style="margin-top: 10px;" class="text-center">
-                                <div id="container">
-                                    <img id="pickfiles"
-                                         src="{{ isset($data->img) ? $data->img.'?imageView2/2/w/500/h/300/interlace/1/q/75|imageslim' : URL::asset('/img/upload.png')}}"
-                                         style="width: 350px;">
-                                </div>
-                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传350*200尺寸图片</div>
+                        <div class="form-group">
+                            <label for="img" class="col-sm-2 control-label">图片</label>
+
+                            <div class="col-sm-10">
+                                <input id="img" name="img" type="text" class="form-control" placeholder="图片网路链接地址"
+                                       value="{{ isset($tw->img) ? $tw->img : '' }}">
                             </div>
                         </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-info btn-block btn-flat">保存</button>
+                        <div style="margin-top: 10px;" class="text-center">
+                            <div id="container">
+                                <img id="pickfiles"
+                                     src="{{ isset($tw->img) ? $tw->img : URL::asset('/img/upload.png') }}"
+                                     style="width: 240px;">
+                            </div>
+                            <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片</div>
                         </div>
-                        <!-- /.box-footer -->
-                    </form>
                 </div>
-                <!-- /.box -->
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info btn-block btn-flat">添加图文</button>
+                </div>
+                <!-- /.box-footer -->
+                </form>
             </div>
             <!--/.col (right) -->
             <div class="col-md-6">
+                {{--作品预览信息--}}
+                <div class="white-bg" style="padding: 30px;">
+                    <div class="font-size-16">
+                        {{$data->name}}
+                    </div>
+                    <div class="border-t margin-top-10 margin-bottom-10">
+                    </div>
+                    <div class="font-size-14 grey-font">
+                        <span>{{$data->created_at_str}}</span>
+                        <span class="margin-left-10 text-info">{{$data->doctor->name}}</span>
+                    </div>
+                    <div class="grey-bg margin-top-10" style="padding: 10px;">
+                        {{$data->desc}}
+                    </div>
+                    <div style="padding: 10px;">
+                        <!--作品信息-->
+                        @foreach($data->steps as $step)
+                            <div>
+                                <div class="white-bg margin-b-10" style="background-color: white;">
+                                    <div class="padding-10">
+                                        @if($step->img)
+                                            <img src="{{$step->img}}"
+                                                 style="width: 100%;" class="padding-top-10 padding-bottom-10">
+                                        @endif
+                                    </div>
+                                    <div class="padding-bottom-10">
+                                        @if($step->text)
+                                            {{$step->text}}
+                                        @endif
+                                    </div>
+                                    <div class="padding-bottom-10">
+                                        <span class="time"><i
+                                                    class="fa fa-clock-o"></i> {{$step->created_at_str}}</span>
 
+                                        <span onclick="clickDel({{$step->id}})"
+                                              class="btn btn-danger btn-xs pull-right"
+                                              style="margin-left: 10px;">删除</span>
+
+                                        <a href="{{URL::asset('/admin/kfmb/setStep/')}}/{{$data->id}}?tw_id={{$step->id}}"
+                                           class="btn btn-warning btn-xs pull-right">编辑</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
+        {{--删除对话框--}}
+        <div class="modal fade modal-margin-top" id="delConfrimModel" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content message_align">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">提示信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>您确认要删除该条图文吗？</p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="url"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button id="delConfrimModel_confirm_btn" data-value="" onclick="delTW();"
+                                class="btn btn-success"
+                                data-dismiss="modal">确定
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </section>
 @endsection
 
@@ -90,19 +157,38 @@
 
         //合规校验
         function checkValid() {
-            var content = $("#content").val();
-            //合规校验
-            if (judgeIsNullStr(content)) {
-                $("#content").focus();
-                return false;
-            }
+            var text = $("#text").val();
             var img = $("#img").val();
-            if (judgeIsNullStr(img)) {
-                $("#img").focus();
+            //合规校验
+            if (judgeIsNullStr(text) && judgeIsNullStr(img)) {
+                if (judgeIsNullStr(text)) {
+                    $("#text").focus();
+                }
+                if (judgeIsNullStr(img)) {
+                    $("#img").focus();
+                }
                 return false;
             }
             return true;
         }
+
+
+        //点击删除
+        function clickDel(tw_id) {
+            console.log("clickDel tw_id:" + tw_id);
+            //为删除按钮赋值
+            $("#delConfrimModel_confirm_btn").attr("data-value", tw_id);
+            $("#delConfrimModel").modal('show');
+        }
+
+        //删除轮播
+        function delTW() {
+            var tw_id = $("#delConfrimModel_confirm_btn").attr("data-value");
+            console.log("delTW tw_id:" + tw_id);
+            //进行页面跳转
+            window.location.href = "{{URL::asset('/admin/kfmb/delStep/')}}/" + tw_id;
+        }
+
 
         $(document).ready(function () {
             //获取七牛token
