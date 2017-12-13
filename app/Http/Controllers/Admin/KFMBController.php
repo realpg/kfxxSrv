@@ -196,4 +196,16 @@ class KFMBController
         redirect('/admin/kfmb/edit?id' . $kfmbjh->kfmb_id);
     }
 
+    //设置康复计划
+    public function setJH(Request $request, $id)
+    {
+        $data = $request->all();
+        $admin = $request->session()->get('admin');
+        $kfmb = KFMBManager::getKFMBById($id);
+        $kfmb = KFMBManager::getKFMBInfoByLevel($kfmb, 5);
+//        dd($kfmb);
+        return view('admin.kfmb.editJH', ['admin' => $admin, 'data' => $kfmb]);
+    }
+
+
 }

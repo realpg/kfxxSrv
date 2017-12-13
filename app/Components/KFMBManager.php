@@ -12,6 +12,7 @@ namespace App\Components;
 use App\Models\KFMB;
 use App\Models\Doctor;
 use App\Models\KFMBJH;
+use App\Models\KFMBJHSJ;
 use App\Models\TWStep;
 use Qiniu\Auth;
 
@@ -86,20 +87,80 @@ class KFMBManager
      * 1:基本级别，带录入人员信息
      * 2:中级级别，带宣教信息
      * 3:高级级别，带计划列表
-     *
+     * 4:高级级别，计划带宣教列表
+     * 5:高级级别，计划带采集列表
      */
-    public static function getKFMBInfoByLevel($xj, $level)
+    public static function getKFMBInfoByLevel($kfmb, $level)
     {
         if ($level >= 1) {
-            $xj->doctor = DoctorManager::getDoctorById($xj->doctor_id);
+            $kfmb->doctor = DoctorManager::getDoctorById($kfmb->doctor_id);
         }
         if ($level >= 2) {
-
+            $kfmb->steps = self::getStepsByKFMBId($kfmb->id);
         }
         if ($level >= 3) {
-
+            $kfmb->jhs = self::getJHListByKFMBId($kfmb->id);
         }
-        return $xj;
+        if ($level >= 4) {
+            foreach ($kfmb->jhs as $jh) {
+                if ($jh->xj_ids != null) {
+                    $jh->xj = XJManager::getXJById($jh->xj_ids);
+                }
+            }
+        }
+        if ($level >= 5) {
+            foreach ($kfmb->jhs as $jh) {
+                $jh->jhsjs = self::getJHSJByJHId($jh->id);
+            }
+        }
+        return $kfmb;
+    }
+
+
+    /*
+     * 获取康复模板计划的采集数据列表信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-13
+     *
+     */
+    public static function getJHSJByJHId($jh_id)
+    {
+        $jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh_id)->get();
+        foreach ($jhsjs as $jhsj) {
+            $jhsj->sj = self::getSJById($jhsj->sj_id);
+        }
+        return $jhsjs;
+    }
+
+
+    /*
+     * 根据id获取数据项
+     *
+     * By TerryQi
+     *
+     * 2017-12-13
+     *
+     */
+    public static function getSJById($id)
+    {
+        $sj = SJXManager::getSJXById($id);
+        return $sj;
+    }
+
+    /*
+     * 获取康复模板下的计划列表
+     *
+     * By TerryQi
+     *
+     * 2017-12-13
+     *
+     */
+    public static function getJHListByKFMBId($kfmb_id)
+    {
+        $jhs = KFMBJH::where('kfmb_id', '=', $kfmb_id)->orderby('seq', 'asc')->get();
+        return $jhs;
     }
 
 
@@ -111,7 +172,8 @@ class KFMBManager
      * 2017-12-12
      *
      */
-    public static function getStepsByKFMBId($kfmb_id)
+    public
+    static function getStepsByKFMBId($kfmb_id)
     {
         $tw_steps = TWStep::where('f_table', '=', 'kfmb')->where('f_id', '=', $kfmb_id)->get();
         return $tw_steps;
@@ -126,7 +188,8 @@ class KFMBManager
      * 2017-12-12
      *
      */
-    public static function getTWById($tw_id)
+    public
+    static function getTWById($tw_id)
     {
         $tw = TWStep::where('id', '=', $tw_id)->first();
         return $tw;
@@ -141,7 +204,8 @@ class KFMBManager
      * 2017-12-12
      *
      */
-    public static function setKFMB($kfmb, $data)
+    public
+    static function setKFMB($kfmb, $data)
     {
         if (array_key_exists('name', $data)) {
             $kfmb->name = array_get($data, 'name');
@@ -169,7 +233,8 @@ class KFMBManager
      * 2017-12-12
      *
      */
-    public static function setKFMBJH($kfmbjh, $data)
+    public
+    static function setKFMBJH($kfmbjh, $data)
     {
         if (array_key_exists('kfmb_id', $data)) {
             $kfmbjh->kfmb_id = array_get($data, 'kfmb_id');

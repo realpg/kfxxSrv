@@ -72,7 +72,7 @@ class XJManager
      */
     public static function getXJListByCon($types_arr)
     {
-        $xjs = XJ::orderby('id', 'desc');
+        $xjs = XJ::orderby('id', 'desc')->where('status', '=', '1');
         for ($i = 0; $i < count($types_arr); $i++) {
             if ($i == 0) {
                 $xjs = $xjs->where('type', 'like', '%' . $types_arr[$i] . '%');
