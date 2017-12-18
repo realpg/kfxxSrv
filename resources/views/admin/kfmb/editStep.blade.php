@@ -33,45 +33,46 @@
                                            value="{{ $data->id }}">
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group hidden">
-                            <label for="id" class="col-sm-2 control-label">id</label>
-                            <div class="col-sm-10">
-                                <input id="id" name="id" type="text" class="form-control" placeholder="id"
-                                       value="{{ isset($tw->id) ? $tw->id : '' }}">
+
+                            <div class="form-group hidden">
+                                <label for="id" class="col-sm-2 control-label">id</label>
+                                <div class="col-sm-10">
+                                    <input id="id" name="id" type="text" class="form-control" placeholder="id"
+                                           value="{{ isset($tw->id) ? $tw->id : '' }}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="text" class="col-sm-2 control-label">文字</label>
-                            <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="text" class="col-sm-2 control-label">文字</label>
+                                <div class="col-sm-10">
                                     <textarea id="text" name="text" class="form-control" rows="3"
                                               placeholder="请输入 ...">{{ isset($tw->text) ? $tw->text : '' }}</textarea>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="img" class="col-sm-2 control-label">图片</label>
+                            <div class="form-group">
+                                <label for="img" class="col-sm-2 control-label">图片</label>
 
-                            <div class="col-sm-10">
-                                <input id="img" name="img" type="text" class="form-control" placeholder="图片网路链接地址"
-                                       value="{{ isset($tw->img) ? $tw->img : '' }}">
+                                <div class="col-sm-10">
+                                    <input id="img" name="img" type="text" class="form-control" placeholder="图片网路链接地址"
+                                           value="{{ isset($tw->img) ? $tw->img : '' }}">
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px;" class="text-center">
+                                <div id="container">
+                                    <img id="pickfiles"
+                                         src="{{ isset($tw->img) ? $tw->img : URL::asset('/img/upload.png') }}"
+                                         style="width: 240px;">
+                                </div>
+                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片</div>
                             </div>
                         </div>
-                        <div style="margin-top: 10px;" class="text-center">
-                            <div id="container">
-                                <img id="pickfiles"
-                                     src="{{ isset($tw->img) ? $tw->img : URL::asset('/img/upload.png') }}"
-                                     style="width: 240px;">
-                            </div>
-                            <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片</div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info btn-block btn-flat">添加图文</button>
                         </div>
+                        <!-- /.box-footer -->
+                    </form>
                 </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                    <button type="submit" class="btn btn-info btn-block btn-flat">添加图文</button>
-                </div>
-                <!-- /.box-footer -->
-                </form>
             </div>
             <!--/.col (right) -->
             <div class="col-md-6">

@@ -11,11 +11,9 @@
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
-                <a href="{{url('/admin/sjx/edit')}}">
-                    <button type="button" class="btn btn-primary">
-                        +新建数据项
-                    </button>
-                </a>
+                <button type="button" class="btn btn-primary" onclick="clickAdd();">
+                    +新建数据项
+                </button>
             </div>
         </div>
     </section>
@@ -48,13 +46,13 @@
                                     <td><span class="line-height-30">{{$data->created_at_str}}</span></td>
                                     <td class="opt-th-width-m">
                                         <span class="line-height-30">
-                                            <a href="{{URL::asset('/admin/sjx/edit')}}?id={{$data->id}}"
-                                               class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
-                                               data-toggle="tooltip"
-                                               data-placement="top"
-                                               title="编辑该数据项">
+                                            <span onclick="clickEdit({{$data->id}})"
+                                                  class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
+                                                  data-toggle="tooltip"
+                                                  data-placement="top"
+                                                  title="编辑该数据项">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
-                                            </a>
+                                            </span>
                                             <a href=""
                                                class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
                                                data-toggle="modal" data-target="#tip_modal"
@@ -107,6 +105,87 @@
             </div>
         </div>
 
+        {{--新建对话框--}}
+        <div class="modal fade modal-margin-top-m" id="addSJXModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content message_align">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">新建/编辑数据项</h4>
+                    </div>
+                    <form action="{{URL::asset('/admin/sjx/edit')}}" method="post" class="form-horizontal"
+                          onsubmit="return checkValid();">
+                        <div class="modal-body">
+                            {{csrf_field()}}
+                            <div class="box-body">
+                                <div class="form-group hidden">
+                                    <label for="doctor_id" class="col-sm-2 control-label">id</label>
+                                    <div class="col-sm-10">
+                                        <input id="id" name="id" type="text" class="form-control"
+                                               value="">
+                                    </div>
+                                </div>
+                                <div class="form-group hidden">
+                                    <label for="doctor_id" class="col-sm-2 control-label">录入人id</label>
+                                    <div class="col-sm-10">
+                                        <input id="doctor_id" name="doctor_id" type="text" class="form-control"
+                                               value="{{$admin->id}}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">录入人</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control"
+                                               value="{{$admin->name}}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-2 control-label">名称*</label>
+                                    <div class="col-sm-10">
+                                        <input id="name" name="name" type="text" class="form-control"
+                                               placeholder="请输入数据项名称"
+                                               value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="desc" class="col-sm-2 control-label">描述</label>
+                                    <div class="col-sm-10">
+                                    <textarea id="desc" name="desc" class="form-control" rows="3"
+                                              placeholder="请输入 ..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="unit" class="col-sm-2 control-label">单位</label>
+                                    <div class="col-sm-10">
+                                        <select id="unit" name="unit" class="form-control">
+                                            <option value="mm">毫米(mm)
+                                            </option>
+                                            <option value="cm">厘米(cm)
+                                            </option>
+                                            <option value="m">米(m)</option>
+                                            <option value="疼度">疼度</option>
+                                            <option value="角度">角度</option>
+                                            <option value="摄氏度">摄氏度</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="url"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" id="addSJXModal_confirm_btn" data-value=""
+                                    class="btn btn-success">确定
+                            </button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
     </section>
 @endsection
 
@@ -117,6 +196,45 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
+
+        //点击新建数据项
+        function clickAdd() {
+            //清空模态框
+            $("#id").val("");
+            $("#name").val("");
+            $("#desc").val("");
+            $("#unit").val("cm");
+            $("#addSJXModal").modal('show');
+        }
+
+        //点击编辑
+        function clickEdit(sjx_id) {
+            console.log("clickEdit sjx_id:" + sjx_id);
+            getSJXById("{{URL::asset('')}}", {id: sjx_id}, function (ret) {
+                if (ret.result) {
+                    var msgObj = ret.ret;
+                    //对象配置
+                    $("#id").val(msgObj.id);
+                    $("#name").val(msgObj.name);
+                    $("#desc").val(msgObj.desc);
+                    $("#unit").val(msgObj.unit);
+                    //展示modal
+                    $("#addSJXModal").modal('show');
+                }
+            })
+        }
+
+        //合规校验
+        function checkValid() {
+            var name = $("#name").val();
+            //合规校验
+            if (judgeIsNullStr(name)) {
+                $("#name").focus();
+                return false;
+            }
+            return true;
+        }
 
     </script>
 @endsection

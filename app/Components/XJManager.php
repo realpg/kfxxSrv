@@ -86,6 +86,20 @@ class XJManager
 
 
     /*
+     * 获取全部宣教信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-14
+     *
+     */
+    public static function getAllXJs()
+    {
+        $xjs = XJ::where('status', '=', '1')->orderby('id', 'desc')->get();
+        return $xjs;
+    }
+
+    /*
      * 获取宣教基本信息
      *
      * By TerryQi

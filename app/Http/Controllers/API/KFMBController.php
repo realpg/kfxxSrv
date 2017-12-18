@@ -66,5 +66,4 @@ class KFMBController extends Controller
         return ApiResponse::makeResponse(true, $kfmb, ApiResponse::SUCCESS_CODE);
     }
 
-
 }

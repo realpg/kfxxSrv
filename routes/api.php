@@ -30,6 +30,8 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('ad/getADs', 'API\ADController@getADs');
     Route::get('ad/getById', 'API\ADController@getADById');
 
+    Route::get('ad/getADs', 'API\ADController@getADs');
+
     //根据id获取用户信息
     Route::get('user/getById', 'API\UserController@getUserById');
     //根据id获取用户信息带token
@@ -49,12 +51,16 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('xj/getXJTypes', 'API\XJController@getXJTypes');
     Route::get('xj/getByCon', 'API\XJController@getXJList');
     Route::get('xj/getXJInfoById', 'API\XJController@getXJInfoById');
+    Route::get('xj/getAll', 'API\XJController@getAllXJs');
 
     //数据项相关
     Route::get('sjx/getList', 'API\SJXController@getList');
+    Route::get('sjx/getById', 'API\SJXController@getSJXById');
 
     //康复模板相关
     Route::get('kfmb/getKFMBById', 'API\KFMBController@getKFMBById');
+    Route::get('kfmb/getKFMBList', 'API\KFMBController@getKFMBList');
+
 
 
 });

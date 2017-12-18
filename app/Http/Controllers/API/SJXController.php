@@ -36,8 +36,31 @@ class SJXController extends Controller
     public function getList(Request $request)
     {
         $data = $request->all();    //request转array
-        $sjx = SJXManager::getSJXs();
+        $sjxs = SJXManager::getSJXs();
 
+        return ApiResponse::makeResponse(true, $sjxs, ApiResponse::SUCCESS_CODE);
+    }
+
+    /*
+     * 根据id获取数据项
+     *
+     * By TerryQi
+     *
+     * 2017-12-13
+     *
+     */
+    public function getSJXById(Request $request)
+    {
+        $data = $request->all();    //request转array
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+
+        $sjx = SJXManager::getSJXById($data['id']);
         return ApiResponse::makeResponse(true, $sjx, ApiResponse::SUCCESS_CODE);
     }
 

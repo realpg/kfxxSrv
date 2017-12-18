@@ -74,6 +74,16 @@ class KFMBManager
         return $kfmbjh;
     }
 
+    /*
+     * 根据id获取计划模板采集数据
+     *
+     */
+    public static function getJHSJById($id)
+    {
+        $kfmbjhsj = KFMBJHSJ::where('id', '=', $id)->first();
+        return $kfmbjhsj;
+    }
+
 
     /*
      * 获取康复模板信息
@@ -129,7 +139,7 @@ class KFMBManager
     {
         $jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh_id)->get();
         foreach ($jhsjs as $jhsj) {
-            $jhsj->sj = self::getSJById($jhsj->sj_id);
+            $jhsj->sj = self::getSJById($jhsj->sjx_id);
         }
         return $jhsjs;
     }
@@ -233,8 +243,7 @@ class KFMBManager
      * 2017-12-12
      *
      */
-    public
-    static function setKFMBJH($kfmbjh, $data)
+    public static function setKFMBJH($kfmbjh, $data)
     {
         if (array_key_exists('kfmb_id', $data)) {
             $kfmbjh->kfmb_id = array_get($data, 'kfmb_id');
@@ -263,5 +272,29 @@ class KFMBManager
         return $kfmbjh;
     }
 
+
+    /*
+     * 设置康复模板采集数据
+     *
+     * By TerryQi
+     *
+     * 2017-12-14
+     */
+    public static function setKFMBJHSJ($kfmbjhsj, $data)
+    {
+        if (array_key_exists('jh_id', $data)) {
+            $kfmbjhsj->mbjh_id = array_get($data, 'jh_id');
+        }
+        if (array_key_exists('sjx_id', $data)) {
+            $kfmbjhsj->sjx_id = array_get($data, 'sjx_id');
+        }
+        if (array_key_exists('min_value', $data)) {
+            $kfmbjhsj->min_value = array_get($data, 'min_value');
+        }
+        if (array_key_exists('max_value', $data)) {
+            $kfmbjhsj->max_value = array_get($data, 'max_value');
+        }
+        return $kfmbjhsj;
+    }
 
 }

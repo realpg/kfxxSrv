@@ -84,8 +84,7 @@
                                                data-placement="top" title="在小程序页面中隐藏该轮播图">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
-                                            <span href="{{URL::asset('/admin/ad/edit')}}?id={{$data->id}}"
-                                                  class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
+                                            <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
                                                   title="编辑该轮播图"

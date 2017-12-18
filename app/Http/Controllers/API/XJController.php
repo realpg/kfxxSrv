@@ -39,9 +39,21 @@ class XJController extends Controller
         if (array_key_exists('type', $data)) { //如果不存在type
             $types_arr = explode(',', $data['type']);
         }
-
         $xjs = XJManager::getXJListByCon($types_arr);
+        return ApiResponse::makeResponse(true, $xjs, ApiResponse::SUCCESS_CODE);
+    }
 
+    /*
+     * 获取全部生效宣教
+     *
+     * By TerryQi
+     *
+     * 2017-12-14
+     */
+    public function getAllXJs(Request $request)
+    {
+        $data = $request->all();    //request转array
+        $xjs = XJManager::getAllXJs();
         return ApiResponse::makeResponse(true, $xjs, ApiResponse::SUCCESS_CODE);
     }
 

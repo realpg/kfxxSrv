@@ -60,6 +60,7 @@ class SJXController
     public function editPost(Request $request)
     {
         $data = $request->all();
+//        dd($data);
         $sjx = new SJX();
         //存在id是保存
         if (array_key_exists('id', $data)) {

@@ -21,57 +21,81 @@
                 <!-- Horizontal Form -->
                 <div class="box box-default">
                     <!-- form start -->
-                    <!-- form start -->
-                    <form action="" method="post" class="form-horizontal" onsubmit="return checkValid();">
+                    <form action="" method="post" class="form-horizontal"
+                          onsubmit="return checkValid();">
                         {{csrf_field()}}
                         <div class="box-body">
                             <div class="form-group hidden">
-                                <label for="f_id" class="col-sm-2 control-label">父id</label>
+                                <label for="kfmb_id" class="col-sm-2 control-label">康复模板id</label>
 
                                 <div class="col-sm-10">
-                                    <input id="f_id" name="f_id" type="text" class="form-control" placeholder="父id"
+                                    <input id="kfmb_id" name="kfmb_id" type="text" class="form-control"
+                                           placeholder="父id"
                                            value="{{ $data->id }}">
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group hidden">
-                            <label for="id" class="col-sm-2 control-label">id</label>
-                            <div class="col-sm-10">
-                                <input id="id" name="id" type="text" class="form-control" placeholder="id"
-                                       value="{{ isset($tw->id) ? $tw->id : '' }}">
+                            <div class="form-group hidden">
+                                <label for="jh_id" class="col-sm-2 control-label">id</label>
+                                <div class="col-sm-10">
+                                    <input id="jh_id" name="jh_id" type="text" class="form-control" placeholder="id"
+                                           value="{{ isset($jh->id) ? $jh->id : '' }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">计划*</label>
+                                <div class="col-sm-10">
+                                    <input id="name" name="name" type="text" class="form-control" placeholder="请输入计划名称"
+                                           value="{{ isset($jh->name) ? $jh->name : '' }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="desc" class="col-sm-2 control-label">描述*</label>
+                                <div class="col-sm-10">
+                                    <textarea id="desc" name="desc" class="form-control" rows="5"
+                                              placeholder="请输入 ...">{{ isset($jh->desc) ? $jh->desc : '' }}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label for="btime_type" class="col-sm-2 control-label">基线*</label>
+                                <div class="col-sm-10">
+                                    <select id="btime_type" name="btime_type" class="form-control">
+                                        <option value="0" {{ $jh->btime_type==='0' ? 'selected' : '' }}>术后</option>
+                                        <option value="1" {{ $jh->btime_type==='1' ? 'selected' : '' }}>首次弯腿后</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="start_time" class="col-sm-2 control-label">开始</label>
+                                <div class="col-sm-10">
+                                    <div class="form-inline">
+                                        <input id="start_time" name="start_time" type="number"
+                                               class="form-control pull-left"
+                                               placeholder="开始时间"
+                                               value="{{ isset($jh->start_time) ? $jh->start_time : '0' }}">
+                                        <span class="pull-right text-info text-oneline" style="line-height: 30px;">计划的执行不早于开始时间</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_time" class="col-sm-2 control-label">结束</label>
+                                <div class="col-sm-10">
+                                    <div class="form-inline">
+                                        <input id="end_time" name="end_time" type="number"
+                                               class="form-control pull-left"
+                                               placeholder="结束时间"
+                                               value="{{ isset($jh->end_time) ? $jh->end_time : '3' }}">
+                                        <span class="pull-right text-info text-oneline" style="line-height: 30px;">计划的执行不晚于结束时间</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="text" class="col-sm-2 control-label">文字</label>
-                            <div class="col-sm-10">
-                                    <textarea id="text" name="text" class="form-control" rows="3"
-                                              placeholder="请输入 ...">{{ isset($tw->text) ? $tw->text : '' }}</textarea>
-                            </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info btn-block btn-flat">添加康复计划</button>
                         </div>
-
-                        <div class="form-group">
-                            <label for="img" class="col-sm-2 control-label">图片</label>
-
-                            <div class="col-sm-10">
-                                <input id="img" name="img" type="text" class="form-control" placeholder="图片网路链接地址"
-                                       value="{{ isset($tw->img) ? $tw->img : '' }}">
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;" class="text-center">
-                            <div id="container">
-                                <img id="pickfiles"
-                                     src="{{ isset($tw->img) ? $tw->img : URL::asset('/img/upload.png') }}"
-                                     style="width: 240px;">
-                            </div>
-                            <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片</div>
-                        </div>
+                        <!-- /.box-footer -->
+                    </form>
                 </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                    <button type="submit" class="btn btn-info btn-block btn-flat">添加康复计划</button>
-                </div>
-                <!-- /.box-footer -->
-                </form>
             </div>
             <!--/.col (right) -->
             <div class="col-md-6">
@@ -82,48 +106,89 @@
                     </div>
                     <div class="border-t margin-top-10 margin-bottom-10">
                     </div>
-                    <div class="font-size-14 grey-font">
-                        <span>{{$data->created_at_str}}</span>
-                        <span class="margin-left-10 text-info">{{$data->doctor->name}}</span>
-                    </div>
-                    <div class="grey-bg margin-top-10" style="padding: 10px;">
-                        {{$data->desc}}
-                    </div>
+
                     <div style="padding: 10px;">
-                        <!--作品信息-->
-                        @foreach($data->steps as $step)
+                        <!--康复计划信息-->
+                        @foreach($data->jhs as $jh)
                             <div>
-                                <div class="white-bg margin-b-10" style="background-color: white;">
-                                    <div class="padding-10">
-                                        @if($step->img)
-                                            <img src="{{$step->img}}"
-                                                 style="width: 100%;" class="padding-top-10 padding-bottom-10">
+                                <!--康复计划信息-->
+                                <div class="border-bottom padding-bottom-20 padding-top-20">
+                                    <div id="" class="margin-bottom-10">
+                                        <!--标题-->
+                                        <div class="font-size-18 text-info">任务<span
+                                                    class="margin-left-10">{{$jh->name}}</span></div>
+                                        @if($jh->desc)
+                                            <div class="grey-bg margin-top-10" style="padding: 10px;">
+                                                {{$jh->desc}}
+                                            </div>
                                         @endif
+                                        <div class="margin-top-10 font-size-16">
+                                            <i class="fa fa-clock-o"></i>
+                                            <span class="">执行时间</span>
+                                            <span class="margin-left-15">
+                                                {{ $jh->btime_type==='0' ? '手术后' : '' }}
+                                                {{ $jh->btime_type==='1' ? '首次弯腿时间' : '' }}
+                                            </span>
+                                            <span class="margin-left-20">{{$jh->start_time}}天</span>
+                                            <span class="margin-left-10">到</span>
+                                            <span class="margin-left-10">{{$jh->end_time}}天</span>
+                                        </div>
                                     </div>
                                     <div class="padding-bottom-10">
-                                        @if($step->text)
-                                            {{$step->text}}
+                                        <a href="{{URL::asset('/admin/kfmb/delJH/')}}/{{$jh->id}}"
+                                           class="btn btn-danger btn-xs pull-right">删除</a>
+                                        <a href="{{URL::asset('/admin/kfmb/setJH/')}}/{{$data->id}}?jh_id={{$jh->id}}"
+                                           class="btn btn-warning btn-xs pull-right margin-right-10">编辑</a>
+                                    </div>
+                                    {{--宣教信息--}}
+                                    <div class="margin-top-20">
+                                        <div>
+                                            <span class="padding-left-10"
+                                                  style="border-left: 3px solid #31708f;">关联宣教</span>
+                                            <span class="text-info btn btn-xs btn-warning margin-left-20"
+                                                  onclick="clickGLJHSJ({{$jh->id}});">关联</span>
+                                        </div>
+                                        @if(isset($jh->xj))
+                                            <div class="margin-top-10">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <div class="text-info text-oneline">
+                                                            {{$jh->xj->title}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <a href="{{URL::asset('/admin/kfmb/delJHXJ')}}?jh_id={{$jh->id}}"
+                                                           class="btn btn-danger btn-xs pull-right">删除</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endif
                                     </div>
-                                    <div class="padding-bottom-10">
-                                        <span class="time"><i
-                                                    class="fa fa-clock-o"></i> {{$step->created_at_str}}</span>
-
-                                        <span onclick="clickDel({{$step->id}})"
-                                              class="btn btn-danger btn-xs pull-right"
-                                              style="margin-left: 10px;">删除</span>
-
-                                        <a href="{{URL::asset('/admin/kfmb/setStep/')}}/{{$data->id}}?tw_id={{$step->id}}"
-                                           class="btn btn-warning btn-xs pull-right">编辑</a>
-
-                                        <span onclick="clickDel({{$step->id}})"
-                                              class="btn btn-danger btn-xs pull-right"
-                                              style="margin-left: 10px;">关联宣教</span>
-
-                                        <span onclick="clickDel({{$step->id}})"
-                                              class="btn btn-danger btn-xs pull-right"
-                                              style="margin-left: 10px;">关联采集</span>
-
+                                    <div class="margin-top-20">
+                                        <div>
+                                            <span class="padding-left-10"
+                                                  style="border-left: 3px solid #31708f;">采集数据</span>
+                                            <span class="text-info btn btn-xs btn-warning margin-left-20"
+                                                  onclick="clickTJJHSJ({{$jh->id}})">添加</span>
+                                        </div>
+                                        @foreach($jh->jhsjs as $jhsj)
+                                            <div class="margin-top-10">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <div class="text-info">
+                                                            <span class="text-info">{{$jhsj->sj->name}}
+                                                                ({{$jhsj->sj->unit}})</span>
+                                                            <span class="margin-left-10">阈值范围 {{$jhsj->min_value}}
+                                                                -{{$jhsj->max_value}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <a href="{{URL::asset('/admin/kfmb/delCJSJ')}}?jhsj_id={{$jhsj->id}}"
+                                                           class="btn btn-danger btn-xs pull-right">删除</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -132,31 +197,118 @@
                 </div>
             </div>
         </div>
-        {{--删除对话框--}}
-        <div class="modal fade modal-margin-top" id="delConfrimModel" tabindex="-1" role="dialog">
+        {{--新建对话框--}}
+        <div class="modal fade modal-margin-top-m" id="addJHXJModal" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content message_align">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">×</span></button>
-                        <h4 class="modal-title">提示信息</h4>
+                        <h4 class="modal-title">关联宣教</h4>
                     </div>
-                    <div class="modal-body">
-                        <p>您确认要删除该条康复计划吗？</p>
+                    <form action="{{URL::asset('/admin/kfmb/setJH')}}/{{$data->id}}" method="post"
+                          class="form-horizontal">
+                        <div class="modal-body">
+                            {{csrf_field()}}
+                            <div class="box-body">
+                                <div class="form-group hidden">
+                                    <label for="jh_id" class="col-sm-2 control-label">关联宣教的计划id</label>
+                                    <div class="col-sm-10">
+                                        <input id="glxj_jh_id" name="jh_id" type="text" class="form-control"
+                                               placeholder="id"
+                                               value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="xj_ids" class="col-sm-2 control-label">关联宣教</label>
+                                    <div class="col-sm-10">
+                                        <select id="xj_ids" name="xj_ids" class="form-control">
+                                            @foreach($all_xjs as $xj)
+                                                <option value="{{$xj->id}}">{{$xj->title}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="url"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" id="addJHXJModal_confirm_btn" data-value=""
+                                    class="btn btn-success">确定
+                            </button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        {{--采集数据--}}
+        <div class="modal fade modal-margin-top-m" id="addCJSJModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content message_align">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">采集数据</h4>
                     </div>
-                    <div class="modal-footer">
-                        <input type="hidden" id="url"/>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button id="delConfrimModel_confirm_btn" data-value="" onclick="delTW();"
-                                class="btn btn-success"
-                                data-dismiss="modal">确定
-                        </button>
-                    </div>
+                    <form action="{{URL::asset('/admin/kfmb/setCJSJ')}}" method="post"
+                          class="form-horizontal" onsubmit="return checkCJSJValid();">
+                        <div class="modal-body">
+                            {{csrf_field()}}
+                            <div class="box-body">
+                                <div class="form-group hidden">
+                                    <label for="jh_id" class="col-sm-2 control-label">关联宣教的计划id</label>
+                                    <div class="col-sm-10">
+                                        <input id="cjsj_jh_id" name="jh_id" type="text" class="form-control"
+                                               placeholder="id"
+                                               value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="xj_ids" class="col-sm-2 control-label">采集数据</label>
+                                    <div class="col-sm-10">
+                                        <select id="sjx_id" name="sjx_id" class="form-control">
+                                            @foreach($all_sjxs as $sjx)
+                                                <option value="{{$sjx->id}}">{{$sjx->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jh_id" class="col-sm-2 control-label">最小值*</label>
+                                    <div class="col-sm-10">
+                                        <input id="min_value" name="min_value" type="number" class="form-control"
+                                               placeholder="该值为阈值最小值，小于最小值将报警"
+                                               value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jh_id" class="col-sm-2 control-label">最大值*</label>
+                                    <div class="col-sm-10">
+                                        <input id="max_value" name="max_value" type="number" class="form-control"
+                                               placeholder="该值为阈值最大值，大于最大值将报警"
+                                               value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="url"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" id="addCJSJModal_confirm_btn" data-value=""
+                                    class="btn btn-success">确定
+                            </button>
+                        </div>
+                    </form>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </section>
 @endsection
+
 
 @section('script')
     <script src="{{ URL::asset('js/qiniu.js') }}"></script>
@@ -166,134 +318,52 @@
 
         //合规校验
         function checkValid() {
-            var text = $("#text").val();
-            var img = $("#img").val();
+            var name = $("#name").val();
             //合规校验
-            if (judgeIsNullStr(text) && judgeIsNullStr(img)) {
-                if (judgeIsNullStr(text)) {
-                    $("#text").focus();
-                }
-                if (judgeIsNullStr(img)) {
-                    $("#img").focus();
-                }
+            if (judgeIsNullStr(text)) {
+                $("#text").focus();
                 return false;
             }
             return true;
         }
 
+        //采集数据form的合规校验
+        function checkCJSJValid() {
+            var min_value = $("#min_value").val();
+            //合规校验
+            if (judgeIsNullStr(min_value)) {
+                $("#min_value").focus();
+                return false;
+            }
+            var max_value = $("#max_value").val();
+            //合规校验
+            if (judgeIsNullStr(max_value)) {
+                $("#max_value").focus();
+                return false;
+            }
+            return true;
+        }
 
-        //点击删除
-        function clickDel(tw_id) {
-            console.log("clickDel tw_id:" + tw_id);
+        //关联宣教
+        function clickGLJHSJ(jh_id) {
+            console.log("clickGLJHSJ jh_id:" + jh_id);
             //为删除按钮赋值
-            $("#delConfrimModel_confirm_btn").attr("data-value", tw_id);
-            $("#delConfrimModel").modal('show');
+            $("#addJHXJModal_confirm_btn").attr("data-value", jh_id);
+            $("#glxj_jh_id").val(jh_id);
+            $("#addJHXJModal").modal('show');
         }
 
-        //删除轮播
-        function delTW() {
-            var tw_id = $("#delConfrimModel_confirm_btn").attr("data-value");
-            console.log("delTW tw_id:" + tw_id);
-            //进行页面跳转
-            window.location.href = "{{URL::asset('/admin/kfmb/delStep/')}}/" + tw_id;
+        //添加采集数据
+        function clickTJJHSJ(jh_id) {
+            console.log("clickGLJHSJ jh_id:" + jh_id);
+            $("#max_value").val("");
+            $("#min_value").val("");
+            //为删除按钮赋值
+            $("#addCJSJModal").attr("data-value", jh_id);
+            $("#cjsj_jh_id").val(jh_id);
+            $("#addCJSJModal").modal('show');
         }
 
-
-        $(document).ready(function () {
-            //获取七牛token
-            initQNUploader();
-        });
-
-        //初始化七牛上传模块
-        function initQNUploader() {
-            var uploader = Qiniu.uploader({
-                runtimes: 'html5,flash,html4',      // 上传模式，依次退化
-                browse_button: 'pickfiles',         // 上传选择的点选按钮，必需
-                container: 'container',//上传按钮的上级元素ID
-                // 在初始化时，uptoken，uptoken_url，uptoken_func三个参数中必须有一个被设置
-                // 切如果提供了多个，其优先级为uptoken > uptoken_url > uptoken_func
-                // 其中uptoken是直接提供上传凭证，uptoken_url是提供了获取上传凭证的地址，如果需要定制获取uptoken的过程则可以设置uptoken_func
-                uptoken: "{{$upload_token}}", // uptoken是上传凭证，由其他程序生成
-                // uptoken_url: '/uptoken',         // Ajax请求uptoken的Url，强烈建议设置（服务端提供）
-                // uptoken_func: function(file){    // 在需要获取uptoken时，该方法会被调用
-                //    // do something
-                //    return uptoken;
-                // },
-                get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的uptoken
-                // downtoken_url: '/downtoken',
-                // Ajax请求downToken的Url，私有空间时使用，JS-SDK将向该地址POST文件的key和domain，服务端返回的JSON必须包含url字段，url值为该文件的下载地址
-                unique_names: true,              // 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
-                // save_key: true,                  // 默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
-                domain: 'http://twst.isart.me/',     // bucket域名，下载资源时用到，必需
-                max_file_size: '100mb',             // 最大文件体积限制
-                flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入flash，相对路径
-                max_retries: 3,                     // 上传失败最大重试次数
-                dragdrop: true,                     // 开启可拖曳上传
-                drop_element: 'container',          // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
-                chunk_size: '4mb',                  // 分块上传时，每块的体积
-                auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
-                //x_vars : {
-                //    查看自定义变量
-                //    'time' : function(up,file) {
-                //        var time = (new Date()).getTime();
-                // do something with 'time'
-                //        return time;
-                //    },
-                //    'size' : function(up,file) {
-                //        var size = file.size;
-                // do something with 'size'
-                //        return size;
-                //    }
-                //},
-                init: {
-                    'FilesAdded': function (up, files) {
-                        plupload.each(files, function (file) {
-                            // 文件添加进队列后，处理相关的事情
-//                                            alert(alert(JSON.stringify(file)));
-                        });
-                    },
-                    'BeforeUpload': function (up, file) {
-                        // 每个文件上传前，处理相关的事情
-//                        console.log("BeforeUpload up:" + up + " file:" + JSON.stringify(file));
-                    },
-                    'UploadProgress': function (up, file) {
-                        // 每个文件上传时，处理相关的事情
-//                        console.log("UploadProgress up:" + up + " file:" + JSON.stringify(file));
-                    },
-                    'FileUploaded': function (up, file, info) {
-                        // 每个文件上传成功后，处理相关的事情
-                        // 其中info是文件上传成功后，服务端返回的json，形式如：
-                        // {
-                        //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
-                        //    "key": "gogopher.jpg"
-                        //  }
-//                        console.log(JSON.stringify(info));
-                        var domain = up.getOption('domain');
-                        var res = JSON.parse(info);
-                        //获取上传成功后的文件的Url
-                        var sourceLink = domain + res.key;
-                        $("#img").val(sourceLink);
-                        $("#pickfiles").attr('src', qiniuUrlTool(sourceLink, "ad"));
-//                        console.log($("#pickfiles").attr('src'));
-                    },
-                    'Error': function (up, err, errTip) {
-                        //上传出错时，处理相关的事情
-                        console.log(err + errTip);
-                    },
-                    'UploadComplete': function () {
-                        //队列文件处理完毕后，处理相关的事情
-                    },
-                    'Key': function (up, file) {
-                        // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-                        // 该配置必须要在unique_names: false，save_key: false时才生效
-
-                        var key = "";
-                        // do something with key here
-                        return key
-                    }
-                }
-            });
-        }
 
     </script>
 @endsection

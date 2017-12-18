@@ -26,6 +26,15 @@ function getKFMBById(url, param, callBack) {
     ajaxRequest(url + "/api/kfmb/getKFMBById", param, "GET", callBack);
 }
 
+//根据id获取数据项
+function getSJXById(url, param, callBack) {
+    ajaxRequest(url + "/api/sjx/getById", param, "GET", callBack);
+}
+
+//获取全部生效宣教信息
+function getAllXJs(url, param, callBack) {
+    ajaxRequest(url + "/api/xj/getAll", param, "GET", callBack);
+}
 
 /*
  * 校验手机号js

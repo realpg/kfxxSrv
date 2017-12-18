@@ -72,5 +72,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/kfmb/delStep/{id}', 'Admin\KFMBController@delStep');  //删除步骤
     Route::get('/kfmb/setJH/{id}', 'Admin\KFMBController@setJH');  //设置康复模板计划
     Route::post('/kfmb/setJH/{id}', 'Admin\KFMBController@setJHPost');  //编辑康复模板计划
+    Route::get('/kfmb/delJH/{id}', 'Admin\KFMBController@delJH');  //删除康复模板计划
+    Route::get('/kfmb/delJHXJ', 'Admin\KFMBController@delJHXJ');  //删除康复模板计划关联的宣教
+    Route::post('/kfmb/setCJSJ', 'Admin\KFMBController@setCJSJPost');  //删除康复模板计划关联的宣教
+    Route::get('/kfmb/delCJSJ', 'Admin\KFMBController@delCJSJ');  //删除康复模板计划采集数据
+
 
 });
