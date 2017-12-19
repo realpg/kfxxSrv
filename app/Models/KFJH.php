@@ -6,8 +6,7 @@
  * Time: 13:30
 <<<<<<< Updated upstream
  */
-=======
- */
+
 namespace App\Models;
 
 
@@ -20,4 +19,4 @@ class KFJH extends Model{
 	public $timestamps = true;  //自动管理时间戳
 	protected $dates = ['deleted_at'];  //软删除
 }
->>>>>>> Stashed changes
+

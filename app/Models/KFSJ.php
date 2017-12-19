@@ -6,8 +6,7 @@
  * Time: 9:45
 <<<<<<< Updated upstream
  */
-=======
- */
+
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,4 +17,4 @@ class KFSJ extends Model{
 	public $timestamps = true;  //自动管理时间戳
 	protected $dates = ['deleted_at'];  //软删除
 }
->>>>>>> Stashed changes
+

@@ -6,9 +6,6 @@
  * Time: 10:39
 <<<<<<< Updated upstream
  */
-=======
- */
-
 namespace App\Components;
 
 use App\Models\KFJH;
@@ -75,4 +72,4 @@ class KFJHManager
 		return $sjs;
 	}
 }
->>>>>>> Stashed changes
+

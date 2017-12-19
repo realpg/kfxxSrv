@@ -6,8 +6,6 @@
  * Time: 10:36
 <<<<<<< Updated upstream
  */
-=======
- */
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -19,4 +17,4 @@ class LBQuestion extends Model{
 	public $timestamps = true;  //自动管理时间戳
 	protected $dates = ['deleted_at'];  //软删除
 }
->>>>>>> Stashed changes
+

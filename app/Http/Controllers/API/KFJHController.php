@@ -1,27 +1,13 @@
 <?php
 /**
-<<<<<<< Updated upstream
- * File_Name:UserController.php
- * Author: leek
- * Date: 2017/8/23
- * Time: 15:24
-=======
  * Created by PhpStorm.
  * User: Acer
  * Date: 2017/12/16
  * Time: 10:34
->>>>>>> Stashed changes
  */
 
 namespace App\Http\Controllers\API;
 
-<<<<<<< Updated upstream
-
-class KFJHController extends Controller
-{
-
-
-=======
 use App\Components\KFJHManager;
 use App\Components\KFMBManager;
 use App\Components\RequestValidator;
@@ -85,5 +71,4 @@ class KFJHController
 			return ApiResponse::makeResponse(true, $sj, ApiResponse::SUCCESS_CODE);
 		}
 	}
->>>>>>> Stashed changes
 }

@@ -6,8 +6,7 @@
  * Time: 10:41
 <<<<<<< Updated upstream
  */
-=======
- */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -21,4 +20,4 @@ class User_cases extends Model
 	protected $dates = ['deleted_at'];  //软删除
 	
 }
->>>>>>> Stashed changes
+
