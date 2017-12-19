@@ -72,10 +72,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/kfmb/delStep/{id}', 'Admin\KFMBController@delStep');  //删除步骤
     Route::get('/kfmb/setJH/{id}', 'Admin\KFMBController@setJH');  //设置康复模板计划
     Route::post('/kfmb/setJH/{id}', 'Admin\KFMBController@setJHPost');  //编辑康复模板计划
+// <<<<<<< Updated upstream
     Route::get('/kfmb/delJH/{id}', 'Admin\KFMBController@delJH');  //删除康复模板计划
     Route::get('/kfmb/delJHXJ', 'Admin\KFMBController@delJHXJ');  //删除康复模板计划关联的宣教
     Route::post('/kfmb/setCJSJ', 'Admin\KFMBController@setCJSJPost');  //删除康复模板计划关联的宣教
     Route::get('/kfmb/delCJSJ', 'Admin\KFMBController@delCJSJ');  //删除康复模板计划采集数据
 
+
+
+	
+	//量表相关
+	Route::get('/lb/index', 'Admin\LBController@index');  //量表管理首页  ok
+	Route::get('/lb/setStatus/{id}', 'Admin\LBController@setStatus');  //量表宣教状态 ok
+	Route::get('/lb/detail/{id}', 'Admin\LBController@detail');  //量表问题 ok
+	Route::post('/lb/setQues/{id}', 'Admin\LBController@setQusetionPost');  //编辑量表问题 ok
+	Route::get('/lb/delQues/{id}', 'Admin\LBController@delQue');  //删除量表问题条目 ok
+	Route::get('/lb/edit', 'Admin\LBController@edit');  //新建或编辑量表
+	Route::post('/lb/edit', 'Admin\LBController@editPost');  //新建或编辑量表
+	Route::get('/lb/del/{id}', 'Admin\LBController@del');  //删除量表ok
 
 });

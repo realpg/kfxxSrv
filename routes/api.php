@@ -61,5 +61,16 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('kfmb/getKFMBById', 'API\KFMBController@getKFMBById');
     Route::get('kfmb/getKFMBList', 'API\KFMBController@getKFMBList');
 
-
+    //量表相关
+    Route::get('lb/getList', 'API\LBController@getList');
+	Route::get('lb/getQuestionsById', 'API\LBController@getQuestionsById');
+	Route::post('lb/answerLB', 'API\LBController@answerLB');
+	Route::get('lb/getAnswerHistory', 'API\LBController@getAnswerHistoryByUserId');
+	
+	
+	//康复计划
+	Route::get('kfjh/getBLByUserId', 'API\KFJHController@getBLByUserId');//获取病历
+	Route::get('kfjh/getKFJHByUserId', 'API\KFJHController@getKFJHByUserId');//获取康复计划
+	Route::get('kfjh/getKFSJByUserId', 'API\KFJHController@getKFSJByUserId');//获取康复数据
+	
 });
