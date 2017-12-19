@@ -2,7 +2,6 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="row">
             <div class="col-lg-6">
@@ -58,13 +57,13 @@
                                     <td>
                                         <span class="line-height-30">
                                         @if($data->role==='0')
-                                                <span class="label label-info line-height-30">医师</span>
+                                                <span class="label label-info line-height-30">主治医师</span>
                                             @endif
                                             @if($data->role==='1')
-                                                <span class="label label-success line-height-30">康复师</span>
+                                                <span class="label label-success line-height-30">康复医师</span>
                                             @endif
                                             @if($data->role==='2')
-                                                <span class="label label-warning line-height-30">管理员</span>
+                                                <span class="label label-warning line-height-30">管理人员</span>
                                             @endif
                                         </span>
                                     </td>

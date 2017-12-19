@@ -26,6 +26,11 @@ function getKFMBById(url, param, callBack) {
     ajaxRequest(url + "/api/kfmb/getKFMBById", param, "GET", callBack);
 }
 
+//根据id获取患者信息
+function getUserById(url, param, callBack) {
+    ajaxRequest(url + "/api/user/getById", param, "GET", callBack);
+}
+
 //根据id获取数据项
 function getSJXById(url, param, callBack) {
     ajaxRequest(url + "/api/sjx/getById", param, "GET", callBack);

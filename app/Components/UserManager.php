@@ -10,7 +10,9 @@
 namespace App\Components;
 
 use App\Models\User;
+use App\Models\UserCase;
 use App\Models\Vertify;
+use GuzzleHttp\Psr7\Request;
 
 class UserManager
 {
@@ -138,6 +140,34 @@ class UserManager
     }
 
     /*
+     * 配置用户病例信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     */
+    public static function setUserCase($userCase, $data)
+    {
+        if (array_key_exists('zz_doctor_id', $data)) {
+            $userCase->zz_doctor_id = array_get($data, 'zz_doctor_id');
+        }
+        if (array_key_exists('kf_doctor_id', $data)) {
+            $userCase->kf_doctor_id = array_get($data, 'kf_doctor_id');
+        }
+        if (array_key_exists('ss_time', $data)) {
+            $userCase->ss_time = array_get($data, 'ss_time');
+        }
+        if (array_key_exists('wt_time', $data)) {
+            $userCase->wt_time = array_get($data, 'wt_time');
+        }
+        if (array_key_exists('xj_type', $data)) {
+            $userCase->xj_type = array_get($data, 'xj_type');
+        }
+        return $userCase;
+    }
+
+    /*
      * 注册用户
      *
      * By TerryQi
@@ -249,6 +279,99 @@ class UserManager
         } else {
             return false;
         }
+    }
+
+
+    /*
+     * 获取全部用户信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     */
+    public static function getAllUsers()
+    {
+        $users = User::orderby('id', 'desc')->paginate(10);
+        return $users;
+    }
+
+    /*
+     * 根据级别不同获取用户的具体病例信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     * level：获取级别，暂无
+     *
+     */
+    public static function getUserCaseByLevel($level, $user_id)
+    {
+        $userCase = UserCase::where('user_id', '=', $user_id)->orderby('id', 'desc')->first();
+        if ($userCase) {
+            $userCase->zz_doctor = DoctorManager::getDoctorById($userCase->zz_doctor_id);
+            $userCase->kf_doctor = DoctorManager::getDoctorById($userCase->kf_doctor_id);
+            $userCase->kfmb = KFMBManager::getKFMBById($userCase->kfmb_id);
+        }
+        return $userCase;
+    }
+
+    /*
+     * 根据用户id获取病例，即获取该用户的全部病例
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     */
+    public static function getUserCaseByUserId($user_id)
+    {
+        $userCases = UserCase::where('user_id', '=', $user_id)->get();
+        return $userCases;
+    }
+
+    /*
+     * 获取用户的最新的病例信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     */
+    public static function getTopUserCaseByUserId($user_id)
+    {
+        $userCase = UserCase::where('user_id', '=', $user_id)->orderby('id', 'desc')->first();
+        return $userCase;
+    }
+
+
+    /*
+     * 根据id获取用户病例
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     */
+    public static function getUserCaseById($userCase_id)
+    {
+        $userCase = UserCase::where('id', '=', $userCase_id)->first();
+        return $userCase;
+    }
+
+    /*
+     * 搜索用户信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     */
+    public static function searchUser($search_word)
+    {
+        $users = User::where('real_name', 'like', '%' . $search_word . '%')
+            ->orwhere('phonenum', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(10);
+        return $users;
     }
 
 

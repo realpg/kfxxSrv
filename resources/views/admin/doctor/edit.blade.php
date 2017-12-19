@@ -110,9 +110,9 @@
                                 <div class="col-sm-10">
                                     <select id="role" name="role" class="form-control"
                                             value="{{ isset($data->role) ? $data->role : '' }}">
-                                        <option value="0" {{ $data->role==='0' ? 'selected' : '' }}>医师</option>
-                                        <option value="1" {{ $data->role==='1' ? 'selected' : '' }}>康复师</option>
-                                        <option value="2" {{ $data->role==='2' ? 'selected' : '' }}>管理员</option>
+                                        <option value="0" {{ $data->role==='0' ? 'selected' : '' }}>主治医师</option>
+                                        <option value="1" {{ $data->role==='1' ? 'selected' : '' }}>康复医师</option>
+                                        <option value="2" {{ $data->role==='2' ? 'selected' : '' }}>管理人员</option>
                                     </select>
                                 </div>
                             </div>

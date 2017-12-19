@@ -43,6 +43,23 @@ class DoctorManager
     }
 
     /*
+     * 根据类型获取医生列表
+     *
+     * By TerryQi
+     *
+     */
+    public static function getDoctorsByRole($role)
+    {
+        $doctors = Doctor::orderby('id', 'asc');
+        if ($role == "all") {
+
+        } else {
+            $doctors = $doctors->where('role', '=', $role);
+        }
+        return $doctors->get();
+    }
+
+    /*
      * 根据id获取医生信息（带token）
      *
      * By TerryQi

@@ -77,5 +77,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/kfmb/setCJSJ', 'Admin\KFMBController@setCJSJPost');  //删除康复模板计划关联的宣教
     Route::get('/kfmb/delCJSJ', 'Admin\KFMBController@delCJSJ');  //删除康复模板计划采集数据
 
+    //患者管理
+    Route::get('/user/index', 'Admin\UserController@index');  //患者管理首页
+    Route::post('/user/search', 'Admin\UserController@search');  //搜索用户信息
+    Route::post('/user/edit', 'Admin\UserController@editPost');  //患者管理首页
+    Route::get('/user/editUserCase', 'Admin\UserController@editUserCase');  //患者管理首页
+
 
 });
