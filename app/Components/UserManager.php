@@ -198,6 +198,7 @@ class UserManager
     {
         //配置用户信息
         $user = self::getUserInfoByIdWithToken($data['user_id']);
+//	    $user = self::getUserInfoById($data['user_id']);
         $user = self::setUser($user, $data);
         $user->save();
         return $user;
