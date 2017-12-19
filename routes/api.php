@@ -62,5 +62,4 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('kfmb/getKFMBList', 'API\KFMBController@getKFMBList');
 
 
-
 });
