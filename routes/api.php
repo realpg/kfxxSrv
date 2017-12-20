@@ -49,9 +49,11 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //宣教相关
     Route::get('xj/getXJTypes', 'API\XJController@getXJTypes');
+    Route::get('xj/getXJTypeById', 'API\XJController@getXJTypeById');
     Route::get('xj/getByCon', 'API\XJController@getXJList');
     Route::get('xj/getXJInfoById', 'API\XJController@getXJInfoById');
     Route::get('xj/getAll', 'API\XJController@getAllXJs');
+
 
     //数据项相关
     Route::get('sjx/getList', 'API\SJXController@getList');
@@ -63,16 +65,17 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //医生康复师相关
     Route::get('doctor/getDoctorsByRole', 'API\DoctorController@getDoctorsByRole');
+    Route::get('doctor/getById', 'API\DoctorController@getDoctorById');
 
     //量表相关
     Route::get('lb/getList', 'API\LBController@getList');
-	Route::get('lb/getQuestionsById', 'API\LBController@getQuestionsById');
-	Route::post('lb/answerLB', 'API\LBController@answerLB');
-	Route::get('lb/getAnswerHistory', 'API\LBController@getAnswerHistoryByUserId');
+    Route::get('lb/getQuestionsById', 'API\LBController@getQuestionsById');
+    Route::post('lb/answerLB', 'API\LBController@answerLB');
+    Route::get('lb/getAnswerHistory', 'API\LBController@getAnswerHistoryByUserId');
 
-	//康复计划
-	Route::get('kfjh/getBLByUserId', 'API\KFJHController@getBLByUserId');//获取病历
-	Route::get('kfjh/getKFJHByUserId', 'API\KFJHController@getKFJHByUserId');//获取康复计划
-	Route::get('kfjh/getKFSJByUserId', 'API\KFJHController@getKFSJByUserId');//获取康复数据
+    //康复计划
+    Route::get('kfjh/getBLByUserId', 'API\KFJHController@getBLByUserId');//获取病历
+    Route::get('kfjh/getKFJHByUserId', 'API\KFJHController@getKFJHByUserId');//获取康复计划
+    Route::get('kfjh/getKFSJByUserId', 'API\KFJHController@getKFSJByUserId');//获取康复数据
 
 });

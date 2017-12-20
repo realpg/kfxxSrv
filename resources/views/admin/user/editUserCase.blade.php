@@ -21,7 +21,7 @@
                 <!-- Horizontal Form -->
                 <div class="box box-default">
                     <!-- form start -->
-                    <form action="" method="post" class="form-horizontal"
+                    <form action="{{URL::asset('/admin/user/editUserCase')}}" method="post" class="form-horizontal"
                           onsubmit="return checkValid();">
                         {{csrf_field()}}
                         <div class="box-body">
@@ -53,27 +53,28 @@
                                 <div class="col-sm-10">
                                     <select id="zz_doctor_id" name="zz_doctor_id" class="form-control">
                                         @foreach($zz_doctors as $zz_doctor)
-                                            <option value="{{$zz_doctor->id}}">{{$zz_doctor->name}}</option>
+                                            <option value="{{$zz_doctor->id}}" {{ $zz_doctor->checked===true ? 'selected' : '' }}>{{$zz_doctor->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="zz_doctor_id" class="col-sm-2 control-label">康复医师</label>
+                                <label for="kf_doctor_id" class="col-sm-2 control-label">康复医师</label>
                                 <div class="col-sm-10">
-                                    <select id="zz_doctor_id" name="zz_doctor_id" class="form-control">
+                                    <select id="kf_doctor_id" name="kf_doctor_id" class="form-control">
                                         @foreach($kf_doctors as $kf_doctor)
-                                            <option value="{{$kf_doctor->id}}">{{$kf_doctor->name}}</option>
+                                            <option value="{{$kf_doctor->id}}" {{ $kf_doctor->checked===true ? 'selected' : '' }}>{{$kf_doctor->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 15px;">
-                                <label for="btime_type" class="col-sm-2 control-label">康复模板</label>
+                                <label for="kfmb_id" class="col-sm-2 control-label">康复模板</label>
                                 <div class="col-sm-10">
-                                    <select id="kfmb_id" name="btime_type" class="form-control">
+                                    <select id="kfmb_id" name="kfmb_id" class="form-control">
                                         @foreach($kfmbs as $kfmb)
-                                            <option value="{{$kfmb->id}}">{{$kfmb->name}}</option>
+                                            <option value="{{$kfmb->id}}"
+                                                    {{ isset($kfmb->checked) ? 'selected':'' }}>{{$kfmb->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -83,7 +84,7 @@
                                 <div class="col-sm-10">
                                     <input id="ss_time" name="ss_time" type="date" class="form-control"
                                            placeholder="请选择手术时间"
-                                           value="">
+                                           value="{{ isset($data->ss_time) ? $data->ss_time:'' }}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -91,7 +92,7 @@
                                 <div class="col-sm-10">
                                     <input id="wt_time" name="wt_time" type="date" class="form-control"
                                            placeholder="请选择弯腿时间"
-                                           value="">
+                                           value="{{ isset($data->wt_time) ? $data->wt_time:'' }}">
                                 </div>
                             </div>
 
@@ -122,10 +123,16 @@
 
         //合规校验
         function checkValid() {
-            var name = $("#name").val();
+            var ss_time = $("#ss_time").val();
             //合规校验
-            if (judgeIsNullStr(text)) {
-                $("#text").focus();
+            if (judgeIsNullStr(ss_time)) {
+                $("#ss_time").focus();
+                return false;
+            }
+            var wt_time = $("#wt_time").val();
+            //合规校验
+            if (judgeIsNullStr(wt_time)) {
+                $("#wt_time").focus();
                 return false;
             }
             return true;

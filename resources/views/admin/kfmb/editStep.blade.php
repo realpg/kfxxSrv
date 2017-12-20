@@ -125,7 +125,7 @@
             </div>
         </div>
         {{--删除对话框--}}
-        <div class="modal fade modal-margin-top" id="delConfrimModel" tabindex="-1" role="dialog">
+        <div class="modal fade modal-margin-top" id="delConfrimModal" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content message_align">
                     <div class="modal-header">
@@ -139,7 +139,7 @@
                     <div class="modal-footer">
                         <input type="hidden" id="url"/>
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button id="delConfrimModel_confirm_btn" data-value="" onclick="delTW();"
+                        <button id="delConfrimModal_confirm_btn" data-value="" onclick="delTW();"
                                 class="btn btn-success"
                                 data-dismiss="modal">确定
                         </button>
@@ -178,13 +178,13 @@
         function clickDel(tw_id) {
             console.log("clickDel tw_id:" + tw_id);
             //为删除按钮赋值
-            $("#delConfrimModel_confirm_btn").attr("data-value", tw_id);
-            $("#delConfrimModel").modal('show');
+            $("#delConfrimModal_confirm_btn").attr("data-value", tw_id);
+            $("#delConfrimModal").modal('show');
         }
 
         //删除轮播
         function delTW() {
-            var tw_id = $("#delConfrimModel_confirm_btn").attr("data-value");
+            var tw_id = $("#delConfrimModal_confirm_btn").attr("data-value");
             console.log("delTW tw_id:" + tw_id);
             //进行页面跳转
             window.location.href = "{{URL::asset('/admin/kfmb/delStep/')}}/" + tw_id;

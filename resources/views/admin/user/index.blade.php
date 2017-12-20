@@ -205,8 +205,8 @@
                                 <div class="form-group">
                                     <label for="birthday" class="col-sm-2 control-label">出生日期</label>
                                     <div class="col-sm-10">
-                                        <input id="birthday" name="birthday" type="text" class="form-control"
-                                               placeholder="请输入出生日期，格式为2017-1-1"
+                                        <input id="birthday" name="birthday" type="date" class="form-control"
+                                               placeholder="请输入患者出生日期"
                                                value="">
                                     </div>
                                 </div>
@@ -252,6 +252,28 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
+        //合规校验
+        function checkValid() {
+            var real_name = $("#real_name").val();
+            //合规校验
+            if (judgeIsNullStr(real_name)) {
+                $("#real_name").focus();
+                return false;
+            }
+            var birthday = $("#birthday").val();
+            if (judgeIsNullStr(birthday)) {
+                $("#birthday").focus();
+                return false;
+            }
+            var phonenum = $("#phonenum").val();
+            if (judgeIsNullStr(phonenum)) {
+                $("#phonenum").focus();
+                return false;
+            }
+            return true;
+
+        }
 
         //点击新建康复患者信息
         function clickAdd() {

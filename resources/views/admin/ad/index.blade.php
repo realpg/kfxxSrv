@@ -120,108 +120,108 @@
                 {!! $datas->links() !!}
             </div>
         </div>
-        {{--新建对话框--}}
-        <div class="modal fade modal-margin-top-m" id="addADModel" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content message_align">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">×</span></button>
-                        <h4 class="modal-title">新建/编辑轮播图</h4>
-                    </div>
-                    <form action="{{URL::asset('/admin/ad/edit')}}" method="post" class="form-horizontal"
-                          onsubmit="return checkValid();">
-                        <div class="modal-body">
-                            {{csrf_field()}}
-                            <div class="box-body">
-                                <div class="form-group hidden">
-                                    <label for="id" class="col-sm-2 control-label">id</label>
-                                    <div class="col-sm-10">
-                                        <input id="id" name="id" type="text" class="form-control"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group hidden">
-                                    <label for="title" class="col-sm-2 control-label">录入人id</label>
-                                    <div class="col-sm-10">
-                                        <input id="doctor_id" name="doctor_id" type="text" class="form-control"
-                                               value="{{$admin->id}}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="title" class="col-sm-2 control-label">录入人</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control"
-                                               value="{{$admin->name}}" disabled>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="seq" class="col-sm-2 control-label">说明*</label>
-
-                                    <div class="col-sm-10">
-                                        <input id="content" name="content" type="text" class="form-control"
-                                               placeholder="轮播图说明"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="img" class="col-sm-2 control-label">图片*</label>
-
-                                    <div class="col-sm-10">
-                                        <input id="img" name="img" type="text" class="form-control"
-                                               placeholder="图片网路链接地址"
-                                               value="">
-                                    </div>
-                                </div>
-                                <div style="margin-top: 10px;" class="text-center">
-                                    <div id="container">
-                                        <img id="pickfiles"
-                                             src="{{URL::asset('/img/upload.png')}}"
-                                             style="width: 350px;">
-                                    </div>
-                                    <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传350*200尺寸图片
-                                    </div>
+    </section>
+    {{--新建对话框--}}
+    <div class="modal fade modal-margin-top-m" id="addADModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">管理轮播图</h4>
+                </div>
+                <form id="editAD" action="{{URL::asset('/admin/ad/edit')}}" method="post" class="form-horizontal"
+                      onsubmit="return checkValid();">
+                    <div class="modal-body">
+                        {{csrf_field()}}
+                        <div class="box-body">
+                            <div class="form-group hidden">
+                                <label for="id" class="col-sm-2 control-label">id</label>
+                                <div class="col-sm-10">
+                                    <input id="id" name="id" type="text" class="form-control"
+                                           value="">
                                 </div>
                             </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <div class="modal-footer">
-                            <input type="hidden" id="url"/>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="submit" id="addADModel_confirm_btn" data-value=""
-                                    class="btn btn-success">确定
-                            </button>
-                        </div>
-                    </form>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                            <div class="form-group hidden">
+                                <label for="title" class="col-sm-2 control-label">录入人id</label>
+                                <div class="col-sm-10">
+                                    <input id="doctor_id" name="doctor_id" type="text" class="form-control"
+                                           value="{{$admin->id}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">录入人</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control"
+                                           value="{{$admin->name}}" disabled>
+                                </div>
+                            </div>
 
-        {{--删除对话框--}}
-        <div class="modal fade modal-margin-top" id="delConfrimModel" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content message_align">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">×</span></button>
-                        <h4 class="modal-title">提示信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>您确认要删除该轮播图片吗？</p>
+                            <div class="form-group">
+                                <label for="seq" class="col-sm-2 control-label">说明*</label>
+
+                                <div class="col-sm-10">
+                                    <input id="content" name="content" type="text" class="form-control"
+                                           placeholder="轮播图说明"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="img" class="col-sm-2 control-label">图片*</label>
+
+                                <div class="col-sm-10">
+                                    <input id="img" name="img" type="text" class="form-control"
+                                           placeholder="图片网路链接地址"
+                                           value="">
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px;" class="text-center">
+                                <div id="container">
+                                    <img id="pickfiles"
+                                         src="{{URL::asset('/img/upload.png')}}"
+                                         style="width: 350px;">
+                                </div>
+                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传350*200尺寸图片
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" id="url"/>
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button id="delConfrimModel_confirm_btn" data-value="" onclick="delAD();"
-                                class="btn btn-success"
-                                data-dismiss="modal">确定
+                        <button type="submit" id="addADModal_confirm_btn" data-value=""
+                                class="btn btn-success">确定
                         </button>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-    </section>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    {{--删除对话框--}}
+    <div class="modal fade modal-margin-top" id="delConfrimModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                    <p>您确认要删除该轮播图片吗？</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="url"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="delConfrimModal_confirm_btn" data-value="" onclick="delAD();"
+                            class="btn btn-success"
+                            data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @section('script')
@@ -238,13 +238,13 @@
         function clickDel(ad_id) {
             console.log("clickDel ad_id:" + ad_id);
             //为删除按钮赋值
-            $("#delConfrimModel_confirm_btn").attr("data-value", ad_id);
-            $("#delConfrimModel").modal('show');
+            $("#delConfrimModal_confirm_btn").attr("data-value", ad_id);
+            $("#delConfrimModal").modal('show');
         }
 
         //删除轮播
         function delAD() {
-            var ad_id = $("#delConfrimModel_confirm_btn").attr("data-value");
+            var ad_id = $("#delConfrimModal_confirm_btn").attr("data-value");
             console.log("delAD ad_id:" + ad_id);
             //进行tr隐藏
             $("#tr_" + ad_id).fadeOut();
@@ -255,11 +255,9 @@
         //点击新建轮播图
         function clickAdd() {
             //清空模态框
-            $("#id").val("");
-            $("#content").val("");
-            $("#img").val("");
+            $("#editAD")[0].reset();
             $("#pickfiles").attr("src", '{{URL::asset('/img/upload.png')}}');
-            $("#addADModel").modal('show');
+            $("#addADModal").modal('show');
         }
 
         //点击编辑
@@ -274,7 +272,7 @@
                     $("#img").val(msgObj.image);
                     $("#pickfiles").attr("src", msgObj.image);
                     //展示modal
-                    $("#addADModel").modal('show');
+                    $("#addADModal").modal('show');
                 }
             })
         }

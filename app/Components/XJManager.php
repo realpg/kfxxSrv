@@ -41,7 +41,7 @@ class XJManager
      */
     public static function getXJTypes()
     {
-        $xj_types = XJType::orderby('seq', 'asc')->get();
+        $xj_types = XJType::orderby('seq', 'asc')->paginate(Utils::PAGE_SIZE);
         return $xj_types;
     }
 
@@ -84,9 +84,22 @@ class XJManager
         return $xjs;
     }
 
+    /*
+     * 获取宣教信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-20
+     */
+    public static function getIndexXJs()
+    {
+        $xjs = XJ::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $xjs;
+    }
+
 
     /*
-     * 获取全部宣教信息
+     * 获取全部生效宣教信息
      *
      * By TerryQi
      *

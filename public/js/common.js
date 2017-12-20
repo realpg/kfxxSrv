@@ -31,6 +31,11 @@ function getUserById(url, param, callBack) {
     ajaxRequest(url + "/api/user/getById", param, "GET", callBack);
 }
 
+//根据id获取医生信息
+function getDoctorById(url, param, callBack) {
+    ajaxRequest(url + "/api/doctor/getById", param, "GET", callBack);
+}
+
 //根据id获取数据项
 function getSJXById(url, param, callBack) {
     ajaxRequest(url + "/api/sjx/getById", param, "GET", callBack);
@@ -39,6 +44,11 @@ function getSJXById(url, param, callBack) {
 //获取全部生效宣教信息
 function getAllXJs(url, param, callBack) {
     ajaxRequest(url + "/api/xj/getAll", param, "GET", callBack);
+}
+
+//获取宣教类别信息
+function getXJTypeById(url, param, callBack) {
+    ajaxRequest(url + "/api/xj/getXJTypeById", param, "GET", callBack);
 }
 
 /*

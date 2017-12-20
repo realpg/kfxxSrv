@@ -77,14 +77,14 @@
                                                class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"
-                                               title="编辑该宣教图文">
+                                               title="编辑宣教基本信息">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </a>
                                             <a href="{{URL::asset('/admin/xj/del')}}/{{$data->id}}"
                                                class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"
-                                               title="删除该宣教图文">
+                                               title="删除宣教">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </a>
                                              <a href="{{URL::asset('/admin/xj/setStep')}}/{{$data->id}}"
@@ -106,6 +106,14 @@
                 <!-- /.box -->
             </div>
             <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+
+            </div>
+            <div class="col-sm-7 text-right">
+                {!! $datas->links() !!}
+            </div>
         </div>
         <!-- /.row -->
     </section>

@@ -49,6 +49,19 @@ class DateTool
     }
 
     /*
+     * 将2017-11-27 00:00:00转换为2017-11-27
+     *
+     * By TerryQi
+     *
+     * 2017-12-04
+     */
+    public static function getYMD($date_str)
+    {
+        $date_arr = explode(' ', $date_str);
+        return $date_arr[0];
+    }
+
+    /*
      * 将2017-11-27 00:00:00转换为2017年11月27日 12:12
      *
      * By TerryQi

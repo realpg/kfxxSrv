@@ -21,9 +21,9 @@ class DoctorManager
      * By TerryQi
      *
      */
-    public static function getAllDoctors()
+    public static function getAllDoctorsByPage()
     {
-        $doctors = Doctor::orderBy('id', 'desc')->paginate(10);
+        $doctors = Doctor::orderBy('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $doctors;
     }
 

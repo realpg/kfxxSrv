@@ -197,7 +197,7 @@
         </div><!-- /.modal -->
 
         {{--删除对话框--}}
-        <div class="modal fade modal-margin-top" id="delConfrimModel" tabindex="-1" role="dialog">
+        <div class="modal fade modal-margin-top" id="delConfrimModal" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content message_align">
                     <div class="modal-header">
@@ -211,7 +211,7 @@
                     <div class="modal-footer">
                         <input type="hidden" id="url"/>
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button id="delConfrimModel_confirm_btn" data-value="" onclick="delKFMB();"
+                        <button id="delConfrimModal_confirm_btn" data-value="" onclick="delKFMB();"
                                 class="btn btn-success"
                                 data-dismiss="modal">确定
                         </button>
@@ -248,7 +248,7 @@
 
         //删除轮播
         function delKFMB() {
-            var kfmb_id = $("#delConfrimModel_confirm_btn").attr("data-value");
+            var kfmb_id = $("#delConfrimModal_confirm_btn").attr("data-value");
             console.log("delAD kfmb_id:" + kfmb_id);
             //进行tr隐藏
             $("#tr_" + kfmb_id).fadeOut();
@@ -260,8 +260,8 @@
         function clickDel(kfmb_id) {
             console.log("clickDel kfmb_id:" + kfmb_id);
             //为删除按钮赋值
-            $("#delConfrimModel_confirm_btn").attr("data-value", kfmb_id);
-            $("#delConfrimModel").modal('show');
+            $("#delConfrimModal_confirm_btn").attr("data-value", kfmb_id);
+            $("#delConfrimModal").modal('show');
         }
 
         //点击新建康复模板l

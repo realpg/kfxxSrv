@@ -149,11 +149,17 @@ class UserManager
      */
     public static function setUserCase($userCase, $data)
     {
+        if (array_key_exists('user_id', $data)) {
+            $userCase->user_id = array_get($data, 'user_id');
+        }
         if (array_key_exists('zz_doctor_id', $data)) {
             $userCase->zz_doctor_id = array_get($data, 'zz_doctor_id');
         }
         if (array_key_exists('kf_doctor_id', $data)) {
             $userCase->kf_doctor_id = array_get($data, 'kf_doctor_id');
+        }
+        if (array_key_exists('kfmb_id', $data)) {
+            $userCase->kfmb_id = array_get($data, 'kfmb_id');
         }
         if (array_key_exists('ss_time', $data)) {
             $userCase->ss_time = array_get($data, 'ss_time');
@@ -293,7 +299,7 @@ class UserManager
      */
     public static function getAllUsers()
     {
-        $users = User::orderby('id', 'desc')->paginate(10);
+        $users = User::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $users;
     }
 
@@ -371,9 +377,21 @@ class UserManager
     public static function searchUser($search_word)
     {
         $users = User::where('real_name', 'like', '%' . $search_word . '%')
-            ->orwhere('phonenum', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(10);
+            ->orwhere('phonenum', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $users;
     }
 
 
+    /*
+     * 获取用户全部康复计划
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     */
+    public static function getKFJHByUserId($user_id)
+    {
+
+    }
 }

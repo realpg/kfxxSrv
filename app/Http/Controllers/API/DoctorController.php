@@ -42,4 +42,26 @@ class DoctorController extends Controller
         return ApiResponse::makeResponse(true, $doctors, ApiResponse::SUCCESS_CODE);
     }
 
+    /*
+     * 根据id获取医生信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-21
+     *
+     */
+    public function getDoctorById(Request $request)
+    {
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $doctor = DoctorManager::getDoctorById($data['id']);
+        return ApiResponse::makeResponse(true, $doctor, ApiResponse::SUCCESS_CODE);
+    }
+
 }

@@ -259,10 +259,10 @@
                             {{csrf_field()}}
                             <div class="box-body">
                                 <div class="form-group hidden">
-                                    <label for="jh_id" class="col-sm-2 control-label">关联宣教的计划id</label>
+                                    <label for="jh_id" class="col-sm-2 control-label">关联采集数据的计划id</label>
                                     <div class="col-sm-10">
-                                        <input id="cjsj_jh_id" name="jh_id" type="text" class="form-control"
-                                               placeholder="id"
+                                        <input id="cjsj_mbjh_id" name="mbjh_id" type="text" class="form-control"
+                                               placeholder="关联采集数据的计划id"
                                                value="">
                                     </div>
                                 </div>
@@ -360,7 +360,7 @@
             $("#min_value").val("");
             //为删除按钮赋值
             $("#addCJSJModal").attr("data-value", jh_id);
-            $("#cjsj_jh_id").val(jh_id);
+            $("#cjsj_mbjh_id").val(jh_id);
             $("#addCJSJModal").modal('show');
         }
 

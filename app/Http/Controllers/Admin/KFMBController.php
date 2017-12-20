@@ -250,10 +250,10 @@ class KFMBController
             $kfmbjhsj = KFMBManager::getJHSJById($data['jhsj_id']);
         }
         $kfmbjhsj = KFMBManager::setKFMBJHSJ($kfmbjhsj, $data);
+//        dd($kfmbjhsj);
         $kfmbjhsj->save();
-        $kfmbjh = KFMBManager::getKFMBJHById($data['jh_id']);
+        $kfmbjh = KFMBManager::getKFMBJHById($data['mbjh_id']);
         return redirect('/admin/kfmb/setJH/' . $kfmbjh->kfmb_id);
-
     }
 
     //删除采集数据

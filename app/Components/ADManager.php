@@ -52,7 +52,7 @@ class ADManager
      */
     public static function getAllADs()
     {
-        $ads = AD::orderBy('seq', 'desc')->orderBy('id', 'desc')->paginate(10);
+        $ads = AD::orderBy('seq', 'desc')->orderBy('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $ads;
     }
 

@@ -11,6 +11,5 @@ namespace App\Components;
 
 class Utils
 {
-
-    const PAGE_SIZE = 25;
+    const PAGE_SIZE = 8;
 }

@@ -31,10 +31,10 @@ class XJController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $xjs = XJManager::getXJListByCon([]);
+        $xjs = XJManager::getIndexXJs();
         foreach ($xjs as $xj) {
             $xj->created_at_str = DateTool::formateData($xj->created_at, 1);
-            $xj = XJManager::getXJInfoByLevel($xj, 2);
+            $xj = XJManager::getXJInfoByLevel($xj, 1);
         }
         return view('admin.xj.index', ['admin' => $admin, 'datas' => $xjs]);
     }
@@ -175,7 +175,7 @@ class XJController
         return view('admin.xj.edit', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token, 'xj_types' => $xj_types]);
     }
 
-    //新建或编辑宣教类型-get
+    //新建或编辑宣教类型-post
     public function editType(Request $request)
     {
         $admin = $request->session()->get('admin');
@@ -208,7 +208,7 @@ class XJController
         $data = $request->all();
         $xjType = new XJType();
         //存在id是保存
-        if (array_key_exists('id', $data)) {
+        if (array_key_exists('id', $data) && $data['id'] != null) {
             $xjType = XJManager::getXJTypeById($data['id']);
         }
         $xjType = XJManager::setXJType($xjType, $data);

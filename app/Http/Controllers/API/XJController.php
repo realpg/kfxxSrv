@@ -96,4 +96,18 @@ class XJController extends Controller
         return ApiResponse::makeResponse(true, $xj_types, ApiResponse::SUCCESS_CODE);
     }
 
+    public function getXJTypeById(Request $request)
+    {
+        $data = $request->all();
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+
+        $xjType = XJManager::getXJTypeById($data['id']);
+        return ApiResponse::makeResponse(true, $xjType, ApiResponse::SUCCESS_CODE);
+    }
+
 }

@@ -81,7 +81,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/user/index', 'Admin\UserController@index');  //患者管理首页
     Route::post('/user/search', 'Admin\UserController@search');  //搜索用户信息
     Route::post('/user/edit', 'Admin\UserController@editPost');  //患者管理首页
-    Route::get('/user/editUserCase', 'Admin\UserController@editUserCase');  //患者管理首页
+    Route::get('/user/editUserCase', 'Admin\UserController@editUserCase');  //编辑患者病例
+    Route::post('/user/editUserCase', 'Admin\UserController@editUserCasePost');  //编辑患者病例
 
 
     //量表相关

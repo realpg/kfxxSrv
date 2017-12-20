@@ -41,7 +41,7 @@ class SJXManager
      */
     public static function getSJXs()
     {
-        $sjx = SJX::orderby('seq', 'asc')->paginate(10);
+        $sjx = SJX::orderby('seq', 'asc')->paginate(Utils::PAGE_SIZE);
         return $sjx;
     }
 

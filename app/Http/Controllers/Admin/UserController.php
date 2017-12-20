@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Components\ADManager;
+use App\Components\DateTool;
 use App\Components\DoctorManager;
 use App\Components\KFMBManager;
 use App\Components\QNManager;
@@ -95,22 +96,71 @@ class UserController
     {
         $admin = $request->session()->get('admin');
         $data = $request->all();
-        //获取用户病例
-        $userCase = UserManager::getTopUserCaseByUserId($data['user_id']);
-        if ($userCase) {
-            $userCase->user = UserManager::getUserInfoById($userCase->user_id);
-            $userCase->zz_doctor = DoctorManager::getDoctorById($userCase->zz_doctor_id);
-            $userCase->kf_doctor = DoctorManager::getDoctorById($userCase->kf_doctor_id);
-            $userCase->kfmb = KFMBManager::getKFMBById($userCase->kfmb_id);
-        }
-
+        //获取页面基础数据
         $user = UserManager::getUserInfoById($data['user_id']); //需要编辑的患者信息
         $zz_doctors = DoctorManager::getDoctorsByRole("0"); //全部主治医师
         $kf_doctors = DoctorManager::getDoctorsByRole("1"); //全部康复医师
         $kfmbs = KFMBManager::getKFMBList("s1");    //生效康复模板
+        //获取用户病例
+        $userCase = UserManager::getTopUserCaseByUserId($data['user_id']);
+        if ($userCase) {
+            //时间转日期
+            $userCase->ss_time = DateTool::getYMD($userCase->ss_time);
+            $userCase->wt_time = DateTool::getYMD($userCase->wt_time);
 
+            $userCase->user = UserManager::getUserInfoById($userCase->user_id);
+            //主治医师信息
+            $userCase->zz_doctor = DoctorManager::getDoctorById($userCase->zz_doctor_id);
+            foreach ($zz_doctors as $zz_doctor) {
+                if ($zz_doctor->id == $userCase->zz_doctor_id) {
+                    $zz_doctor->checked = true;
+                }
+            }
+            //康复医师信息
+            $userCase->kf_doctor = DoctorManager::getDoctorById($userCase->kf_doctor_id);
+            foreach ($kf_doctors as $kf_doctor) {
+                if ($kf_doctor->id == $userCase->kf_doctor_id) {
+                    $kf_doctor->checked = true;
+                }
+            }
+            //康复模板信息
+            $userCase->kfmb = KFMBManager::getKFMBById($userCase->kfmb_id);
+            foreach ($kfmbs as $kfmb) {
+                if ($kfmb->id == $userCase->kfmb_id) {
+                    $kfmb->checked = true;
+                }
+            }
+        }
+
+        //自动生成康复计划的逻辑，如果用户已经生成康复计划，获取康复计划，否则为用户生成康复计划
+
+
+//        dd($zz_doctors);
         return view('admin.user.editUserCase', ['admin' => $admin, 'data' => $userCase, 'user' => $user
             , 'zz_doctors' => $zz_doctors, 'kf_doctors' => $kf_doctors, 'kfmbs' => $kfmbs]);
     }
+
+    /*
+     * 新建用户病例-post
+     *
+     * By TerryQi
+     *
+     * 2017-12-20
+     *
+     */
+    public function editUserCasePost(Request $request)
+    {
+        $data = $request->all();
+//        dd($data);
+        $useCase = new UserCase();
+        //存在id是保存
+        if (array_key_exists('id', $data) && $data['id'] != null) {
+            $useCase = UserManager::getUserCaseById($data['id']);
+        }
+        $useCase = UserManager::setUserCase($useCase, $data);
+        $useCase->save();
+        return redirect('/admin/user/editUserCase?user_id=' . $useCase->user_id);
+    }
+
 
 }

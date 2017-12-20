@@ -27,8 +27,10 @@ class DoctorController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $admins = DoctorManager::getAllDoctors();
-        return view('admin.doctor.index', ['admin' => $admin, 'datas' => $admins]);
+        $doctors = DoctorManager::getAllDoctorsByPage();
+        //生成七牛token
+        $upload_token = QNManager::uploadToken();
+        return view('admin.doctor.index', ['admin' => $admin, 'datas' => $doctors, 'upload_token' => $upload_token]);
     }
 
 
