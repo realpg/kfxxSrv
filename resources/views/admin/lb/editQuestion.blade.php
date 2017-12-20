@@ -26,38 +26,31 @@
                         {{csrf_field()}}
                         <div class="box-body">
                             <div class="form-group hidden">
-                                <label for="f_id" class="col-sm-2 control-label">父id</label>
+                                <label for="lb_id" class="col-sm-2 control-label">父id</label>
 
                                 <div class="col-sm-10">
-                                    <input id="f_id" name="f_id" type="text" class="form-control"
+                                    <input id="lb_id" name="lb_id" type="text" class="form-control"
                                            placeholder="父id"
                                            value="{{ $data->id }}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="text" class="col-sm-2 control-label">文字</label>
+                                <label for="text" class="col-sm-2 control-label">题目</label>
                                 <div class="col-sm-10">
-                                    <textarea id="text" name="text" class="form-control" rows="3"
+                                    <textarea id="text" name="question" class="form-control" rows="3"
                                               placeholder="请输入 ..."></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="img" class="col-sm-2 control-label">图片</label>
-
+                                <label for="text" class="col-sm-2 control-label">答案</label>
                                 <div class="col-sm-10">
-                                    <input id="img" name="img" type="text" class="form-control" placeholder="图片网路链接地址"
-                                           value="">
+                                    <textarea id="text" name="answer" class="form-control" rows="3"
+                                              placeholder="请输入 ..."></textarea>
                                 </div>
                             </div>
-                            <div style="margin-top: 10px;" class="text-center">
-                                <div id="container">
-                                    <img id="pickfiles"
-                                         src="{{URL::asset('/img/upload.png')}}"
-                                         style="width: 240px;">
-                                </div>
-                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片</div>
-                            </div>
+
+                            答案示例:A高难度_5;B中等难度_4;C低等难度_3;D无难度_0
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
@@ -73,7 +66,7 @@
                 {{--作品预览信息--}}
                 <div class="white-bg" style="padding: 30px;">
                     <div class="font-size-16">
-                        {{$data->title}}
+                        {{$data->name}}
                     </div>
                     <div class="border-t margin-top-10 margin-bottom-10">
                     </div>
@@ -91,20 +84,24 @@
                             <div>
                                 <div class="white-bg margin-b-10" style="background-color: white;">
                                     <div class="padding-10">
-                                        @if($question->img)
-                                            <img src="{{$question->img}}"
-                                                 style="width: 100%;" class="padding-top-10 padding-bottom-10">
+                                        @if($question->name)
+                                            {{$question->name}}
                                         @endif
                                     </div>
                                     <div class="padding-bottom-10">
-                                        @if($question->text)
-                                            {{$question->text}}
+                                        @if($question->question)
+                                            {{$question->question}}
+                                        @endif
+                                    </div>
+                                    <div class="padding-bottom-10">
+                                        @if($question->answer)
+                                            {{$question->answer}}
                                         @endif
                                     </div>
                                     <div class="padding-bottom-10">
                                         <span class="time"><i
                                                     class="fa fa-clock-o"></i> {{$question->created_at_str}}</span>
-                                        <a href="{{URL::asset('/admin/lb/delQ/')}}/{{$question->id}}"
+                                        <a href="{{URL::asset('/admin/lb/delQue/')}}/{{$question->id}}"
                                            class="btn btn-danger btn-xs pull-right">删除</a>
                                     </div>
                                 </div>

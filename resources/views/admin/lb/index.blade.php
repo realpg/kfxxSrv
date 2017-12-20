@@ -83,11 +83,11 @@
                                                title="删除该量表图文">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </a>
-                                             <a href="{{URL::asset('/admin/lb/setStep')}}/{{$data->id}}"
+                                             <a href="{{URL::asset('/admin/lb/setQue')}}/{{$data->id}}"
                                                 class="btn btn-social-icon btn-primary margin-right-10 opt-btn-size"
                                                 data-toggle="tooltip"
                                                 data-placement="top"
-                                                title="设置量表图文">
+                                                title="设置量表问题">
                                                 <i class="fa fa-image opt-btn-i-size"></i>
                                             </a>
                                         </span>

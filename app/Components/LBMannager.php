@@ -47,7 +47,7 @@ class LBMannager
 			$lb->doctor = DoctorManager::getDoctorById($lb->doctor_id);
 		}
 		if ($level >= 2) {
-			$lb->questions = self::getQuestionsById($lb->id);
+			$lb->questions = self::getQuestionsByLBId($lb->id);
 			self::addShowNum($lb->id);
 		}
 		
@@ -55,13 +55,21 @@ class LBMannager
 	}
 	
 	//根据id获取问题
-	public static function getQuestionsById($id)
+	public static function getQuestionsByLBId($id)
 	{
 		$questions = LBQuestion::where('lb_id', '=', $id)->get();
 		return $questions;
 	}
+	
+	public static function getQuestionByQId($id)
+	{
+		$question = LBQuestion::where('id', '=', $id)->first();
+		return $question;
+	}
+	
 	//设置量表
-	public static function setLB($lb,$data){
+	public static function setLB($lb, $data)
+	{
 		if (array_key_exists('name', $data)) {
 			$lb->name = array_get($data, 'name');
 		}
@@ -103,17 +111,20 @@ class LBMannager
 		if (array_key_exists('seq', $data)) {
 			$lb_question->seq = array_get($data, 'seq');
 		}
+		return $lb_question;
 	}
+	
 	//答题
-	public static function answerLB( $data){
-		$ans=new LBAnswer();
-		$ans->user_id=array_get($data, 'user_id');
-		$ans->lb_id=array_get($data, 'lb_id');
-		$results=array_get($data, 'result');
-		$ans->result=$results;
+	public static function answerLB($data)
+	{
+		$ans = new LBAnswer();
+		$ans->user_id = array_get($data, 'user_id');
+		$ans->lb_id = array_get($data, 'lb_id');
+		$results = array_get($data, 'result');
+		$ans->result = $results;
 		
 		
-		$user=UserManager::getUserInfoById($data['user_id']);
+		$user = UserManager::getUserInfoById($data['user_id']);
 		if ($user->gender) {
 			$ans->gender = $user->gender;
 		}
@@ -124,20 +135,22 @@ class LBMannager
 			$ans->phonenum = $user->phonenum;
 		}
 		
-		$bl=KFJHManager::getBLById($data['user_id']);
-		if($bl->ss_time){
-			$ans->s_time=$bl->ss_time;
+		$bl = KFJHManager::getBLById($data['user_id']);
+		if ($bl->ss_time) {
+			$ans->s_time = $bl->ss_time;
 		}
-		if($bl->zz_doctor_id){
-			$ans->s_doctor=DoctorManager::getDoctorById($bl->zz_doctor_id)->name;
+		if ($bl->zz_doctor_id) {
+			$ans->s_doctor = DoctorManager::getDoctorById($bl->zz_doctor_id)->name;
 		}
 		$ans->save();
 		return $ans;
 	}
+	
 	//根据用户ID获取答题记录
-	public static function getAnswersByID($u_id){
-		$ans=LBAnswer::where('user_id','=',$u_id)->get();
+	public static function getAnswersByID($u_id)
+	{
+		$ans = LBAnswer::where('user_id', '=', $u_id)->get();
 		return $ans;
 	}
-
+	
 }

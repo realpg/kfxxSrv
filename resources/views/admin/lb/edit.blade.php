@@ -45,7 +45,7 @@
                             <div class="form-group">
                                 <label for="title" class="col-sm-2 control-label">标题*</label>
                                 <div class="col-sm-10">
-                                    <input id="title" name="title" type="text" class="form-control"
+                                    <input id="name" name="name" type="text" class="form-control"
                                            placeholder="请输入标题" value="{{ isset($data->name) ? $data->name : '' }}">
                                 </div>
                             </div>
@@ -73,21 +73,28 @@
             <div class="col-md-6">
                 @if (isset($data->id))
                     {{--作品预览信息--}}
-                    <div class="white-bg" style="padding: 30px;">
-                        <div class="font-size-16">
-                            {{$data->title}}
+                    @foreach($data->questions as $question)
+                        <div>
+                            <div class="white-bg margin-b-10" style="background-color: white;">
+                                <div class="padding-bottom-10">
+                                    @if($question->question)
+                                        {{$question->question}}
+                                    @endif
+                                </div>
+                                <div class="padding-bottom-10">
+                                    @if($question->answer)
+                                        {{$question->answer}}
+                                    @endif
+                                </div>
+                                <div class="padding-bottom-10">
+                                        <span class="time"><i
+                                                    class="fa fa-clock-o"></i> {{$question->created_at_str}}</span>
+                                    <a href="{{URL::asset('/admin/lb/delQue/')}}/{{$question->id}}"
+                                       class="btn btn-danger btn-xs pull-right">删除</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="border-t margin-top-10 margin-bottom-10">
-                        </div>
-                        <div class="font-size-14 grey-font">
-                            <span>{{$data->created_at_str}}</span>
-                            <span class="margin-left-10 text-info">{{$data->author}}</span>
-                            <span class="margin-left-10">阅读 {{$data->show_num}}</span>
-                        </div>
-                        <div class="grey-bg margin-top-10" style="padding: 10px;">
-                            {{$data->desc}}
-                        </div>
-                    </div>
+                    @endforeach
                 @endif
             </div>
         </div>
