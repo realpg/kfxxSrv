@@ -34,6 +34,7 @@ class LBMannager
 	public static function getLBById($id)
 	{
 		$lb = LB::where('id', '=', $id)->first();
+		
 		return $lb;
 	}
 	//根据级别获取量表信息
@@ -49,6 +50,7 @@ class LBMannager
 			$lb->questions = self::getQuestionsById($lb->id);
 			self::addShowNum($lb->id);
 		}
+		
 		return $lb;
 	}
 	
@@ -57,6 +59,19 @@ class LBMannager
 	{
 		$questions = LBQuestion::where('lb_id', '=', $id)->get();
 		return $questions;
+	}
+	//设置量表
+	public static function setLB($lb,$data){
+		if (array_key_exists('name', $data)) {
+			$lb->name = array_get($data, 'name');
+		}
+		if (array_key_exists('desc', $data)) {
+			$lb->desc = array_get($data, 'desc');
+		}
+		if (array_key_exists('doctor_id', $data)) {
+			$lb->doctor_id = array_get($data, 'doctor_id');
+		}
+		return $lb;
 	}
 	
 	//展示次数增加

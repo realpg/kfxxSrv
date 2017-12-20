@@ -11,7 +11,7 @@ use App\Components\DateTool;
 use App\Components\LBMannager;
 use App\Components\QNManager;
 use App\Components\RequestValidator;
-use App\Components\XJManager;
+use App\Components\lbManager;
 use App\Models\LB;
 use App\Models\LBQuestion;
 use Illuminate\Http\Request;
@@ -25,7 +25,7 @@ class LBController{
 		foreach ($LBList as $lb) {
 			$lb->created_at_str = DateTool::formateData($lb->created_at, 1);
 		}
-		return view('admin.xj.index', ['admin' => $admin, 'datas' => $LBList]);
+		return view('admin.lb.index', ['admin' => $admin, 'datas' => $LBList]);
 	}
 	
 	//根据id获取量表详情
@@ -40,7 +40,7 @@ class LBController{
 		}
 		//生成七牛token
 		$upload_token = QNManager::uploadToken();
-		return view('admin.xj.editStep', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token]);
+		return view('admin.lb.editStep', ['admin' => $admin, 'data' => $lb, 'upload_token' => $upload_token]);
 	}
 	public function setStatus(Request $request, $id)
 	{
@@ -69,7 +69,7 @@ class LBController{
 		$lb_question = new LBQuestion();
 		$lb_question = LBMannager::setQuestion($lb_question,$data);
 		$lb_question->save();
-		return redirect('/admin/xj/setStep/' . $lb_question->f_id);
+		return redirect('/admin/lb/setStep/' . $lb_question->f_id);
 	}
 	//删除量表
 	public static function del($id){
@@ -88,7 +88,7 @@ class LBController{
 		$Que=LBMannager::getQuestionsById($id);
 		$lb_id=$Que->lb_id;
 		$Que->delete();
-		return redirect('/admin/xj/setStep/' . $lb_id);
+		return redirect('/admin/lb/setStep/' . $lb_id);
 	}
 	
 	//新建或者编辑量表
@@ -99,23 +99,27 @@ class LBController{
 		//type
 		if (array_key_exists('id', $data)) {
 			$lb = LBMannager::getLBById($data['id']);
-			foreach ($xj_types as $xj_type) {
-				if (in_array($xj_type->id, explode(",", $xj->type))) {
-					$xj_type->checked = true;
-				}
-			}
+			
 			//步骤信息
-			$xj->steps = [];
-			$xj->created_at_str = DateTool::formateData($xj->created_at, 1);
-			$xj = XJManager::getXJInfoByLevel($xj, 3);
-			foreach ($xj->steps as $step) {
-				$step->created_at_str = DateTool::formateData($step->created_at, 1);
-			}
+			$lb->questions = [];
+			$lb->created_at_str = DateTool::formateData($lb->created_at, 1);
+			$lb = LBMannager::getLBDetailByLevel($lb, 3);
+			
 		}
 		
-		//生成七牛token
-		$upload_token = QNManager::uploadToken();
-		return view('admin.xj.edit', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token, 'xj_types' => $xj_types]);
-		
+		return view('admin.lb.edit', ['admin' => $admin, 'data' => $lb]);
+	}
+	//post
+	public function editPost(Request $request)
+	{
+		$data = $request->all();
+		$lb = new LB();
+		//存在id是保存
+		if (array_key_exists('id', $data)) {
+			$lb = LBMannager::getLBById($data['id']);
+		}
+		$lb = LBManager::setLB($lb, $data);
+		$lb->save();
+		return redirect('/admin/lb/edit' . '?id=' . $lb->id);
 	}
 }
