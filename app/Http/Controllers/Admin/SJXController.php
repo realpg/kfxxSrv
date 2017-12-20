@@ -63,7 +63,7 @@ class SJXController
 //        dd($data);
         $sjx = new SJX();
         //存在id是保存
-        if (array_key_exists('id', $data)) {
+        if (array_key_exists('id', $data) && $data['id'] != null) {
             $sjx = SJXManager::getSJXById($data['id']);
         }
         $sjx = SJXManager::setSJX($sjx, $data);
