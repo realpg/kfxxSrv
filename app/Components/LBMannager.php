@@ -135,8 +135,8 @@ class LBMannager
 		return $ans;
 	}
 	//根据用户ID获取答题记录
-	public static function getAnswersByID($id){
-		$ans=LBAnswer::where('id','=',$id)->get();
+	public static function getAnswersByID($u_id){
+		$ans=LBAnswer::where('user_id','=',$u_id)->get();
 		return $ans;
 	}
 
