@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/doctor/index', 'Admin\DoctorController@index');  //管理员管理首页
     Route::get('/doctor/del/{id}', 'Admin\DoctorController@del');  //删除管理员
     Route::get('/doctor/edit', 'Admin\DoctorController@edit');  //新建或编辑管理员
+	Route::post('/doctor/search', 'Admin\DoctorController@search');  //搜索管理员
     Route::post('/doctor/edit', 'Admin\DoctorController@editPost');  //新建或编辑管理员
 
     //宣教管理
@@ -50,11 +51,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/xj/edit', 'Admin\XJController@edit');  //新建或编辑宣教
     Route::post('/xj/edit', 'Admin\XJController@editPost');  //新建或编辑宣教
     Route::get('/xj/del/{id}', 'Admin\XJController@del');  //删除宣教
+	
 
     //宣教分类管理
     Route::get('/xjType/index', 'Admin\XJController@indexType');  //宣教分类管理首页
     Route::get('/xjType/edit', 'Admin\XJController@editType');  //新建或编辑宣教分类
     Route::post('/xjType/edit', 'Admin\XJController@editTypePost');  //新建或编辑宣教分类
+	
 
     //数据项管理
     Route::get('/sjx/index', 'Admin\SJXController@index');  //数据项管理首页
