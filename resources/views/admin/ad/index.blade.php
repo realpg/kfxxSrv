@@ -25,22 +25,24 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-body">
-                        <table id="example2" class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th class="opt-th-width-ll">内容</th>
+                                <th>内容</th>
                                 <th>时间</th>
                                 <th>录入人</th>
                                 <th>宣教</th>
                                 <th>状态</th>
-                                <th class="opt-th-width">操作</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($datas as $data)
                                 <tr id="tr_{{$data->id}}">
-                                    <td class="opt-th-width-ll"><span
-                                                class="line-height-30 text-oneline text-info">{{$data->content}}</span>
+                                    <td>
+                                        <div class="line-height-30 text-info text-oneline con-th-width-ll">
+                                            {{$data->content}}
+                                        </div>
                                     </td>
                                     <td><span class="line-height-30">{{$data->created_at_str}}</span>
                                     </td>
@@ -70,7 +72,7 @@
                                         @endif
 
                                     </td>
-                                    <td class="opt-th-width">
+                                    <td>
                                         <span class="line-height-30">
                                             <a href="{{URL::asset('/admin/ad/setStatus')}}/{{$data->id}}?opt=1"
                                                class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
@@ -91,7 +93,7 @@
                                                   onclick="clickEdit({{$data->id}})">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
-                                            <span class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
+                                            <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
                                                   title="删除该轮播图"

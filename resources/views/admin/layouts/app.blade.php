@@ -34,6 +34,8 @@
     <script src=" https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
+
+
         /*按钮大小*/
         .opt-btn-size {
             width: 28px !important;
@@ -45,14 +47,25 @@
             line-height: 26px !important;
         }
 
+        /*模态框距离顶部边距*/
+        .modal-margin-top {
+            margin-top: 150px;
+        }
+
+        .modal-margin-top-m {
+            margin-top: 20px;
+        }
+
         /*操作th的最大宽度*/
         .opt-th-width {
             min-width: 140px !important;
+            width: 140px !important;
             max-width: 140px !important;
         }
 
         .opt-th-width-l {
             min-width: 180px !important;
+            width: 180px !important;
             max-width: 180px !important;
         }
 
@@ -71,13 +84,9 @@
             max-width: 280px !important;
         }
 
-        /*模态框距离顶部边距*/
-        .modal-margin-top {
-            margin-top: 150px;
-        }
-
-        modal-margin-top-m {
-            margin-top: 20px;
+        .con-th-width-ll {
+            min-width: 360px !important;
+            max-width: 360px !important;
         }
 
     </style>

@@ -26,25 +26,26 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
+                    <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="example2" class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover">
                             <thead>
-                            <tr class="opt-th-width">
+                            <tr>
                                 <th>标题</th>
                                 <th>创建时间</th>
                                 <th>作者</th>
                                 <th>状态</th>
-                                <th class="opt-th-width-l">操作</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($datas as $data)
-                                <tr id="tr_{{$data->id}}">
-                                    <td><span class="line-height-30">
-                                        <a href="{{URL::asset('/admin/xj/edit')}}?id={{$data->id}}">
+                                <tr>
+                                    <td>
+                                        <div class="line-height-30 text-info text-oneline con-th-width-ll">
                                             {{$data->title}}
-                                        </a>
-                                        </span></td>
+                                        </div>
+                                    </td>
                                     <td><span class="line-height-30">{{$data->created_at_str}}</span>
                                     </td>
                                     <td>
@@ -59,8 +60,8 @@
                                             <span class="label label-success line-height-30">生效</span>
                                         @endif
                                     </td>
-                                    <td class="opt-th-width-l">
-                                        <span class="line-height-30">
+                                    <td>
+                                        <div class="line-height-30 ">
                                             <a href="{{URL::asset('/admin/xj/setStatus')}}/{{$data->id}}?opt=1"
                                                class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
@@ -80,21 +81,21 @@
                                                title="编辑宣教基本信息">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </a>
-                                            <a href="{{URL::asset('/admin/xj/del')}}/{{$data->id}}"
-                                               class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
+                                            <span class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
+                                                  data-toggle="tooltip"
+                                                  data-placement="top"
+                                                  title="删除宣教"
+                                                  onclick="clickDel({{$data->id}})">
+                                                <i class="fa fa-trash-o opt-btn-i-size"></i>
+                                            </span>
+                                            <a href="{{URL::asset('/admin/xj/setStep')}}/{{$data->id}}"
+                                               class="btn btn-social-icon btn-primary opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"
-                                               title="删除宣教">
-                                                <i class="fa fa-trash-o opt-btn-i-size"></i>
-                                            </a>
-                                             <a href="{{URL::asset('/admin/xj/setStep')}}/{{$data->id}}"
-                                                class="btn btn-social-icon btn-primary margin-right-10 opt-btn-size"
-                                                data-toggle="tooltip"
-                                                data-placement="top"
-                                                title="设置宣教图文">
+                                               title="设置宣教图文">
                                                 <i class="fa fa-image opt-btn-i-size"></i>
                                             </a>
-                                        </span>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -102,8 +103,8 @@
                         </table>
                     </div>
                     <!-- /.box-body -->
+
                 </div>
-                <!-- /.box -->
             </div>
             <!-- /.col -->
         </div>
@@ -117,7 +118,37 @@
         </div>
         <!-- /.row -->
     </section>
+
+
+    {{--删除对话框--}}
+    <div class="modal fade modal-margin-top" id="delConfrimModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                    <p>您确认要删除该宣教图文吗？</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="url"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="delConfrimModal_confirm_btn" data-value="" onclick="delXJ();"
+                            class="btn btn-success"
+                            data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 @endsection
+
+
+
+
 
 @section('script')
     <script type="application/javascript">
@@ -126,6 +157,24 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
 
+        //点击删除
+        function clickDel(xj_id) {
+            console.log("clickDel xj_id:" + xj_id);
+            //为删除按钮赋值
+            $("#delConfrimModal_confirm_btn").attr("data-value", xj_id);
+            $("#delConfrimModal").modal('show');
+        }
+
+
+        //删除宣教
+        function delXJ() {
+            var xj_id = $("#delConfrimModal_confirm_btn").attr("data-value");
+            console.log("delXJ xj_id:" + xj_id);
+            //进行tr隐藏
+            $("#tr_" + xj_id).fadeOut();
+            //进行页面跳转
+            window.location.href = "{{URL::asset('/admin/xj/del')}}/" + xj_id;
+        }
 
     </script>
 @endsection

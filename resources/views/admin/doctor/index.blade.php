@@ -45,10 +45,8 @@
                                         <img src="{{ $data->avatar ? $data->avatar.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/default_headicon.png')}}"
                                              class="img-rect-30 radius-5">
                                     </td>
-                                    <td><span class="line-height-30">
-                                            <a href="{{URL::asset('/admin/doctor/edit')}}?id={{$data->id}}">
+                                    <td><span class="line-height-30 text-info">
                                             {{$data->name}}
-                                            </a>
                                         </span></td>
                                     <td><span class="line-height-30">{{$data->dep}}</span></td>
                                     <td><span class="line-height-30">{{$data->duty}}</span></td>
@@ -79,7 +77,7 @@
                                                   title="编辑该角色">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
-                                            <span class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
+                                            <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
                                                   title="删除该角色"

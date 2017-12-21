@@ -34,7 +34,7 @@ class XJController
         $xjs = XJManager::getIndexXJs();
         foreach ($xjs as $xj) {
             $xj->created_at_str = DateTool::formateData($xj->created_at, 1);
-            $xj = XJManager::getXJInfoByLevel($xj, 1);
+            $xj = XJManager::getXJInfoByLevel($xj, 0);
         }
         return view('admin.xj.index', ['admin' => $admin, 'datas' => $xjs]);
     }
