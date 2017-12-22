@@ -69,6 +69,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //量表相关
     Route::get('lb/getList', 'API\LBController@getList');
+	Route::get('lb/getById', 'API\LBController@getById');
     Route::get('lb/getQuestionsById', 'API\LBController@getQuestionsById');
     Route::post('lb/answerLB', 'API\LBController@answerLB');
     Route::get('lb/getAnswerHistory', 'API\LBController@getAnswerHistoryByUserId');

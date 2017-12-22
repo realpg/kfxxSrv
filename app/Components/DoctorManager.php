@@ -130,4 +130,13 @@ class DoctorManager
             return false;
         }
     }
+
+	
+	public static function searchDoctor($search_word)
+	{
+		$users = Doctor::where('name', 'like', '%' . $search_word . '%')
+			->orwhere('phonenum', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+		return $users;
+	}
+
 }

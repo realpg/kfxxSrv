@@ -22,6 +22,10 @@ function ajaxRequest(url, param, method, callBack) {
 function getADById(url, param, callBack) {
     ajaxRequest(url + "/api/ad/getById", param, "GET", callBack);
 }
+//根据id获取轮播图信息
+function getLBById(url, param, callBack) {
+    ajaxRequest(url + "/api/lb/getById", param, "GET", callBack);
+}
 
 //根据id获取康复模板信息
 function getKFMBById(url, param, callBack) {

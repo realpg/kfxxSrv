@@ -126,6 +126,8 @@
         }
 
         $(document).ready(function () {
+            forEach()
+
             //获取七牛token
             //initQNUploader();
         });

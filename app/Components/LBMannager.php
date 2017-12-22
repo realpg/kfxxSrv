@@ -26,7 +26,7 @@ class LBMannager
 	//管理后台使用，获取所有量表
 	public static function lblist_all()
 	{
-		$list = Lb::get();
+		$list = Lb::orderBy('seq','desc')->orderBy('id','desc')->paginate(Utils::PAGE_SIZE);
 		return $list;
 	}
 	
@@ -70,6 +70,7 @@ class LBMannager
 	//设置量表
 	public static function setLB($lb, $data)
 	{
+		$lb->name="没进去";
 		if (array_key_exists('name', $data)) {
 			$lb->name = array_get($data, 'name');
 		}

@@ -21,6 +21,36 @@
 
     <!-- Main content -->
     <section class="content">
+        {{--条件搜索--}}
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- Horizontal Form -->
+                <div class="">
+                    <!-- form start -->
+                    <form action="{{URL::asset('/admin/doctor/search')}}" method="post" class="form-horizontal">
+                        {{csrf_field()}}
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <input id="search_word" name="search_word" type="text" class="form-control"
+                                           placeholder="根据用户名称/手机号码搜索"
+                                           value="">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="submit" class="btn btn-info btn-block btn-flat" onclick="">
+                                        搜索
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
         <!--列表-->
         <div class="row">
             <div class="col-xs-12">
@@ -346,7 +376,7 @@
                 // 在初始化时，uptoken，uptoken_url，uptoken_func三个参数中必须有一个被设置
                 // 切如果提供了多个，其优先级为uptoken > uptoken_url > uptoken_func
                 // 其中uptoken是直接提供上传凭证，uptoken_url是提供了获取上传凭证的地址，如果需要定制获取uptoken的过程则可以设置uptoken_func
-                uptoken: "{{$upload_token}}", // uptoken是上传凭证，由其他程序生成
+                //{{--uptoken: "{/{ $upload_token}}", // uptoken是上传凭证，由其他程序生成--}}
                 // uptoken_url: '/uptoken',         // Ajax请求uptoken的Url，强烈建议设置（服务端提供）
                 // uptoken_func: function(file){    // 在需要获取uptoken时，该方法会被调用
                 //    // do something
