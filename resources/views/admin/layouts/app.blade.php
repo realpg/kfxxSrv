@@ -365,8 +365,6 @@
 {{--<script src="{{ URL::asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>--}}
 <!-- Slimscroll -->
 <script src="{{ URL::asset('bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
-<!-- FastClick -->
-<script src="{{ URL::asset('bower_components/fastclick/lib/fastclick.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ URL::asset('dist/js/adminlte.min.js') }}"></script>
 <!-- iCheck 1.0.1 -->
@@ -377,6 +375,11 @@
 <script src="{{ URL::asset('js/plupload/moxie.js') }}"></script>
 <!-- common -->
 <script src="{{ URL::asset('js/common.js') }}"></script>
+<!-- doT -->
+<script src="{{ URL::asset('js/dateFormateTool.js') }}"></script>
+<!-- doT -->
+<script src="{{ URL::asset('js/doT.min.js') }}"></script>
+
 </body>
 </html>
 @yield('script')

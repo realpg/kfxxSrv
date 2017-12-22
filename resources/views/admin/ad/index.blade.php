@@ -40,7 +40,7 @@
                             @foreach($datas as $data)
                                 <tr id="tr_{{$data->id}}">
                                     <td>
-                                        <div class="line-height-30 text-info text-oneline con-th-width-ll">
+                                        <div class="line-height-30 text-info text-oneline  con-th-width-ll">
                                             {{$data->content}}
                                         </div>
                                     </td>

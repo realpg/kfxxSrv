@@ -6,6 +6,8 @@ function ajaxRequest(url, param, method, callBack) {
         type: method,  //提交方式
         url: url,//路径
         data: param,//数据，这里使用的是Json格式进行传输
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
         success: function (ret) {//返回数据根据结果进行相应的处理
             console.log("ret:" + JSON.stringify(ret));
             callBack(ret)
@@ -51,6 +53,11 @@ function getXJTypeById(url, param, callBack) {
     ajaxRequest(url + "/api/xj/getXJTypeById", param, "GET", callBack);
 }
 
+//编辑宣教
+function editXJ(url, param, callBack) {
+    ajaxRequest(url + "/api/xj/editXJ", param, "post", callBack);
+}
+
 /*
  * 校验手机号js
  *
@@ -72,6 +79,25 @@ function judgeIsNullStr(val) {
         return true
     }
     return false
+}
+
+// 判断参数是否为空
+function judgeIsAnyNullStr() {
+    if (arguments.length > 0) {
+        for (var i = 0; i < arguments.length; i++) {
+            if (!isArray(arguments[i])) {
+                if (arguments[i] == null || arguments[i] == "" || arguments[i] == undefined || arguments[i] == "未设置" || arguments[i] == "undefined") {
+                    return true
+                }
+            }
+        }
+    }
+    return false
+}
+
+// 判断数组时候为空, 服务于 judgeIsAnyNullStr 方法
+function isArray(object) {
+    return Object.prototype.toString.call(object) == '[object Array]';
 }
 
 
@@ -114,4 +140,15 @@ function qiniuUrlTool(img_url, type) {
             break
     }
     return qn_img_url
+}
+
+function Text2Html(str) {
+    if (str == null) {
+        return "";
+    } else if (str.length == 0) {
+        return "";
+    }
+    str = str.replace(/\r\n/g,"<br>")
+    str = str.replace(/\n/g,"<br>");
+    return str;
 }

@@ -50,6 +50,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/xj/edit', 'Admin\XJController@edit');  //新建或编辑宣教
     Route::post('/xj/edit', 'Admin\XJController@editPost');  //新建或编辑宣教
     Route::get('/xj/del/{id}', 'Admin\XJController@del');  //删除宣教
+    Route::get('/xj/editXJ', 'Admin\XJController@editXJ');  //删除宣教
 
     //宣教分类管理
     Route::get('/xjType/index', 'Admin\XJController@indexType');  //宣教分类管理首页
@@ -89,9 +90,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/lb/index', 'Admin\LBController@index');  //量表管理首页  ok
     Route::get('/lb/setStatus/{id}', 'Admin\LBController@setStatus');  //量表宣教状态 ok
     Route::get('/lb/detail/{id}', 'Admin\LBController@detail');  //量表问题 ok
-	Route::post('/lb/setQue/{id}', 'Admin\LBController@setQuestionPost');  //编辑量表问题 ok
-	Route::get('/lb/setQue/{id}', 'Admin\LBController@setQuestion');  //编辑量表问题 ok
-	Route::get('/lb/delQue/{id}', 'Admin\LBController@delQue');  //删除量表问题条目 ok
+    Route::post('/lb/setQue/{id}', 'Admin\LBController@setQuestionPost');  //编辑量表问题 ok
+    Route::get('/lb/setQue/{id}', 'Admin\LBController@setQuestion');  //编辑量表问题 ok
+    Route::get('/lb/delQue/{id}', 'Admin\LBController@delQue');  //删除量表问题条目 ok
     Route::get('/lb/edit', 'Admin\LBController@edit');  //新建或编辑量表
     Route::post('/lb/edit', 'Admin\LBController@editPost');  //新建或编辑量表
     Route::get('/lb/del/{id}', 'Admin\LBController@del');  //删除量表ok

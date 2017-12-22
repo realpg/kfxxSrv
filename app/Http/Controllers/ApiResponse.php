@@ -34,6 +34,8 @@ class ApiResponse
     const NO_USER = 105;
     //验证码验证失败
     const VERTIFY_ERROR = 106;
+    //医师编码丢失
+    const DOCTOR_ID_LOST = 107;
 
     //映射错误信息
     public static $errorMassage = [

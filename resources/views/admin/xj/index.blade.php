@@ -11,7 +11,7 @@
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
-                <a href="{{url('/admin/xj/edit')}}">
+                <a href="{{URL::asset('/admin/xj/editXJ')}}">
                     <button type="button" class="btn btn-primary">
                         +新建宣教
                     </button>
@@ -74,7 +74,7 @@
                                                data-placement="top" title="失效的宣教图文不会推送给客户">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
-                                            <a href="{{URL::asset('/admin/xj/edit')}}?id={{$data->id}}"
+                                            <a href="{{URL::asset('/admin/xj/editXJ')}}?id={{$data->id}}"
                                                class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"
@@ -103,7 +103,6 @@
                         </table>
                     </div>
                     <!-- /.box-body -->
-
                 </div>
             </div>
             <!-- /.col -->
@@ -147,15 +146,13 @@
 @endsection
 
 
-
-
-
 @section('script')
     <script type="application/javascript">
 
-        $(function () {
+        //入口函数
+        $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip()
-        })
+        });
 
         //点击删除
         function clickDel(xj_id) {
@@ -164,7 +161,6 @@
             $("#delConfrimModal_confirm_btn").attr("data-value", xj_id);
             $("#delConfrimModal").modal('show');
         }
-
 
         //删除宣教
         function delXJ() {

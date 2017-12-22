@@ -108,4 +108,26 @@ class DoctorManager
         }
         return $doctor;
     }
+
+
+    /*
+     * 根据user_code和token校验合法性，全部插入、更新、删除类操作需要使用中间件
+     *
+     * By TerryQi
+     *
+     * 2017-09-14
+     *
+     * 返回值
+     *
+     */
+    public static function ckeckToken($id, $token)
+    {
+        //根据id、token获取医师信息
+        $count = Doctor::where('id', '=', $id)->where('token', '=', $token)->count();
+        if ($count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

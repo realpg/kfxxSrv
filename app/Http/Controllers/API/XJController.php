@@ -16,7 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
 use App\Libs\wxDecode\WXBizDataCrypt;
 use App\Models\User;
-use App\Models\ViewModels\HomeView;
+use Illuminate\Support\Facades\Log;
 use App\Models\XJ;
 use Illuminate\Http\Request;
 use App\Components\RequestValidator;
@@ -108,6 +108,26 @@ class XJController extends Controller
 
         $xjType = XJManager::getXJTypeById($data['id']);
         return ApiResponse::makeResponse(true, $xjType, ApiResponse::SUCCESS_CODE);
+    }
+
+
+    /*
+     * 编辑宣教
+     *
+     * By TerryQi
+     *
+     * 2017-12-21
+     */
+    public function editXJ(Request $request)
+    {
+        //将json数据转化为数组
+        $data = json_decode(json_encode($request->all()));
+
+        //新建宣教信息
+
+
+        return ApiResponse::makeResponse(true, $data->steps[0], ApiResponse::SUCCESS_CODE);
+
     }
 
 }
