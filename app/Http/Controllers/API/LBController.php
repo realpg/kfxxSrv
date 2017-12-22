@@ -25,7 +25,19 @@ class LBController extends Controller
 		$LBlist = LBMannager::getLBList();
 		return ApiResponse::makeResponse(true, $LBlist, ApiResponse::SUCCESS_CODE);
 	}
-	
+	public function getById(Request $request)
+	{
+		$data = $request->all();
+		//合规校验account_type
+		$requestValidationResult = RequestValidator::validator($request->all(), [
+			'id' => 'required',
+		]);
+		if ($requestValidationResult !== true) {
+			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+		}
+		$ad = LBMannager::getLBById($data['id']);
+		return ApiResponse::makeResponse(true, $ad, ApiResponse::SUCCESS_CODE);
+	}
 	//答复量表
 	public static function answerLB(Request $request)
 	{

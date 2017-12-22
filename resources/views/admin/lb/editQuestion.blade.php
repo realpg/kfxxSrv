@@ -16,52 +16,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <!-- left column -->
-            <div class="col-md-6">
-                <!-- Horizontal Form -->
-                <div class="box box-default">
-                    <!-- form start -->
-                    <!-- form start -->
-                    <form action="" method="post" class="form-horizontal" onsubmit="return checkValid();">
-                        {{csrf_field()}}
-                        <div class="box-body">
-                            <div class="form-group hidden">
-                                <label for="lb_id" class="col-sm-2 control-label">父id</label>
-
-                                <div class="col-sm-10">
-                                    <input id="lb_id" name="lb_id" type="text" class="form-control"
-                                           placeholder="父id"
-                                           value="{{ $data->id }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="col-sm-2 control-label">题目</label>
-                                <div class="col-sm-10">
-                                    <textarea id="text" name="question" class="form-control" rows="3"
-                                              placeholder="请输入 ..."></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="text" class="col-sm-2 control-label">答案</label>
-                                <div class="col-sm-10">
-                                    <textarea id="text" name="answer" class="form-control" rows="3"
-                                              placeholder="请输入 ..."></textarea>
-                                </div>
-                            </div>
-
-                            答案示例:A高难度_5;B中等难度_4;C低等难度_3;D无难度_0
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-info btn-block btn-flat">添加图文</button>
-                        </div>
-                        <!-- /.box-footer -->
-                    </form>
-                </div>
-                <!-- /.box -->
-            </div>
-            <!--/.col (right) -->
+            <!-- left column end-->
             <div class="col-md-6">
                 {{--作品预览信息--}}
                 <div class="white-bg" style="padding: 30px;">
@@ -70,24 +25,20 @@
                     </div>
                     <div class="border-t margin-top-10 margin-bottom-10">
                     </div>
+                    <div class="grey-bg margin-top-10" style="padding: 10px;">简介：
+                        {{$data->desc}}
+                    </div>
                     <div class="font-size-14 grey-font">
                         <span>{{$data->created_at_str}}</span>
                         <span class="margin-left-10 text-info">{{$data->author}}</span>
-                        <span class="margin-left-10">阅读 {{$data->show_num}}</span>
+                        <span class="margin-left-10 pull-right">阅读{{$data->show_num}}</span>
                     </div>
-                    <div class="grey-bg margin-top-10" style="padding: 10px;">
-                        {{$data->desc}}
-                    </div>
+
                     <div style="padding: 10px;">
                         <!--作品信息-->
                         @foreach($data->questions as $question)
                             <div>
                                 <div class="white-bg margin-b-10" style="background-color: white;">
-                                    <div class="padding-10">
-                                        @if($question->name)
-                                            {{$question->name}}
-                                        @endif
-                                    </div>
                                     <div class="padding-bottom-10">
                                         @if($question->question)
                                             {{$question->question}}
@@ -99,17 +50,79 @@
                                         @endif
                                     </div>
                                     <div class="padding-bottom-10">
-                                        <span class="time"><i
-                                                    class="fa fa-clock-o"></i> {{$question->created_at_str}}</span>
+                                        {{--<span class="time"><i--}}
+                                        {{--class="fa fa-clock-o"></i> {{$question->created_at_str}}</span>--}}
+
                                         <a href="{{URL::asset('/admin/lb/delQue/')}}/{{$question->id}}"
                                            class="btn btn-danger btn-xs pull-right">删除</a>
+                                        <a href="{{URL::asset('/admin/lb/detail/')}}/{{$data->id}}/{{$question->id}}"
+                                           class="btn btn-xs pull-right">编辑</a>
                                     </div>
                                 </div>
                             </div>
+                            <hr/>
                         @endforeach
                     </div>
                 </div>
             </div>
+            <!-- left column end-->
+
+            <!--/.col (right) -->
+            <div class="col-md-6">
+                <!-- Horizontal Form -->
+                <div class="box box-default">
+                    <!-- form start -->
+                    <!-- form start -->
+                    <form action="{{URL::asset('/admin/lb/setQue')}}" method="post" class="form-horizontal" onsubmit="return checkValid();">
+                        {{csrf_field()}}
+                        <div class="box-body">
+                            <div class="form-group hidden">
+                                <label for="lb_id" class="col-sm-2 control-label">父id</label>
+
+                                <div class="col-sm-10">
+                                    <input id="lb_id" name="lb_id" type="text" class="form-control"
+                                           placeholder="父id"
+                                           value="{{ $data->id }}">
+                                </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <label for="que_id" class="col-sm-2 control-label">父id</label>
+
+                                <div class="col-sm-10">
+                                    <input id="que_id" name="que_id" type="text" class="form-control"
+                                           placeholder="父id"
+                                           value="{{ $question->id }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="col-sm-2 control-label">题目</label>
+                                <div class="col-sm-10">
+                                    <textarea id="text" name="question" class="form-control" rows="3"
+                                              placeholder="请输入 ...">{{$question->question}}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="text" class="col-sm-2 control-label">答案</label>
+                                <div class="col-sm-10">
+                                    <input id="text" name="answer" class="form-control" rows="3"
+                                              placeholder="请输入 ..."value="{{$question->answer}}" >
+                                </div>
+                            </div>
+
+                            答案示例:A高难度_5;B中等难度_4;C低等难度_3;D无难度_0
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info btn-block btn-flat">提交</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+            <!--/.col (right) -->
+
         </div>
     </section>
 @endsection
@@ -151,7 +164,7 @@
                 // 在初始化时，uptoken，uptoken_url，uptoken_func三个参数中必须有一个被设置
                 // 切如果提供了多个，其优先级为uptoken > uptoken_url > uptoken_func
                 // 其中uptoken是直接提供上传凭证，uptoken_url是提供了获取上传凭证的地址，如果需要定制获取uptoken的过程则可以设置uptoken_func
-                uptoken: "{{$upload_token}}", // uptoken是上传凭证，由其他程序生成
+                //uptoken: "{/{$upload_token}}", // uptoken是上传凭证，由其他程序生成
                 // uptoken_url: '/uptoken',         // Ajax请求uptoken的Url，强烈建议设置（服务端提供）
                 // uptoken_func: function(file){    // 在需要获取uptoken时，该方法会被调用
                 //    // do something

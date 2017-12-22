@@ -32,19 +32,20 @@ class LBController
 	}
 	
 	//根据id获取量表详情
-	public function detail(Request $request, $id)
+	public function detail(Request $request, $id,$que_id)
 	{
 		$admin = $request->session()->get('admin');
 		$lb = LBMannager::getLBById($id);
 		$lb->questions = [];
 		$lb->created_at_str = DateTool::formateData($lb->created_at, 1);
 		$lb = LBMannager::getLBDetailByLevel($lb, 2);
-		foreach ($lb->questions as $question) {
-			$question->created_at_str = DateTool::formateData($question->created_at, 1);
-		}
+//		foreach ($lb->questions as $question) {
+//			$question->created_at_str = DateTool::formateData($question->created_at, 1);
+//		}
 		//生成七牛token
 		$upload_token = QNManager::uploadToken();
-		return view('admin.lb.editQuestion', ['admin' => $admin, 'data' => $lb]);
+		$question=LBMannager::getQuestionByQId($que_id);
+		return view('admin.lb.editQuestion', ['admin' => $admin, 'data' => $lb,'question'=>$question]);
 	}
 	
 	public function setStatus(Request $request, $id)
@@ -72,26 +73,28 @@ class LBController
 	{
 		$admin = $request->session()->get('admin');
 		$lb = LBMannager::getLBById($id);
-		$lb->question = [];
+		$lb->questions = [];
 		//$lb->created_at_str = DateTool::formateData($lb->created_at, 1);
 		$lb = LBMannager::getLBDetailByLevel($lb, 3);
 		foreach ($lb->questions as $question) {
 //				$question->created_at_str = DateTool::formateData($question->created_at, 1);
 		}
 		//生成七牛token
-		$upload_token = QNManager::uploadToken();
-		return view('admin.lb.editQuestion', ['admin' => $admin, 'data' => $lb, 'upload_token' => $upload_token]);
+		$question=new LBQuestion();
+		return view('admin.lb.editQuestion', ['admin' => $admin, 'data' => $lb, 'question' => $question]);
 	}
 	
 	public function setQuestionPost(Request $request)
 	{
 		$data = $request->all();
 		$lb_question = new LBQuestion();
+		if(array_key_exists('que_id',$data))
+			$lb_question=LBMannager::getQuestionByQId($data['que_id']);
 		$lb_question = LBMannager::setQuestion($lb_question, $data);
 		$lb_question->save();
 		return redirect('/admin/lb/setQue/' . $lb_question->lb_id);
 	}
-	
+
 	//删除量表
 	public static function del($id)
 	{
@@ -140,13 +143,15 @@ class LBController
 	public function editPost(Request $request)
 	{
 		$data = $request->all();
-		$lb = new LB();
+		$lb=null;
 		//存在id是保存
 		if (array_key_exists('id', $data)) {
 			$lb = LBMannager::getLBById($data['id']);
 		}
+		if(!$lb)
+			$lb = new LB();
 		$lb = LBMannager::setLB($lb, $data);
 		$lb->save();
-		return redirect('/admin/lb/edit' . '?id=' . $lb->id);
+		return redirect('/admin/lb/index');
 	}
 }
