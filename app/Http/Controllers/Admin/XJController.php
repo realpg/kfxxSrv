@@ -44,17 +44,14 @@ class XJController
     {
         $admin = $request->session()->get('admin');
         $data = $request->all();
-        $xj = new XJ();
         //types
         $xj_types = XJType::all();
+        $xj = new XJ();
         if (array_key_exists('id', $data)) {
             $xj = XJManager::getXJById($data['id']);
             //步骤信息
             $xj->steps = [];
             $xj = XJManager::getXJInfoByLevel($xj, 3);
-            foreach ($xj->steps as $step) {
-                $step->created_at_str = DateTool::formateData($step->created_at, 1);
-            }
         }
         //生成七牛token
         $upload_token = QNManager::uploadToken();

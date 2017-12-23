@@ -88,12 +88,6 @@
                                                   onclick="clickDel({{$data->id}})">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </span>
-                                            <a href="{{URL::asset('/admin/xj/setStep')}}/{{$data->id}}"
-                                               class="btn btn-social-icon btn-primary opt-btn-size"
-                                               data-toggle="tooltip"
-                                               data-placement="top"
-                                               title="设置宣教图文">
-                                                <i class="fa fa-image opt-btn-i-size"></i>
                                             </a>
                                         </div>
                                     </td>

@@ -19,6 +19,10 @@ class TestController extends Controller
 {
     public function test(Request $request)
     {
+        $val = $request->all();
+        return ApiResponse::makeResponse(true, $val['name'], ApiResponse::SUCCESS_CODE);
+
+
         $requestValidationResult = RequestValidator::validator($request->all(), [
             'test' => 'required',
         ]);

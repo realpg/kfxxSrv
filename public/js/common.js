@@ -1,12 +1,12 @@
 // 接口部分
 //基本的ajax访问后端接口类
 function ajaxRequest(url, param, method, callBack) {
-    console.log("url:" + url + " param:" + JSON.stringify(param));
+    console.log("url:" + url + " post:" + method + " param:" + param);
     $.ajax({
         type: method,  //提交方式
         url: url,//路径
         data: param,//数据，这里使用的是Json格式进行传输
-        contentType: "application/json; charset=utf-8",
+        contentType: "application/json", //必须有
         dataType: "json",
         success: function (ret) {//返回数据根据结果进行相应的处理
             console.log("ret:" + JSON.stringify(ret));
@@ -20,47 +20,58 @@ function ajaxRequest(url, param, method, callBack) {
 
 //根据id获取轮播图信息
 function getADById(url, param, callBack) {
-    ajaxRequest(url + "/api/ad/getById", param, "GET", callBack);
+    ajaxRequest(url + "api/ad/getById", param, "GET", callBack);
 }
 //根据id获取轮播图信息
 function getLBById(url, param, callBack) {
-    ajaxRequest(url + "/api/lb/getById", param, "GET", callBack);
+    ajaxRequest(url + "api/lb/getById", param, "GET", callBack);
 }
 
 //根据id获取康复模板信息
 function getKFMBById(url, param, callBack) {
-    ajaxRequest(url + "/api/kfmb/getKFMBById", param, "GET", callBack);
+    ajaxRequest(url + "api/kfmb/getKFMBById", param, "GET", callBack);
 }
 
 //根据id获取患者信息
 function getUserById(url, param, callBack) {
-    ajaxRequest(url + "/api/user/getById", param, "GET", callBack);
+    ajaxRequest(url + "api/user/getById", param, "GET", callBack);
 }
 
 //根据id获取医生信息
 function getDoctorById(url, param, callBack) {
-    ajaxRequest(url + "/api/doctor/getById", param, "GET", callBack);
+    ajaxRequest(url + "api/doctor/getById", param, "GET", callBack);
 }
 
 //根据id获取数据项
 function getSJXById(url, param, callBack) {
-    ajaxRequest(url + "/api/sjx/getById", param, "GET", callBack);
+    ajaxRequest(url + "api/sjx/getById", param, "GET", callBack);
 }
 
 //获取全部生效宣教信息
 function getAllXJs(url, param, callBack) {
-    ajaxRequest(url + "/api/xj/getAll", param, "GET", callBack);
+    ajaxRequest(url + "api/xj/getAll", param, "GET", callBack);
 }
 
 //获取宣教类别信息
 function getXJTypeById(url, param, callBack) {
-    ajaxRequest(url + "/api/xj/getXJTypeById", param, "GET", callBack);
+    ajaxRequest(url + "api/xj/getXJTypeById", param, "GET", callBack);
+}
+
+//根据id获取宣教
+function getXJInfoById(url, param, callBack) {
+    ajaxRequest(url + "api/xj/getXJInfoById", param, "get", callBack);
 }
 
 //编辑宣教
 function editXJ(url, param, callBack) {
-    ajaxRequest(url + "/api/xj/editXJ", param, "post", callBack);
+    ajaxRequest(url + "api/xj/editXJ", param, "post", callBack);
 }
+
+//测试接口
+function test(url, param, callBack) {
+    ajaxRequest(url + "api/test", param, "post", callBack);
+}
+
 
 /*
  * 校验手机号js
@@ -146,13 +157,32 @@ function qiniuUrlTool(img_url, type) {
     return qn_img_url
 }
 
+
+// 文字转html，主要是进行换行转换
 function Text2Html(str) {
     if (str == null) {
         return "";
     } else if (str.length == 0) {
         return "";
     }
-    str = str.replace(/\r\n/g,"<br>")
-    str = str.replace(/\n/g,"<br>");
+    str = str.replace(/\r\n/g, "<br>")
+    str = str.replace(/\n/g, "<br>");
     return str;
+}
+
+/*
+ * 获取url中get的参数
+ *
+ * By TerryQi
+ *
+ * 2017-12-23
+ *
+ */
+function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return unescape(r[2]);
+    }
+    return null;
 }

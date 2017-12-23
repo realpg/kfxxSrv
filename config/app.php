@@ -179,6 +179,8 @@ return [
 
         Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
 
+        Barryvdh\Cors\ServiceProvider::class,
+
     ],
 
     /*

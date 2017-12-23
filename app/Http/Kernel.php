@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        \Barryvdh\Cors\HandleCors::class,
     ];
 
     /**
@@ -40,6 +41,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            \Barryvdh\Cors\HandleCors::class,
         ],
     ];
 
@@ -60,6 +62,7 @@ class Kernel extends HttpKernel
         //自定义中间件
         'BeforeRequest' => \App\Http\Middleware\BeforeRequest::class,
         'CheckToken' => \App\Http\Middleware\CheckToken::class,
+        'CheckDoctor' => \App\Http\Middleware\CheckDoctor::class,
         'admin.login' => \App\Http\Middleware\CheckAdminLogin::class,//后台登录中间件
     ];
 }

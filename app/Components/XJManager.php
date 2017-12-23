@@ -158,8 +158,36 @@ class XJManager
      */
     public static function getStepsByXJId($xj_id)
     {
-        $tw_steps = TWStep::where('f_table', '=', 'xj')->where('f_id', '=', $xj_id)->get();
-        return $tw_steps;
+        $steps = TWStep::where('f_table', '=', 'xj')->where('f_id', '=', $xj_id)->orderby('seq', 'asc')->get();
+        return $steps;
+    }
+
+
+    /*
+     * 根据f_id和f_table获取宣教步骤信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-23
+     *
+     */
+    public static function getStepsByFidAndFtable($f_id, $f_table)
+    {
+        $steps = TWStep::where('f_table', '=', $f_table)->where('f_id', '=', $f_id)->get();
+        return $steps;
+    }
+
+
+    /*
+     * 根据f_id和f_table删除全部宣教步骤
+     *
+     * By TerryQi
+     *
+     * 2107-12-23
+     */
+    public static function deleteStepsByFidAndFtable($f_id, $f_table)
+    {
+        $steps = TWStep::where('f_table', '=', $f_table)->where('f_id', '=', $f_id)->delete();
     }
 
     /*
@@ -222,8 +250,8 @@ class XJManager
         if (array_key_exists('status', $data)) {
             $xj->status = array_get($data, 'status');
         }
-        if (array_key_exists('type', $data)) {
-            $xj->type = implode(',', array_get($data, 'type'));
+        if (array_key_exists('type', $data) && !Utils::isObjNull($data['type'])) {
+            $xj->type = array_get($data, 'type');
         }
         if (array_key_exists('show_num', $data)) {
             $xj->show_num = array_get($data, 'show_num');
@@ -269,8 +297,12 @@ class XJManager
      */
     public static function setTWStep($tw_step, $data)
     {
+
         if (array_key_exists('f_id', $data)) {
             $tw_step->f_id = array_get($data, 'f_id');
+        }
+        if (array_key_exists('f_table', $data)) {
+            $tw_step->f_table = array_get($data, 'f_table');
         }
         if (array_key_exists('img', $data)) {
             $tw_step->img = array_get($data, 'img');

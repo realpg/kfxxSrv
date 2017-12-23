@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     // 示例接口
     Route::get('test', 'API\TestController@test');
+    Route::post('test', 'API\TestController@test');
 
     //获取七牛token
     Route::get('user/getQiniuToken', 'API\UserController@getQiniuToken');
@@ -69,7 +70,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //量表相关
     Route::get('lb/getList', 'API\LBController@getList');
-	Route::get('lb/getById', 'API\LBController@getById');
+    Route::get('lb/getById', 'API\LBController@getById');
     Route::get('lb/getQuestionsById', 'API\LBController@getQuestionsById');
     Route::post('lb/answerLB', 'API\LBController@answerLB');
     Route::get('lb/getAnswerHistory', 'API\LBController@getAnswerHistoryByUserId');
