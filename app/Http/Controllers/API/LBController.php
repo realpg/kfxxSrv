@@ -71,6 +71,9 @@ class LBController extends Controller
 		if (!$ans) {
 			return ApiResponse::makeResponse(false, '获取答案失败', ApiResponse::INNER_ERROR);
 		}
+		foreach ($ans as $an) {
+			$an->lb = LBMannager::getLBById($an->lb_id);
+		}
 		
 		return ApiResponse::makeResponse(true, $ans, ApiResponse::SUCCESS_CODE);
 	}
