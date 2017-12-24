@@ -83,32 +83,27 @@ class KFMBManager
      * 2017-12-06
      *
      * 根据level级别不同获取康复模板样式
-     * 0:最简级别，只带康复模板基本信息
-     * 1:基本级别，带录入人员信息
-     * 2:中级级别，带宣教信息
-     * 3:高级级别，带计划列表
-     * 4:高级级别，计划带宣教列表
-     * 5:高级级别，计划带采集列表
+     * 0:级别，只带康复模板基本信息
+     * 1:级别，带录入人员信息
+     * 2:级别，带宣教信息
+     * 3:级别，带计划列表
+     * 4:级别，计划带采集列表
      */
     public static function getKFMBInfoByLevel($kfmb, $level)
     {
-        if ($level >= 1) {
+        if (strpos($level, '0') !== false) {
+
+        }
+        if (strpos($level, '1') !== false) {
             $kfmb->doctor = DoctorManager::getDoctorById($kfmb->doctor_id);
         }
-        if ($level >= 2) {
-            $kfmb->steps = self::getStepsByKFMBId($kfmb->id);
+        if (strpos($level, '2') !== false) {
+            $kfmb->xj = XJManager::getXJInfoById($kfmb->xj_id, 3);
         }
-        if ($level >= 3) {
+        if (strpos($level, '3') !== false) {
             $kfmb->jhs = self::getJHListByKFMBId($kfmb->id);
         }
-        if ($level >= 4) {
-            foreach ($kfmb->jhs as $jh) {
-                if ($jh->xj_ids != null) {
-                    $jh->xj = XJManager::getXJById($jh->xj_ids);
-                }
-            }
-        }
-        if ($level >= 5) {
+        if (strpos($level, '4') !== false) {
             foreach ($kfmb->jhs as $jh) {
                 $jh->jhsjs = self::getJHSJByJHId($jh->id);
             }
@@ -211,8 +206,7 @@ class KFMBManager
      * 2017-12-12
      *
      */
-    public
-    static function setKFMB($kfmb, $data)
+    public static function setKFMB($kfmb, $data)
     {
         if (array_key_exists('name', $data)) {
             $kfmb->name = array_get($data, 'name');
@@ -222,6 +216,9 @@ class KFMBManager
         }
         if (array_key_exists('doctor_id', $data)) {
             $kfmb->doctor_id = array_get($data, 'doctor_id');
+        }
+        if (array_key_exists('xj_id', $data)) {
+            $kfmb->xj_id = array_get($data, 'xj_id');
         }
         if (array_key_exists('status', $data)) {
             $kfmb->status = array_get($data, 'status');

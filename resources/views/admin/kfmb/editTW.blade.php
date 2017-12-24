@@ -3,20 +3,14 @@
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <div class="row">
-            <div class="col-lg-6">
-                <ol class="breadcrumb" style="float: none;background: none;">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">宣教管理</li>
-                    <li class="active">新建/编辑</li>
-                </ol>
-            </div>
-            <div class="col-lg-6 text-right">
-                <button type="button" class="btn btn-primary" onclick="clickSave();">
-                    保存宣教信息
-                </button>
-            </div>
-        </div>
+        <h1>
+            <small>设置图文</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+            <li class="active">康复模板</li>
+            <li class="active">设置图文</li>
+        </ol>
     </section>
 
     <!-- Main content -->
@@ -29,6 +23,10 @@
                 <div id="message-content" class="white-bg" style="padding: 20px;">
 
 
+                </div>
+
+                <div class="margin-top-25 text-center">
+                    <button class="btn btn-info btn-block btn-flat" onclick="clickSave();">保存康复模板</button>
                 </div>
             </div>
             <!--/.col (right) -->
@@ -48,15 +46,10 @@
             <div class="font-size-14 grey-font">
                 <span>@{{=it.created_at_str}}</span>
                 <span class="margin-left-10 text-info">@{{=it.author}}</span>
-                <span class="margin-left-10">阅读 @{{=it.show_num}}</span>
             </div>
             <div class="grey-bg margin-top-10" style="padding: 10px;">
                 @{{=it.desc_html}}
             </div>
-            <div class="text-right margin-top-15">
-                <img src="{{URL::asset('/img/edit_icon.png')}}" class="opt-btn-size" onclick="editXJInfo();">
-            </div>
-
             <div style="border: 1px #F1F1F1 dashed;" class="margin-top-20 margin-bottom-20"></div>
         </div>
         <div class="margin-top-15 margin-bottom-15 text-center">
@@ -70,13 +63,11 @@
             @{{?it.steps[i].text}}
             <div class="padding-bottom-10">@{{=it.steps[i].text_html}}</div>
             @{{?}}
-            @{{? it.steps[i].img}}
-            <div class="text-center">
+            @{{?it.steps[i].img}}
+            <div class="padding-10">
                 <img src="@{{=it.steps[i].img}}"
-                     style="width: 60%;margin: auto;" class="padding-top-10 padding-bottom-10">
+                     style="width: 90%;margin: auto;" class="padding-top-10 padding-bottom-10">
             </div>
-            @{{??}}
-
             @{{?}}
             <div class="text-right margin-top-15">
                 <img src="{{URL::asset('/img/up_pointer_icon.png')}}"
@@ -104,105 +95,6 @@
     </script>
 
 
-    <!--新建编辑宣教对话框-->
-    <div class="modal fade modal-margin-top-m" id="editXJModal" tabindex="-1" role="dialog">
-
-
-    </div>
-    <!-- /.modal -->
-    <script id="editXJModal-content-template" type="text/x-dot-template">
-        <div class="modal-dialog">
-            <div class="modal-content message_align">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理宣教信息</h4>
-                </div>
-                <form id="editXJ" action="" method="post" class="form-horizontal">
-                    <div class="modal-body">
-                        <div class="box-body">
-
-                            <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">标题*</label>
-
-                                <div class="col-sm-10">
-                                    <input id="title" name="title" type="text" class="form-control"
-                                           placeholder="请输入标题"
-                                           value="@{{=it.title}}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="desc" class="col-sm-2 control-label">简介*</label>
-
-                                <div class="col-sm-10">
-                                    <textarea id="desc" name="desc" class="form-control" rows="3"
-                                              placeholder="请输入 ...">@{{=it.desc}}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="author" class="col-sm-2 control-label">展示作者*</label>
-
-                                <div class="col-sm-10">
-                                    <input id="author" name="author" type="text" class="form-control"
-                                           placeholder="请输入作者"
-                                           value="@{{=it.author}}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="img" class="col-sm-2 control-label">封面*</label>
-
-                                <div class="col-sm-10">
-                                    <input id="img" name="img" type="text" class="form-control"
-                                           placeholder="图片网路链接地址"
-                                           value="@{{=it.img}}">
-                                </div>
-                            </div>
-                            <div class="text-center margin-top-10">
-                                <div id="container">
-                                    @{{? it.img}}
-                                    <img id="pickfiles" src="@{{=it.img}}" style="width: 260px;">
-                                    @{{??}}
-                                    <img id="pickfiles" src="{{URL::asset('/img/upload.png')}}" style="width: 260px;">
-                                    @{{?}}
-                                </div>
-                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片
-                                </div>
-                            </div>
-
-                            <div class="form-group margin-top-10">
-                                <label for="type" class="col-sm-2 control-label">类型</label>
-                                <div class="col-sm-10">
-                                    <div class="margin-top-10 row">
-                                        <div class="row">
-                                            @foreach($xj_types as $xj_type)
-                                                <div class="col-xs-4">
-                                                    <input type="checkbox" name="xj_type" id="xj_type{{$xj_type->id}}"
-                                                           value="{{$xj_type->id}}"
-                                                           class="minimal">
-                                                    <span
-                                                            class="margin-left-10">{{$xj_type->name}}</span>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" data-value="" class="btn btn-success"
-                                onclick="clickEditXJ();">确定
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </script>
-
     <!--新建编辑宣教步骤对话框-->
     <div class="modal fade modal-margin-top-m" id="editStepModal" tabindex="-1" role="dialog">
 
@@ -224,13 +116,14 @@
                                 <label for="stepText" class="col-sm-2 control-label">文字</label>
 
                                 <div class="col-sm-10">
-                                    <textarea id="stepText" class="form-control" rows="10"
+                                    <textarea id="stepText" class="form-control" rows="3"
                                               placeholder="请输入 ...">@{{=it.text}}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="img" class="col-sm-2 control-label">图片</label>
+
                                 <div class="col-sm-10">
                                     <input id="stepImg" name="img" type="text" class="form-control"
                                            placeholder="图片网路链接地址"
@@ -240,11 +133,10 @@
                             <div style="margin-top: 10px;" class="text-center">
                                 <div id="stepContainer">
                                     @{{? it.img}}
-                                    <img id="stepPickfiles" src="@{{=it.img}}" style="width: 260px;">
+                                    <img id="stepPickfiles" src="@{{=it.img}}" style="width: 240px;">
                                     @{{??}}
                                     <img id="stepPickfiles" src="{{URL::asset('/img/upload.png')}}"
-                                         style="width: 260px;">
-
+                                         style="width: 240px;">
                                     @{{?}}
                                 </div>
                                 <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片</div>
@@ -267,7 +159,7 @@
 
 
     {{--保存成功提示--}}
-    <div class="modal fade modal-margin-top" id="successSaveModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="successSaveModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">
@@ -289,7 +181,7 @@
     </div><!-- /.modal -->
 
     {{--保存失败提示--}}
-    <div class="modal fade modal-margin-top" id="errorSaveModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="errorSaveModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">
@@ -330,34 +222,18 @@
         }
 
         //初始化宣教值
-        var xjInfo = {};
-
-        //如果没有宣教值，则设置为空值
-        var empty_xjInfo = {
-            "id": null,
-            "title": "在这里输入宣教标题...",
-            "desc": "输入简要描述...",
-            "author": "北京大学第三医院",
-            "created_at": getCurrentTime(),
-            "doctor_id":{{$admin->id}},
-            "img": "",
-            "type": "10000",
-            "show_num": 0,
-            "steps": []
-        }
+        var kfmbInfo = {};
 
 
         //入口函数
         $(document).ready(function () {
             //从url中获取id
-            var xj_id = getQueryString("id");
-            if (judgeIsNullStr(xj_id)) {
+            var kfmb_id = getQueryString("id");
+            if (judgeIsNullStr(kfmb_id)) {
                 //加载页面，空页面
-                xjInfo = empty_xjInfo;
-                loadHtml();
             } else {
                 var param = {
-                    id: xj_id
+                    id: kfmb_id
                 }
                 getXJInfoById("{{URL::asset('')}}", param, function (ret, err) {
                     //提示保存成功
@@ -452,10 +328,9 @@
             if (edit_or_add == "add") {
 
             } else {        //如果是编辑
-                stepObj.text = nullToEmptyStr(xjInfo.steps[index].text);
-                stepObj.img = nullToEmptyStr(xjInfo.steps[index].img);
+                stepObj.text = xjInfo.steps[index].text;
+                stepObj.img = xjInfo.steps[index].img;
             }
-            console.log("stepObj:" + JSON.stringify(stepObj));
             var interText = doT.template($("#editStepModal-content-template").text());
             $("#editStepModal").html(interText(stepObj));
             //初始化七牛

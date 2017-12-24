@@ -12,6 +12,7 @@ use App\Components\ADManager;
 use App\Components\HomeManager;
 use App\Components\KFMBManager;
 use App\Components\UserManager;
+use App\Components\Utils;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
@@ -65,5 +66,4 @@ class KFMBController extends Controller
         $kfmb = KFMBManager::getKFMBInfoByLevel($kfmb, $data['level']);
         return ApiResponse::makeResponse(true, $kfmb, ApiResponse::SUCCESS_CODE);
     }
-
 }

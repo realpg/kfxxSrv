@@ -32,6 +32,22 @@ class XJManager
     }
 
     /*
+     * 根据宣教和level获取宣教信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-24
+     */
+    public static function getXJInfoById($id, $level)
+    {
+        $xj = self::getXJById($id);
+        if ($xj) {
+            $xj = self::getXJInfoByLevel($xj, $level);
+        }
+        return $xj;
+    }
+
+    /*
      * 获取全部类别
      *
      * By TerryQi
@@ -105,12 +121,21 @@ class XJManager
      *
      * 2017-12-14
      *
+     * status，状态 0：失效 1：生效 all：全部
+     *
      */
-    public static function getAllXJs()
+    public static function getAllXJs($status)
     {
-        $xjs = XJ::where('status', '=', '1')->orderby('id', 'desc')->get();
+        $xjs = XJ::orderby('id', 'desc');
+        if ($status == "all") {
+
+        } else {
+            $xjs = $xjs->where('status', '=', $status);
+        }
+        return $xjs->get();
         return $xjs;
     }
+
 
     /*
      * 获取宣教基本信息

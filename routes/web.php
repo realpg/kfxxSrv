@@ -51,7 +51,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/xj/edit', 'Admin\XJController@edit');  //新建或编辑宣教
     Route::post('/xj/edit', 'Admin\XJController@editPost');  //新建或编辑宣教
     Route::get('/xj/del/{id}', 'Admin\XJController@del');  //删除宣教
-    Route::get('/xj/editXJ', 'Admin\XJController@editXJ');  //删除宣教
+    Route::get('/xj/editXJ', 'Admin\XJController@editXJ');  //编辑宣教
 
 
     //宣教分类管理

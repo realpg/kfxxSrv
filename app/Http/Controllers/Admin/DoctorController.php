@@ -79,16 +79,17 @@ class DoctorController
         $doctor->save();
         return redirect('/admin/doctor/index');
     }
-	
-	//搜索，按照手机号、姓名进行搜索
-    public static function search(Request $request){
-	    $admin = $request->session()->get('admin');
-	    $data = $request->all();
-	    $search_word = $data['search_word'];
-	    if (!array_key_exists('nick_name', $data)) {
-		    $data['nick_name'] = '';
-	    }//做什么用的？
-	    $doctors = DoctorManager::searchDoctor($search_word);
-	    return view('admin.doctor.index', ['admin' => $admin, 'datas' => $doctors]);
+
+    //搜索，按照手机号、姓名进行搜索
+    public static function search(Request $request)
+    {
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+        $search_word = $data['search_word'];
+        if (!array_key_exists('nick_name', $data)) {
+            $data['nick_name'] = '';
+        }//做什么用的？
+        $doctors = DoctorManager::searchDoctor($search_word);
+        return view('admin.doctor.index', ['admin' => $admin, 'datas' => $doctors]);
     }
 }

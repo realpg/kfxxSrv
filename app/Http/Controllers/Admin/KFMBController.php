@@ -39,13 +39,20 @@ class KFMBController
     {
         $admin = $request->session()->get('admin');
         $kfmbs = KFMBManager::getKFMBList("all");
-
         foreach ($kfmbs as $kfmb) {
             //补充医生信息
             $kfmb->doctor = DoctorManager::getDoctorById($kfmb->doctor_id);
             $kfmb->created_at_str = DateTool::formateData($kfmb->created_at, 1);
         }
-        return view('admin.kfmb.index', ['admin' => $admin, 'datas' => $kfmbs]);
+        //获取所有宣教列表
+        $xjs = XJManager::getAllXJs("all");       //"all"代表全部
+        foreach ($xjs as $xj) {
+            if (strlen($xj->title) > 25) {
+                $xj->title = mb_substr($xj->title, 0, 25, 'utf-8') . "...";
+            }
+        }
+        //进行宣教信息的截取
+        return view('admin.kfmb.index', ['admin' => $admin, 'datas' => $kfmbs, 'xjs' => $xjs]);
     }
 
     //删除康复模板
@@ -111,71 +118,6 @@ class KFMBController
         return redirect('/admin/kfmb/index');
     }
 
-
-    /*
-     * 根据id获取康复模板图文详情
-     *
-     * By TerryQi
-     *
-     * 2017-120=-07
-     *
-     */
-    public function setStep(Request $request, $id)
-    {
-        $data = $request->all();
-        $admin = $request->session()->get('admin');
-        $kfmb = KFMBManager::getKFMBById($id);
-        $kfmb->doctor = DoctorManager::getDoctorById($kfmb->doctor_id);
-        $kfmb->steps = [];
-        $kfmb->created_at_str = DateTool::formateData($kfmb->created_at, 1);
-        $kfmb->steps = KFMBManager::getStepsByKFMBId($kfmb->id);
-        foreach ($kfmb->steps as $step) {
-            $step->created_at_str = DateTool::formateData($step->created_at, 1);
-        }
-        //如果有tw_id，则再返回图文步骤信息
-        $tw = [];
-        if (array_key_exists('tw_id', $data) && $data['tw_id'] != null) {
-            $tw = KFMBManager::getTWById($data['tw_id']);
-        }
-//        dd($kfmb);
-        //生成七牛token
-        $upload_token = QNManager::uploadToken();
-        return view('admin.kfmb.editStep', ['admin' => $admin, 'data' => $kfmb, 'tw' => $tw, 'upload_token' => $upload_token]);
-    }
-
-    /*
-     * 添加康复模板步骤信息
-     *
-     * By TerryQi
-     *
-     * 2017-12-07
-     *
-     */
-    public function setStepPost(Request $request, $kfmb_id)
-    {
-        $data = $request->all();
-        $tw_step = new TWStep();
-        if (array_key_exists('tw_id', $data) && $data['tw_id'] != null) {
-            $tw_step = KFMBManager::getTWById($data['tw_id']);
-        }
-        $tw_step = XJManager::setTWStep($tw_step, $data);
-        $tw_step->f_table = "kfmb";
-        $tw_step->save();
-        return redirect('/admin/kfmb/setStep/' . $tw_step->f_id);
-    }
-
-    //删除康复模板图文步骤
-    public function delStep(Request $request, $id)
-    {
-        if (is_numeric($id) !== true) {
-            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数宣教id$id']);
-        }
-        $tw_step = XJManager::getStepById($id);
-        $kfmb_id = $tw_step->f_id;
-        $tw_step->delete();
-        return redirect('/admin/kfmb/setStep/' . $kfmb_id);
-    }
-
     //康复计划
     public function setJHPost(Request $request, $kfmb_id)
     {
@@ -216,7 +158,7 @@ class KFMBController
             $jh = KFMBManager::getKFMBJHById($data['jh_id']);
         }
         //获取全部宣教信息
-        $all_xjs = XJManager::getAllXJs();
+        $all_xjs = XJManager::getAllXJs('all');
         $all_sjxs = SJXManager::getSJXs();
 //        dd($kfmb);
         return view('admin.kfmb.editJH', ['admin' => $admin, 'data' => $kfmb, 'jh' => $jh, 'all_xjs' => $all_xjs, 'all_sjxs' => $all_sjxs]);

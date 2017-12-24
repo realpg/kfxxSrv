@@ -30,7 +30,6 @@
                             <tr>
                                 <th>名称</th>
                                 <th>录入时间</th>
-                                <th>医师头像</th>
                                 <th>录入医师</th>
                                 <th>状态</th>
                                 <th class="opt-th-width-l">操作</th>
@@ -39,12 +38,12 @@
                             <tbody>
                             @foreach($datas as $data)
                                 <tr id="tr_{{$data->id}}">
-                                    <td><span class="line-height-30 text-info">{{$data->name}}</span></td>
-                                    <td><span class="line-height-30">{{$data->created_at_str}}</span>
-                                    </td>
                                     <td>
-                                        <img src="{{ $data->doctor->avatar ? $data->doctor->avatar.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/default_headicon.png')}}"
-                                             class="img-rect-30 radius-5">
+                                        <div class="line-height-30 text-info text-oneline con-th-width-ll">
+                                            {{$data->name}}
+                                        </div>
+                                    </td>
+                                    <td><span class="line-height-30">{{$data->created_at_str}}</span>
                                     </td>
                                     <td>
                                         <span class="line-height-30">
@@ -63,7 +62,7 @@
                                         @endif
 
                                     </td>
-                                    <td class="opt-th-width-l">
+                                    <td class="opt-th-width-ll">
                                         <span class="line-height-30">
                                             <a href="{{URL::asset('/admin/kfmb/setStatus')}}/{{$data->id}}?opt=1"
                                                class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
@@ -91,13 +90,6 @@
                                                   title="删除该模板">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </span>
-                                            <a href="{{URL::asset('/admin/kfmb/setStep')}}/{{$data->id}}"
-                                               class="btn btn-social-icon btn-primary margin-right-10 opt-btn-size"
-                                               data-toggle="tooltip"
-                                               data-placement="top"
-                                               title="设置康复模板的图文">
-                                                <i class="fa fa-image opt-btn-i-size"></i>
-                                            </a>
                                             <a href="{{URL::asset('/admin/kfmb/setJH')}}/{{$data->id}}"
                                                class="btn btn-social-icon btn-info opt-btn-size"
                                                data-toggle="tooltip"
@@ -179,6 +171,23 @@
                                     <div class="col-sm-10">
                                     <textarea id="desc" name="desc" class="form-control" rows="5"
                                               placeholder="请输入 ..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="desc" class="col-sm-2 control-label">关联宣教</label>
+                                    <div class="col-sm-10">
+                                        <select id="xj_id" name="xj_id" class="form-control">
+                                            <option value="0">暂不关联宣教图文</option>
+                                            @foreach($xjs as $xj)
+                                                <option value="{{$xj->id}}">{{$xj->title}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="desc" class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-10">
+                                        <a href="{{URL::asset('/admin/xj/index')}}" class="text-info">关联宣教图文，可以向患者展示康复模板信息</a>
                                     </div>
                                 </div>
                             </div>
@@ -283,6 +292,10 @@
                     $("#id").val(msgObj.id);
                     $("#name").val(msgObj.name);
                     $("#desc").val(msgObj.desc);
+                    //宣教id非空
+                    if (!judgeIsNullStr(msgObj.xj_id)) {
+                        $("#xj_id").val(msgObj.xj_id);
+                    }
                     //展示modal
                     $("#addKFMBModal").modal('show');
                 }

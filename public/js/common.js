@@ -170,6 +170,15 @@ function Text2Html(str) {
     return str;
 }
 
+//null变为空str
+function nullToEmptyStr(str) {
+    if (judgeIsNullStr(str)) {
+        str = "";
+    }
+    return str;
+}
+
+
 /*
  * 获取url中get的参数
  *

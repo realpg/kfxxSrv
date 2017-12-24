@@ -70,8 +70,8 @@
         }
 
         .opt-th-width-ll {
-            min-width: 240px !important;
-            max-width: 240px !important;
+            min-width: 280px !important;
+            max-width: 280px !important;
         }
 
         .opt-th-width-m {

@@ -55,7 +55,7 @@ class XJController extends Controller
     public function getAllXJs(Request $request)
     {
         $data = $request->all();    //request转array
-        $xjs = XJManager::getAllXJs();
+        $xjs = XJManager::getAllXJs("1");   //获取生效宣教
         return ApiResponse::makeResponse(true, $xjs, ApiResponse::SUCCESS_CODE);
     }
 
@@ -154,6 +154,5 @@ class XJController extends Controller
         $xj = XJManager::getXJInfoByLevel($xj, 3);
         return ApiResponse::makeResponse(true, $xj, ApiResponse::SUCCESS_CODE);
     }
-
 
 }
