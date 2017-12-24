@@ -336,7 +336,7 @@
             "author": "北京大学第三医院",
             "created_at": getCurrentTime(),
             "img": "",
-            "type": "",
+            "type": "10000",
             "show_num": 0,
             "steps": []
         }
