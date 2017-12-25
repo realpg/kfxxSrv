@@ -55,21 +55,20 @@ class KFJHManager
 	//* 0:最简级别，只带数据基本信息
 	//* 1:带数据模版
 	//* 2:带数据模版和数据ID
-	public static function getKFSJByLevel($sjs, $level)
+	public static function getKFSJByLevel($sj, $level)
 	{
-		$sjmb = null;
-		foreach ($sjs as $sj) {
+			
 			if ($level >= 1) {
-				$sjmb = KFMBManager::getJHSJById($sj->sjmb_id);
-				$sj->sjmb = $sjmb;
+				$mb = KFMBManager::getJHSJById($sj->sjmb_id);
+				$sj->sjmb = $mb;
 			}
 			if ($level >= 2) {
-				if ($sjmb) {
-					$sj->sjx = SJXManager::getSJXById($sjmb->sjx_id);
+				if ($mb) {
+					$sj->sjx = SJXManager::getSJXById($mb->sjx_id);
 				}//这里根据id获取康复计划和采集数据
 			}
-		}
-		return $sjs;
+	
+		return $sj;
 	}
 }
 
