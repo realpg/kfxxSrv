@@ -59,15 +59,15 @@ class KFJHManager
 	{
 			
 			if ($level >= 1) {
-				$mb = KFMBManager::getJHSJById($sj->sjmb_id);
+				$mb = KFMBManager::getKFMBJHById($sj->sjmb_id);
 				$sj->sjmb = $mb;
 			}
 			if ($level >= 2) {
-				if ($mb) {
-					$sj->sjx = SJXManager::getSJXById($mb->sjx_id);
-				}//这里根据id获取康复计划和采集数据
+				if ($sj->sjmb)
+					//$sj->sjx = SJXManager::getSJXById($sj->sjmb->sjx_id);
+				$sj->sjx = SJXManager::getSJXById($sj->sjmb->sjx_id);
+				//这里根据id获取康复计划和采集数据
 			}
-	
 		return $sj;
 	}
 }

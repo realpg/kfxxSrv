@@ -70,7 +70,7 @@ class KFMBManager
      */
     public static function getKFMBJHById($id)
     {
-        $kfmbjh = KFMBJH::where('id', '=', $id)->first();
+        $kfmbjh = KFMBJHSJ::where('id', '=', $id)->first();
         return $kfmbjh;
     }
 
@@ -135,7 +135,11 @@ class KFMBManager
         }
         return $jhsjs;
     }
-
+	
+    public static function getSJMBById($id){
+    	$kfmb=KFMB::where('id','=',$id)->first;
+    	return $kfmb;
+    }
 
     /*
      * 根据id获取数据项
