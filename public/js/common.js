@@ -14,6 +14,7 @@ function ajaxRequest(url, param, method, callBack) {
         },
         error: function (err) {
             console.log(JSON.stringify(err));
+            callBack(err)
         }
     });
 }
@@ -65,6 +66,11 @@ function getXJInfoById(url, param, callBack) {
 //编辑宣教
 function editXJ(url, param, callBack) {
     ajaxRequest(url + "api/xj/editXJ", param, "post", callBack);
+}
+
+//编辑康复模板
+function editKFMB(url, param, callBack) {
+    ajaxRequest(url + "api/kfmb/editKFMB", param, "post", callBack);
 }
 
 //测试接口
@@ -194,4 +200,28 @@ function getQueryString(name) {
         return unescape(r[2]);
     }
     return null;
+}
+
+
+//获取时间基线类型的字符串
+function getBtimeTypeStr(btime_type) {
+    switch (btime_type) {
+        case "0":
+            return "手术后";
+        case "1":
+            return "首次弯腿后";
+    }
+    return "";
+}
+
+//获取时间基线单位
+function getTimeUnitStr(unit) {
+    switch (unit) {
+        case "0":
+            return "天";
+        case "1":
+            return "周";
+        case "2":
+            return "月";
+    }
 }

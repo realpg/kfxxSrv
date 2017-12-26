@@ -45,13 +45,13 @@ class KFMBController
             $kfmb->created_at_str = DateTool::formateData($kfmb->created_at, 1);
         }
         //获取所有宣教列表
-        $xjs = XJManager::getAllXJs("all");       //"all"代表全部
+        $xjs = XJManager::getAllXJs("all");       //"all"代表全部，用于新建康复模板时关联宣教使用
         foreach ($xjs as $xj) {
+            //进行宣教信息的截取
             if (strlen($xj->title) > 25) {
                 $xj->title = mb_substr($xj->title, 0, 25, 'utf-8') . "...";
             }
         }
-        //进行宣教信息的截取
         return view('admin.kfmb.index', ['admin' => $admin, 'datas' => $kfmbs, 'xjs' => $xjs]);
     }
 
@@ -89,7 +89,6 @@ class KFMBController
         return redirect('/admin/kfmb/index');
     }
 
-
     //编辑康复模板-get
     public function edit(Request $request)
     {
@@ -102,7 +101,6 @@ class KFMBController
         }
         return view('admin.kfmb.edit', ['admin' => $admin, 'data' => $kfmb]);
     }
-
 
     //编辑康复模板-post
     public function editPost(Request $request)
@@ -118,100 +116,14 @@ class KFMBController
         return redirect('/admin/kfmb/index');
     }
 
-    //康复计划
-    public function setJHPost(Request $request, $kfmb_id)
-    {
-        $data = $request->all();
-        $kfmbjh = new KFMBJH();
-        if (array_key_exists('jh_id', $data) && $data['jh_id'] != null) {
-            $kfmbjh = KFMBManager::getKFMBJHById($data['jh_id']);
-        }
-        $kfmbjh = KFMBManager::setKFMBJH($kfmbjh, $data);
-        $kfmbjh->save();
-        return redirect('/admin/kfmb/setJH/' . $kfmbjh->kfmb_id);
-    }
-
-    //删除康复计划
-    public function delJH(Request $request, $id)
-    {
-        if (is_numeric($id) !== true) {
-            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数宣教id$id']);
-        }
-        $kfmbjh = KFMBManager::getKFMBJHById($id);
-        $kfmbjh->delete();
-        return redirect('/admin/kfmb/setJH/' . $kfmbjh->kfmb_id);
-    }
 
     //设置康复计划
-    public function setJH(Request $request, $kfmb_id)
+    public function editJH(Request $request)
     {
-        $data = $request->all();
         $admin = $request->session()->get('admin');
-        $kfmb = KFMBManager::getKFMBById($kfmb_id);
-        $kfmb = KFMBManager::getKFMBInfoByLevel($kfmb, 5);
-        $kfmb->created_at_str = DateTool::formateData($kfmb->created_at, 1);
-//        dd($kfmb);
-        //获取单条康复计划
-        //如果有jh_id说明是编辑
-        $jh = new KFMBJH();
-        if (array_key_exists('jh_id', $data) && $data['jh_id'] != null) {
-            $jh = KFMBManager::getKFMBJHById($data['jh_id']);
-        }
-        //获取全部宣教信息
-        $all_xjs = XJManager::getAllXJs('all');
-        $all_sjxs = SJXManager::getSJXs();
-//        dd($kfmb);
-        return view('admin.kfmb.editJH', ['admin' => $admin, 'data' => $kfmb, 'jh' => $jh, 'all_xjs' => $all_xjs, 'all_sjxs' => $all_sjxs]);
+        $sjxs = SJXManager::getSJXs();
+        return view('admin.kfmb.editJH', ['admin' => $admin, 'sjxs' => $sjxs]);
     }
 
 
-    //删除康复计划管理的宣教
-    public function delJHXJ(Request $request)
-    {
-        $data = $request->all();
-        //合规校验
-        $requestValidationResult = RequestValidator::validator($request->all(), [
-            'jh_id' => 'required',
-        ]);
-        if ($requestValidationResult !== true) {
-            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
-        }
-        $kfmbjh = KFMBManager::getKFMBJHById($data['jh_id']);
-        $kfmbjh->xj_ids = null;
-        $kfmbjh->save();
-        return redirect('/admin/kfmb/setJH/' . $kfmbjh->kfmb_id);
-    }
-
-    //设置采集数据
-    public function setCJSJPost(Request $request)
-    {
-        $data = $request->all();
-//        dd($data);
-        $kfmbjhsj = new KFMBJHSJ();
-        if (array_key_exists('jhsj_id', $data) && $data['jhsj_id'] != null) {
-            $kfmbjhsj = KFMBManager::getJHSJById($data['jhsj_id']);
-        }
-        $kfmbjhsj = KFMBManager::setKFMBJHSJ($kfmbjhsj, $data);
-//        dd($kfmbjhsj);
-        $kfmbjhsj->save();
-        $kfmbjh = KFMBManager::getKFMBJHById($data['mbjh_id']);
-        return redirect('/admin/kfmb/setJH/' . $kfmbjh->kfmb_id);
-    }
-
-    //删除采集数据
-    public function delCJSJ(Request $request)
-    {
-        $data = $request->all();
-        //合规校验
-        $requestValidationResult = RequestValidator::validator($request->all(), [
-            'jhsj_id' => 'required',
-        ]);
-        if ($requestValidationResult !== true) {
-            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
-        }
-        $kfmbjhsj = KFMBManager::getJHSJById($data['jhsj_id']);
-        $kfmbjh = KFMBManager::getKFMBJHById($kfmbjhsj->mbjh_id);
-        $kfmbjhsj->delete();
-        return redirect('/admin/kfmb/setJH/' . $kfmbjh->kfmb_id);
-    }
 }

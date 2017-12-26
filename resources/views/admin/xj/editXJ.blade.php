@@ -265,9 +265,8 @@
         <!-- /.modal-dialog -->
     </script>
 
-
-    {{--保存成功提示--}}
-    <div class="modal fade modal-margin-top" id="successSaveModal" tabindex="-1" role="dialog">
+    {{--提示Modal--}}
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">
@@ -275,35 +274,13 @@
                                 aria-hidden="true">×</span></button>
                     <h4 class="modal-title">提示信息</h4>
                 </div>
-                <div class="modal-body">
-                    <p>宣教信息保存成功</p>
+                <div class="modal-body" id="tipModalBody">
+
                 </div>
                 <div class="modal-footer">
                     <button id="delConfrimModal_confirm_btn" data-value=""
                             class="btn btn-success"
                             data-dismiss="modal">确定
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    {{--保存失败提示--}}
-    <div class="modal fade modal-margin-top" id="errorSaveModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content message_align">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">提示信息</h4>
-                </div>
-                <div class="modal-body">
-                    <p>宣教信息保存失败，请联系<span class="text-info">管理员处理</span></p>
-                </div>
-                <div class="modal-footer">
-                    <button id="delConfrimModal_confirm_btn" data-value=""
-                            class="btn btn-success"
-                            data-dismiss="modal" onclick="successSave();">确定
                     </button>
                 </div>
             </div><!-- /.modal-content -->
@@ -514,6 +491,12 @@
 
         //保存宣教信息
         function clickSave() {
+
+            //如果没有步骤信息，说明还没有录入，需要进行录入
+            if (xjInfo.steps.length <= 0) {
+
+                return;
+            }
             //进行排序
             for (var i = 0; i < xjInfo.steps.length; i++) {
                 xjInfo.steps[i].seq = i;
@@ -522,9 +505,13 @@
             editXJ("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
                 //提示保存成功
                 if (ret.result == true) {
-                    $("#successSaveModal").modal('show');
+                    $("#tipModalBody").html('<p>宣教信息保存成功</p>');
+                    $("#tipModal").modal('show');
                     xjInfo = ret.ret;
                     loadHtml();
+                } else {
+                    $("#tipModalBody").html("<p>宣教信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
+                    $("#tipModal").modal('show');
                 }
             })
         }

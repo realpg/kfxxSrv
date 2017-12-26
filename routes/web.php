@@ -71,15 +71,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/kfmb/setStatus/{id}', 'Admin\KFMBController@setStatus');  //设置康复模板状态
     Route::post('/kfmb/edit', 'Admin\KFMBController@editPost');  //新建或编辑宣教分类
     Route::get('/kfmb/del/{id}', 'Admin\KFMBController@del');  //删除康复模板
-    Route::get('/kfmb/setStep/{id}', 'Admin\KFMBController@setStep');  //设置康复模板
-    Route::post('/kfmb/setStep/{id}', 'Admin\KFMBController@setStepPost');  //编辑步骤信息
-    Route::get('/kfmb/delStep/{id}', 'Admin\KFMBController@delStep');  //删除步骤
-    Route::get('/kfmb/setJH/{id}', 'Admin\KFMBController@setJH');  //设置康复模板计划
-    Route::post('/kfmb/setJH/{id}', 'Admin\KFMBController@setJHPost');  //编辑康复模板计划
-    Route::get('/kfmb/delJH/{id}', 'Admin\KFMBController@delJH');  //删除康复模板计划
-    Route::get('/kfmb/delJHXJ', 'Admin\KFMBController@delJHXJ');  //删除康复模板计划关联的宣教
-    Route::post('/kfmb/setCJSJ', 'Admin\KFMBController@setCJSJPost');  //删除康复模板计划关联的宣教
-    Route::get('/kfmb/delCJSJ', 'Admin\KFMBController@delCJSJ');  //删除康复模板计划采集数据
+    Route::get('/kfmb/editJH', 'Admin\KFMBController@editJH');  //删除康复模板
+
 
     //患者管理
     Route::get('/user/index', 'Admin\UserController@index');  //患者管理首页

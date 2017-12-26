@@ -90,7 +90,7 @@
                                                   title="删除该模板">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </span>
-                                            <a href="{{URL::asset('/admin/kfmb/setJH')}}/{{$data->id}}"
+                                            <a href="{{URL::asset('/admin/kfmb/editJH')}}?id={{$data->id}}"
                                                class="btn btn-social-icon btn-info opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"

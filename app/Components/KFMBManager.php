@@ -13,6 +13,7 @@ use App\Models\KFMB;
 use App\Models\Doctor;
 use App\Models\KFMBJH;
 use App\Models\KFMBJHSJ;
+use App\Models\SJX;
 use App\Models\TWStep;
 use Qiniu\Auth;
 
@@ -105,7 +106,12 @@ class KFMBManager
         }
         if (strpos($level, '4') !== false) {
             foreach ($kfmb->jhs as $jh) {
-                $jh->jhsjs = self::getJHSJByJHId($jh->id);
+                $jhsjs = self::getJHSJByJHId($jh->id);
+                if ($jhsjs) {
+                    $jh->jhsjs = self::getJHSJByJHId($jh->id);
+                } else {
+                    $jh->jhsjs = [];
+                }
             }
         }
         return $kfmb;
@@ -131,25 +137,11 @@ class KFMBManager
     {
         $jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh_id)->get();
         foreach ($jhsjs as $jhsj) {
-            $jhsj->sj = self::getSJById($jhsj->sjx_id);
+            $jhsj->sjx = SJXManager::getSJXById($jhsj->sjx_id);
         }
         return $jhsjs;
     }
 
-
-    /*
-     * 根据id获取数据项
-     *
-     * By TerryQi
-     *
-     * 2017-12-13
-     *
-     */
-    public static function getSJById($id)
-    {
-        $sj = SJXManager::getSJXById($id);
-        return $sj;
-    }
 
     /*
      * 获取康复模板下的计划列表
@@ -162,6 +154,13 @@ class KFMBManager
     public static function getJHListByKFMBId($kfmb_id)
     {
         $jhs = KFMBJH::where('kfmb_id', '=', $kfmb_id)->orderby('seq', 'asc')->get();
+        foreach ($jhs as $jh) {
+            $jh->jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh->id)->get();
+            //为计划数据补充数据项信息
+            foreach ($jh->jhsjs as $jhsj) {
+                $jhsj->sjx = SJXManager::getSJXById($jhsj->sjx_id);
+            }
+        }
         return $jhs;
     }
 
@@ -251,14 +250,20 @@ class KFMBManager
         if (array_key_exists('seq', $data)) {
             $kfmbjh->seq = array_get($data, 'seq');
         }
-        if (array_key_exists('btime', $data)) {
-            $kfmbjh->btime = array_get($data, 'btime');
+        if (array_key_exists('btime_type', $data)) {
+            $kfmbjh->btime_type = array_get($data, 'btime_type');
         }
         if (array_key_exists('start_time', $data)) {
             $kfmbjh->start_time = array_get($data, 'start_time');
         }
+        if (array_key_exists('start_unit', $data)) {
+            $kfmbjh->start_unit = array_get($data, 'start_unit');
+        }
         if (array_key_exists('end_time', $data)) {
             $kfmbjh->end_time = array_get($data, 'end_time');
+        }
+        if (array_key_exists('end_unit', $data)) {
+            $kfmbjh->end_unit = array_get($data, 'end_unit');
         }
         if (array_key_exists('xj_ids', $data)) {
             $kfmbjh->xj_ids = array_get($data, 'xj_ids');

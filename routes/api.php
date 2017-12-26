@@ -63,7 +63,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //康复模板相关
     Route::get('kfmb/getKFMBById', 'API\KFMBController@getKFMBById');
     Route::get('kfmb/getKFMBList', 'API\KFMBController@getKFMBList');
-    Route::post('kfmb/editTW', 'API\KFMBController@editTW');
+    Route::post('kfmb/editKFMB', 'API\KFMBController@editKFMB');
 
     //医生康复师相关
     Route::get('doctor/getDoctorsByRole', 'API\DoctorController@getDoctorsByRole');
