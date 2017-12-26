@@ -1,0 +1,10 @@
+diff a/app/Components/KFMBManager.php b/app/Components/KFMBManager.php	(rejected hunks)
+@@ -125,7 +125,7 @@
+      * 2017-12-13
+      *
+      */
+-    public static function getJHSJById($id)
++    public static function getMBById($id)
+     {
+         $sjmb = KFMBJHSJ::where('id', '=', $id)->first();
+         return $sjmb;

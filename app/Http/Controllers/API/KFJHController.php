@@ -66,7 +66,8 @@ class KFJHController
 		if (!$sj) {
 			return ApiResponse::makeResponse(false, '未找到用户病历信息', ApiResponse::INNER_ERROR);
 		} else {
-			$sj = KFJHManager::getKFSJByLevel($sj, 2);
+			foreach ($sj as $item)
+			$item = KFJHManager::getKFSJByLevel($item, 2);
 			//增加按照level获得数据，完善数据细节
 			return ApiResponse::makeResponse(true, $sj, ApiResponse::SUCCESS_CODE);
 		}
