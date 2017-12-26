@@ -10,8 +10,8 @@ namespace App\Components;
 
 use App\Models\KFJH;
 use App\Models\KFSJ;
-use App\Models\User_cases;
 use App\Components\XJManager;
+use App\Models\UserCase;
 
 class KFJHManager
 {
@@ -25,7 +25,7 @@ class KFJHManager
 	//获取病历
 	public static function getBLById($u_id)
 	{
-		$bl = User_cases::where('user_id', '=', $u_id)->first();
+		$bl = UserCase::where('user_id', '=', $u_id)->first();
 		return $bl;
 	}
 	//根据级别获取病历信息
