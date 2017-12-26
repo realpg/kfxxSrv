@@ -119,6 +119,21 @@ class KFMBManager
 
 
     /*
+     * 根据计划id获取关联的计划数据
+     * 
+     * By TerryQi
+     * 
+     * 2017-12-26
+     * 
+     */
+    public static function getJHSJByJHId($jh_id)
+    {
+        $jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh_id)->get();
+        return $jhsjs;
+    }
+
+
+    /*
      * 获取康复模板计划的采集数据列表信息
      *
      * By TerryQi
@@ -141,10 +156,11 @@ class KFMBManager
         }
         return $jhsjs;
     }
-	
-    public static function getSJMBById($id){
-    	$kfmb=KFMB::where('id','=',$id)->first;
-    	return $kfmb;
+
+    public static function getSJMBById($id)
+    {
+        $kfmb = KFMB::where('id', '=', $id)->first;
+        return $kfmb;
     }
 
     /*
