@@ -3,247 +3,200 @@
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>
-            <small>设置图文</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-            <li class="active">宣教管理</li>
-            <li class="active">设置图文</li>
-        </ol>
+        <div class="row">
+            <div class="col-lg-6">
+                <ol class="breadcrumb" style="float: none;background: none;">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+                    <li class="active">编辑量表</li>
+                </ol>
+            </div>
+            <div class="col-lg-6 text-right">
+                <button type="button" class="btn btn-primary" onclick="clickAdd();">
+                    保存量表
+                </button>
+            </div>
+        </div>
     </section>
 
     <!-- Main content -->
     <section class="content">
-        <div class="row">
-            <!-- left column end-->
-            <div class="col-md-6">
-                {{--作品预览信息--}}
-                <div class="white-bg" style="padding: 30px;">
-                    <div class="font-size-16">
-                        {{$data->name}}
-                    </div>
-                    <div class="border-t margin-top-10 margin-bottom-10">
-                    </div>
-                    <div class="grey-bg margin-top-10" style="padding: 10px;">简介：
-                        {{$data->desc}}
-                    </div>
-                    <div class="font-size-14 grey-font">
-                        <span>{{$data->created_at_str}}</span>
-                        <span class="margin-left-10 text-info">{{$data->author}}</span>
-                        <span class="margin-left-10 pull-right">阅读{{$data->show_num}}</span>
-                    </div>
-
-                    <div style="padding: 10px;">
-                        <!--作品信息-->
-                        @foreach($data->questions as $question)
-                            <div>
-                                <div class="white-bg margin-b-10" style="background-color: white;">
-                                    <div class="padding-bottom-10">
-                                        @if($question->question)
-                                            {{$question->question}}
-                                        @endif
-                                    </div>
-                                    <div class="padding-bottom-10">
-                                        @if($question->answer)
-                                            {{$question->answer}}
-                                        @endif
-                                    </div>
-                                    <div class="padding-bottom-10">
-                                        {{--<span class="time"><i--}}
-                                        {{--class="fa fa-clock-o"></i> {{$question->created_at_str}}</span>--}}
-
-                                        <a href="{{URL::asset('/admin/lb/delQue/')}}/{{$question->id}}"
-                                           class="btn btn-danger btn-xs pull-right">删除</a>
-                                        <a href="{{URL::asset('/admin/lb/detail/')}}/{{$data->id}}/{{$question->id}}"
-                                           class="btn btn-xs pull-right">编辑</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr/>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-            <!-- left column end-->
-
-            <!--/.col (right) -->
-            <div class="col-md-6">
-                <!-- Horizontal Form -->
-                <div class="box box-default">
-                    <!-- form start -->
-                    <!-- form start -->
-                    <form action="{{URL::asset('/admin/lb/setQue')}}" method="post" class="form-horizontal" onsubmit="return checkValid();">
-                        {{csrf_field()}}
-                        <div class="box-body">
-                            <div class="form-group hidden">
-                                <label for="lb_id" class="col-sm-2 control-label">父id</label>
-
-                                <div class="col-sm-10">
-                                    <input id="lb_id" name="lb_id" type="text" class="form-control"
-                                           placeholder="父id"
-                                           value="{{ $data->id }}">
-                                </div>
-                            </div>
-                            <div class="form-group hidden">
-                                <label for="que_id" class="col-sm-2 control-label">父id</label>
-
-                                <div class="col-sm-10">
-                                    <input id="que_id" name="que_id" type="text" class="form-control"
-                                           placeholder="父id"
-                                           value="{{ $question->id }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="col-sm-2 control-label">题目</label>
-                                <div class="col-sm-10">
-                                    <textarea id="text" name="question" class="form-control" rows="3"
-                                              placeholder="请输入 ...">{{$question->question}}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="text" class="col-sm-2 control-label">答案</label>
-                                <div class="col-sm-10">
-                                    <input id="text" name="answer" class="form-control" rows="3"
-                                              placeholder="请输入 ..."value="{{$question->answer}}" >
-                                </div>
-                            </div>
-
-                            答案示例:A高难度_5;B中等难度_4;C低等难度_3;D无难度_0
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-info btn-block btn-flat">提交</button>
-                        </div>
-                        <!-- /.box-footer -->
-                    </form>
-                </div>
-                <!-- /.box -->
-            </div>
-            <!--/.col (right) -->
+        <div id="message-content">
 
         </div>
+        <button onclick="submitAll()">
+            提交
+        </button>
     </section>
+
+
+    <script id="message-content-template" type="text/x-dot-template">
+        @{{~it :question:index_que}}
+        <div>
+            <input onchange="changeQuestion('@{{=index_que}}',this)" type="text"placeholder="请输入问题" value=@{{=question.question}}>
+        </div>
+        @{{~question.options :option:index_opt}}
+
+        <div>@{{=index_opt}}
+            ：<input onchange="changeOption('@{{=index_que}}','@{{=index_opt}}',this)" type="text"placeholder="请输入选项" value=@{{=option.option }}>
+            分数：<input onchange="changePoint('@{{=index_que}}','@{{=index_opt}}',this)" type="number" id="point" value=@{{=option.point }}>
+        </div>
+        @{{~}}
+        <button onclick="addOpt('@{{=index_que}}')">
+            addOpt
+        </button>
+        @{{~}}
+        <div>
+        <button onclick="addQue()">
+            addQue
+        </button></div>
+
+    </script>
+
+
+    <!--新建编辑宣教步骤对话框-->
+    <div class="modal fade modal-margin-top-m" id="editJHModal" tabindex="-1" role="dialog">
+
+
+    </div>
+
+    <script id="editJHModal-content-template" type="text/x-dot-template">
+
+    </script>
+
+
+    <!--数据采集模板-->
+    <div class="modal fade modal-margin-top-m" id="editSJModal" tabindex="-1" role="dialog">
+
+    </div>
+
+
+    <script id="editSJModal-content-template" type="text/x-dot-template">
+
+    </script>
+
+
+    <!--提示modal-->
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body" id="tipModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button id="delConfrimModal_confirm_btn" data-value=""
+                            class="btn btn-success"
+                            data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 @endsection
 
-@section('script')
-    <script src="{{ URL::asset('js/qiniu.js') }}"></script>
-    <script src="{{ URL::asset('js/plupload/plupload.full.min.js') }}"></script>
-    <script src="{{ URL::asset('js/plupload/moxie.js') }}"></script>
-    <script type="application/javascript">
 
-        //合规校验
-        function checkValid() {
-            var text = $("#text").val();
-            var img = $("#img").val();
-            //合规校验
-            if (judgeIsNullStr(text) && judgeIsNullStr(img)) {
-                if (judgeIsNullStr(text)) {
-                    $("#text").focus();
+@section('script')
+    <script type="application/javascript">
+        var lb;
+        var questions = [];
+        //入口函数
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            var lb_id = getQueryString("id");
+            //从url中获取id
+            if (judgeIsNullStr(lb_id)) {
+                //没有id则报错
+                alert("康复模板id为空，请联系管理员处理");
+                return;
+            } else {
+                var param = {
+                    id: lb_id,
                 }
-                if (judgeIsNullStr(img)) {
-                    $("#img").focus();
-                }
-                return false;
+                getLBById("{{URL::asset('')}}", param, function (ret, err) {
+                    //提示保存成功
+                    if (ret.result == true) {
+                         lb=ret.ret;
+                         questions=unzip(lb.questions);
+                        loadHtml();
+                    }
+                    else {
+                        alert(ret.ret);
+                    }
+                })
             }
-            return true;
+        });
+        //处理接收到的问题数据,将answer字符串转化为options对象
+        function unzip(Questions) {
+            for(var i in Questions){
+                Questions[i].options=[];
+                var opts=Questions[i].answer.split("@q=");
+                for(var j in opts){
+                    Questions[i].options.push({
+                            option:opts[j].split('&p=')[0],
+                            point:opts[j].split('&p=')[1]
+                    }
+                    );
+                }
+            }
+            return Questions;
+        }
+        //将options对象转换为字符串
+        function zip(Questions) {
+            for(var i in Questions){
+                Questions[i].answer="";
+                for(var j in Questions[i].options) {
+                Questions[i].answer+="@q="+Questions[i].options[j].option+"&p="+Questions[i].options[j].point;
+                }
+            }
+            return Questions;
+        }
+        //加载界面
+        function loadHtml() {
+            //清理页面
+            $("#message-content").empty();
+            //整理数据
+            //加载页面
+            var interText = doT.template($("#message-content-template").text());
+            $("#message-content").html(interText(questions));
+        }
+        function addOpt(index) {
+
+            questions[index].options.push({option:"",point:0})
+            loadHtml();
+        }
+        function addQue() {
+            questions.push({
+                question:"",
+                options:[{option:"",point:0}]
+            });
+            loadHtml();
+        }
+        function changeQuestion(index_que,e) {
+            questions[index_que].question=e.value;
+            loadHtml();
+        }
+        function changeOption(index_que,index_opt,e) {
+
+            questions[index_que].options[index_opt].option=e.value;
+            loadHtml();
+        }
+        function changePoint(index_que,index_opt,e) {
+            questions[index_que].options[index_opt].point=e.value;
+            loadHtml();
         }
 
-        $(document).ready(function () {
-            //获取七牛token
-            initQNUploader();
-        });
-
-        //初始化七牛上传模块
-        function initQNUploader() {
-            var uploader = Qiniu.uploader({
-                runtimes: 'html5,flash,html4',      // 上传模式，依次退化
-                browse_button: 'pickfiles',         // 上传选择的点选按钮，必需
-                container: 'container',//上传按钮的上级元素ID
-                // 在初始化时，uptoken，uptoken_url，uptoken_func三个参数中必须有一个被设置
-                // 切如果提供了多个，其优先级为uptoken > uptoken_url > uptoken_func
-                // 其中uptoken是直接提供上传凭证，uptoken_url是提供了获取上传凭证的地址，如果需要定制获取uptoken的过程则可以设置uptoken_func
-                //uptoken: "{/{$upload_token}}", // uptoken是上传凭证，由其他程序生成
-                // uptoken_url: '/uptoken',         // Ajax请求uptoken的Url，强烈建议设置（服务端提供）
-                // uptoken_func: function(file){    // 在需要获取uptoken时，该方法会被调用
-                //    // do something
-                //    return uptoken;
-                // },
-                get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的uptoken
-                // downtoken_url: '/downtoken',
-                // Ajax请求downToken的Url，私有空间时使用，JS-SDK将向该地址POST文件的key和domain，服务端返回的JSON必须包含url字段，url值为该文件的下载地址
-                unique_names: true,              // 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
-                // save_key: true,                  // 默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
-                domain: 'http://twst.isart.me/',     // bucket域名，下载资源时用到，必需
-                max_file_size: '100mb',             // 最大文件体积限制
-                flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入flash，相对路径
-                max_retries: 3,                     // 上传失败最大重试次数
-                dragdrop: true,                     // 开启可拖曳上传
-                drop_element: 'container',          // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
-                chunk_size: '4mb',                  // 分块上传时，每块的体积
-                auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
-                //x_vars : {
-                //    查看自定义变量
-                //    'time' : function(up,file) {
-                //        var time = (new Date()).getTime();
-                // do something with 'time'
-                //        return time;
-                //    },
-                //    'size' : function(up,file) {
-                //        var size = file.size;
-                // do something with 'size'
-                //        return size;
-                //    }
-                //},
-                init: {
-                    'FilesAdded': function (up, files) {
-                        plupload.each(files, function (file) {
-                            // 文件添加进队列后，处理相关的事情
-//                                            alert(alert(JSON.stringify(file)));
-                        });
-                    },
-                    'BeforeUpload': function (up, file) {
-                        // 每个文件上传前，处理相关的事情
-//                        console.log("BeforeUpload up:" + up + " file:" + JSON.stringify(file));
-                    },
-                    'UploadProgress': function (up, file) {
-                        // 每个文件上传时，处理相关的事情
-//                        console.log("UploadProgress up:" + up + " file:" + JSON.stringify(file));
-                    },
-                    'FileUploaded': function (up, file, info) {
-                        // 每个文件上传成功后，处理相关的事情
-                        // 其中info是文件上传成功后，服务端返回的json，形式如：
-                        // {
-                        //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
-                        //    "key": "gogopher.jpg"
-                        //  }
-//                        console.log(JSON.stringify(info));
-                        var domain = up.getOption('domain');
-                        var res = JSON.parse(info);
-                        //获取上传成功后的文件的Url
-                        var sourceLink = domain + res.key;
-                        $("#img").val(sourceLink);
-                        $("#pickfiles").attr('src', qiniuUrlTool(sourceLink, "ad"));
-//                        console.log($("#pickfiles").attr('src'));
-                    },
-                    'Error': function (up, err, errTip) {
-                        //上传出错时，处理相关的事情
-                        console.log(err + errTip);
-                    },
-                    'UploadComplete': function () {
-                        //队列文件处理完毕后，处理相关的事情
-                    },
-                    'Key': function (up, file) {
-                        // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-                        // 该配置必须要在unique_names: false，save_key: false时才生效
-
-                        var key = "";
-                        // do something with key here
-                        return key
-                    }
-                }
-            });
+        function submitAll() {
+            var q=zip(questions);
+            var s=JSON.stringify(q)
+            alert(s);
+            console.log(s)
         }
 
     </script>

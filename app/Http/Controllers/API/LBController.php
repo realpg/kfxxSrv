@@ -35,8 +35,12 @@ class LBController extends Controller
 		if ($requestValidationResult !== true) {
 			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
 		}
-		$ad = LBMannager::getLBById($data['id']);
-		return ApiResponse::makeResponse(true, $ad, ApiResponse::SUCCESS_CODE);
+		$lb = LBMannager::getLBById($data['id']);
+		if (!$lb) {
+			return ApiResponse::makeResponse(false, '未找到宣教信息', ApiResponse::INNER_ERROR);
+		}
+		$lb = LBMannager::getLBDetailByLevel($lb,3);
+		return ApiResponse::makeResponse(true, $lb, ApiResponse::SUCCESS_CODE);
 	}
 	//答复量表
 	public static function answerLB(Request $request)
