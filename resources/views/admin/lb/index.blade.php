@@ -101,7 +101,7 @@
                                                   onclick="clickDel({{$data->id}})">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </span>
-                                            <a href="{{URL::asset('/admin/lb/setQue')}}/{{$data->id}}"
+                                            <a href="{{URL::asset('/admin/lb/setQue')}}/?id={{$data->id}}"
                                                class="btn btn-social-icon btn-primary margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"

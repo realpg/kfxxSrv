@@ -69,19 +69,18 @@ class LBController
 		return redirect('/admin/lb/index');
 	}
 	
-	public static function setQuestion(Request $request, $id)
+	public static function setQuestion(Request $request)
 	{
 		$admin = $request->session()->get('admin');
-		$lb = LBMannager::getLBById($id);
-		$lb->questions = [];
-		//$lb->created_at_str = DateTool::formateData($lb->created_at, 1);
-		$lb = LBMannager::getLBDetailByLevel($lb, 3);
-		foreach ($lb->questions as $question) {
-//				$question->created_at_str = DateTool::formateData($question->created_at, 1);
-		}
-		//生成七牛token
-		$question=new LBQuestion();
-		return view('admin.lb.editQuestion', ['admin' => $admin, 'data' => $lb, 'question' => $question]);
+//		$lb = LBMannager::getLBById($id);
+//		$lb->questions = [];
+//		//$lb->created_at_str = DateTool::formateData($lb->created_at, 1);
+//		$lb = LBMannager::getLBDetailByLevel($lb, 3);
+//		foreach ($lb->questions as $question) {
+////				$question->created_at_str = DateTool::formateData($question->created_at, 1);
+//		}
+//		//生成七牛token
+		return view('admin.lb.editQuestion', ['admin' => $admin]);
 	}
 	
 	public function setQuestionPost(Request $request)

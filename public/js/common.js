@@ -68,6 +68,11 @@ function getXJInfoById(url, param, callBack) {
     ajaxRequest(url + "api/xj/getXJInfoById", param, "get", callBack);
 }
 
+//根据id获取量表
+function getLBById(url, param, callBack) {
+    ajaxRequest(url + "api/lb/getById", param, "get", callBack);
+}
+
 //编辑宣教
 function editXJ(url, param, callBack) {
     ajaxRequest(url + "api/xj/editXJ", param, "post", callBack);
@@ -77,6 +82,7 @@ function editXJ(url, param, callBack) {
 function editKFMB(url, param, callBack) {
     ajaxRequest(url + "api/kfmb/editKFMB", param, "post", callBack);
 }
+
 
 //测试接口
 function test(url, param, callBack) {

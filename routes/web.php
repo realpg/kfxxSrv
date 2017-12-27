@@ -88,7 +88,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/lb/setStatus/{id}', 'Admin\LBController@setStatus');  //量表宣教状态 ok
     Route::get('/lb/detail/{id}', 'Admin\LBController@detail');  //量表问题 ok
     Route::post('/lb/setQue/{id}', 'Admin\LBController@setQuestionPost');  //编辑量表问题 ok
-    Route::get('/lb/setQue/{id}', 'Admin\LBController@setQuestion');  //编辑量表问题 ok
+    Route::get('/lb/setQue/', 'Admin\LBController@setQuestion');  //编辑量表问题 ok
     Route::get('/lb/detail/{id}/{que_id}', 'Admin\LBController@detail');  //量表问题 ok
     Route::post('/lb/setQue/', 'Admin\LBController@setQuestionPost');  //编辑量表问题 ok
     Route::get('/lb/delQue/{id}', 'Admin\LBController@delQue');  //删除量表问题条目 ok
