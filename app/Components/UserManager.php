@@ -152,6 +152,12 @@ class UserManager
         if (array_key_exists('user_id', $data)) {
             $userCase->user_id = array_get($data, 'user_id');
         }
+        if (array_key_exists('desc', $data)) {
+            $userCase->desc = array_get($data, 'desc');
+        }
+        if (array_key_exists('doctor_id', $data)) {
+            $userCase->doctor_id = array_get($data, 'doctor_id');
+        }
         if (array_key_exists('zz_doctor_id', $data)) {
             $userCase->zz_doctor_id = array_get($data, 'zz_doctor_id');
         }
@@ -168,7 +174,7 @@ class UserManager
             $userCase->wt_time = array_get($data, 'wt_time');
         }
         if (array_key_exists('xj_type', $data)) {
-            $userCase->xj_type = array_get($data, 'xj_type');
+            $userCase->xj_type = implode(',', array_get($data, 'xj_type'));
         }
         return $userCase;
     }
@@ -304,6 +310,40 @@ class UserManager
     }
 
     /*
+     * 设置用户的年龄，多个用户
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     */
+    public static function setUsersAge($users)
+    {
+        foreach ($users as $user) {
+            if ($user->birthday) {
+                $user->age = Utils::getAge($user->birthday);
+            }
+        }
+        return $users;
+    }
+
+    /*
+     * 设置用户的年龄，单个用户
+     *
+     * By TerryQi
+     *
+     * 2017-12-19
+     *
+     */
+    public static function setUserAge($user)
+    {
+        if ($user->birthday) {
+            $user->age = Utils::getAge($user->birthday);
+        }
+        return $user;
+    }
+
+    /*
      * 根据级别不同获取用户的具体病例信息
      *
      * By TerryQi
@@ -312,16 +352,58 @@ class UserManager
      *
      * level：获取级别，暂无
      *
+     * level:0：带基本信息
+     *       1：带康复计划列表
+     *       2：获取康复计划详情
+     *
+     *
      */
-    public static function getUserCaseByLevel($level, $user_id)
+    public static function getUserCaseInfoByLevel($userCase, $level)
     {
-        $userCase = UserCase::where('user_id', '=', $user_id)->orderby('id', 'desc')->first();
-        if ($userCase) {
-            $userCase->zz_doctor = DoctorManager::getDoctorById($userCase->zz_doctor_id);
-            $userCase->kf_doctor = DoctorManager::getDoctorById($userCase->kf_doctor_id);
-            $userCase->kfmb = KFMBManager::getKFMBById($userCase->kfmb_id);
+        //0级获取用户信息
+        if (strpos($level, '0') !== false) {
+            if ($userCase->zz_doctor_id) {
+                $userCase->zz_doctor = DoctorManager::getDoctorById($userCase->zz_doctor_id);
+            }
+            if ($userCase->kf_doctor_id) {
+                $userCase->kf_doctor = DoctorManager::getDoctorById($userCase->kf_doctor_id);
+            }
+            if ($userCase->kfmb_id) {
+                $userCase->kfmb = KFMBManager::getKFMBById($userCase->kfmb_id);
+            }
+        }
+        //1级获取康复计划信息
+        if (strpos($level, '1') !== false) {
+            $userCase->jhs = self::getUserKFJHByCaseId($userCase->id);
+        }
+        //2级获取康复计划详情
+        if (strpos($level, '2') !== false) {
+            foreach ($userCase->jhs as $jh) {
+                $jhsjs = self::getJHSJByJHId($jh->id);
+                if ($jhsjs) {
+                    $jh->jhsjs = self::getJHSJByJHId($jh->id);
+                } else {
+                    $jh->jhsjs = [];
+                }
+            }
+            $userCase->jhs = self::getUserKFJHByCaseId($userCase->id);
         }
         return $userCase;
+    }
+
+
+    /*
+     * 根据用户病例获取康复计划列表
+     *
+     * By TerryQi
+     *
+     * 2017-1-28
+     *
+     */
+    public static function getUserKFJHByCaseId($userCase_id)
+    {
+        $jhs = UserCase::where('userCase_id', '=', $userCase_id)->orderby('seq', 'asc')->get();
+        return $jhs;
     }
 
     /*
@@ -334,7 +416,7 @@ class UserManager
      */
     public static function getUserCaseByUserId($user_id)
     {
-        $userCases = UserCase::where('user_id', '=', $user_id)->get();
+        $userCases = UserCase::where('user_id', '=', $user_id)->orderby('id', 'desc')->get();
         return $userCases;
     }
 
@@ -351,7 +433,6 @@ class UserManager
         return $userCase;
     }
 
-
     /*
      * 根据id获取用户病例
      *
@@ -359,12 +440,14 @@ class UserManager
      *
      * 2017-12-19
      *
+     * level级别
      */
     public static function getUserCaseById($userCase_id)
     {
         $userCase = UserCase::where('id', '=', $userCase_id)->first();
         return $userCase;
     }
+
 
     /*
      * 搜索用户信息
@@ -382,16 +465,4 @@ class UserManager
     }
 
 
-    /*
-     * 获取用户全部康复计划
-     *
-     * By TerryQi
-     *
-     * 2017-12-19
-     *
-     */
-    public static function getKFJHByUserId($user_id)
-    {
-
-    }
 }

@@ -38,7 +38,8 @@
                     </div>
                 </div>
                 <div class="margin-top-10  font-size-14">
-                    点击查看：<a href="{{URL::asset('/admin/xj/editXJ')}}?id=@{{=it.xj_id}}"><span class="text-aqua">宣教信息<i
+                    点击查看：<a href="{{URL::asset('/admin/xj/editXJ')}}?id=@{{=it.xj_id}}" target="_blank"><span
+                                class="text-aqua">宣教信息<i
                                     class="fa fa-link margin-left-5"></i></span></a>
                 </div>
             </div>
@@ -144,7 +145,7 @@
     </script>
 
 
-    <!--新建编辑宣教步骤对话框-->
+    <!--新建编辑计划对话框-->
     <div class="modal fade modal-margin-top-m" id="editJHModal" tabindex="-1" role="dialog">
 
 
@@ -329,6 +330,30 @@
         //康复模板信息
         var kfmbInfo = {}
 
+        //入口函数
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            var kfmb_id = getQueryString("id");
+            if (judgeIsNullStr(kfmb_id)) {
+                //没有id则报错
+                $("#tipModalBody").html('<p>康复模板id为空，请联系管理员处理</p>');
+                $("#tipModal").modal('show');
+                return;
+            } else {
+                var param = {
+                    id: kfmb_id,
+                    level: "03"
+                }
+                getKFMBById("{{URL::asset('')}}", param, function (ret, err) {
+                    //提示保存成功
+                    if (ret.result == true) {
+                        kfmbInfo = ret.ret;
+                        loadHtml();
+                    }
+                })
+            }
+        });
+
         //点击编辑康复计划
         function editJH(index, edit_or_add) {
             console.log("index index:" + index + " edit_or_add:" + edit_or_add);
@@ -408,31 +433,6 @@
         }
 
 
-        //入口函数
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            var kfmb_id = getQueryString("id");
-            if (judgeIsNullStr(kfmb_id)) {
-                //没有id则报错
-                $("#tipModalBody").html('<p>康复模板id为空，请联系管理员处理</p>');
-                $("#tipModal").modal('show');
-                return;
-            } else {
-                var param = {
-                    id: kfmb_id,
-                    level: "03"
-                }
-                getKFMBById("{{URL::asset('')}}", param, function (ret, err) {
-                    //提示保存成功
-                    if (ret.result == true) {
-                        kfmbInfo = ret.ret;
-                        loadHtml();
-                    }
-                })
-            }
-        });
-
-
         //    加载页面
         function loadHtml() {
             //清理页面
@@ -461,7 +461,7 @@
         }
 
 
-        //上移宣教信息
+        //上移计划信息
         function moveUpJH(index) {
             if (index == 0) {
                 return;
@@ -472,7 +472,7 @@
             loadHtml();
         }
 
-        //下移宣教信息
+        //下移计划信息
         function moveDownJH(index) {
             if (index == kfmbInfo.jhs.length - 1) {
                 return;
@@ -553,7 +553,7 @@
                     kfmbInfo = ret.ret;
                     loadHtml();
                 } else {
-                    $("#tipModalBody").html("<p>宣教信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
+                    $("#tipModalBody").html("<p>康复计划信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
                     $("#tipModal").modal('show');
                 }
             })

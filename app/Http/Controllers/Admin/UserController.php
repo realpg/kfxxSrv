@@ -15,6 +15,8 @@ use App\Components\DoctorManager;
 use App\Components\KFMBManager;
 use App\Components\QNManager;
 use App\Components\UserManager;
+use App\Components\Utils;
+use App\Components\XJManager;
 use App\Libs\CommonUtils;
 use App\Models\Doctor;
 use App\Models\Enter;
@@ -34,8 +36,13 @@ class UserController
     {
         $admin = $request->session()->get('admin');
         $users = UserManager::getAllUsers();
+        $users = UserManager::setUsersAge($users);  //设置用户年龄
         foreach ($users as $user) {
-            $user->useCase = UserManager::getUserCaseByLevel(0, $user->id);
+            $userCase = UserManager::getTopUserCaseByUserId($user->id);
+            if ($userCase) {
+                $userCase = UserManager::getUserCaseInfoByLevel($userCase, '0');
+            }
+            $user->userCase = $userCase;
         }
 //        dd($users);
         return view('admin.user.index', ['admin' => $admin, 'datas' => $users]);
@@ -92,52 +99,26 @@ class UserController
      * 2017-12-19
      *
      */
-    public function editUserCase(Request $request)
+    public function userCaseIndex(Request $request)
     {
         $admin = $request->session()->get('admin');
         $data = $request->all();
         //获取页面基础数据
         $user = UserManager::getUserInfoById($data['user_id']); //需要编辑的患者信息
+        $user = UserManager::setUserAge($user);
+//        dd($user);
         $zz_doctors = DoctorManager::getDoctorsByRole("0"); //全部主治医师
         $kf_doctors = DoctorManager::getDoctorsByRole("1"); //全部康复医师
         $kfmbs = KFMBManager::getKFMBList("s1");    //生效康复模板
+        $xj_types = XJManager::getXJTypes();
         //获取用户病例
-        $userCase = UserManager::getTopUserCaseByUserId($data['user_id']);
-        if ($userCase) {
-            //时间转日期
-            $userCase->ss_time = DateTool::getYMD($userCase->ss_time);
-            $userCase->wt_time = DateTool::getYMD($userCase->wt_time);
-
-            $userCase->user = UserManager::getUserInfoById($userCase->user_id);
-            //主治医师信息
-            $userCase->zz_doctor = DoctorManager::getDoctorById($userCase->zz_doctor_id);
-            foreach ($zz_doctors as $zz_doctor) {
-                if ($zz_doctor->id == $userCase->zz_doctor_id) {
-                    $zz_doctor->checked = true;
-                }
-            }
-            //康复医师信息
-            $userCase->kf_doctor = DoctorManager::getDoctorById($userCase->kf_doctor_id);
-            foreach ($kf_doctors as $kf_doctor) {
-                if ($kf_doctor->id == $userCase->kf_doctor_id) {
-                    $kf_doctor->checked = true;
-                }
-            }
-            //康复模板信息
-            $userCase->kfmb = KFMBManager::getKFMBById($userCase->kfmb_id);
-            foreach ($kfmbs as $kfmb) {
-                if ($kfmb->id == $userCase->kfmb_id) {
-                    $kfmb->checked = true;
-                }
-            }
+        $userCases = UserManager::getUserCaseByUserId($data['user_id']);
+        foreach ($userCases as $userCase) {
+            $userCase = UserManager::getUserCaseInfoByLevel($userCase, "0");
         }
-
-        //自动生成康复计划的逻辑，如果用户已经生成康复计划，获取康复计划，否则为用户生成康复计划
-
-
-//        dd($zz_doctors);
-        return view('admin.user.editUserCase', ['admin' => $admin, 'data' => $userCase, 'user' => $user
-            , 'zz_doctors' => $zz_doctors, 'kf_doctors' => $kf_doctors, 'kfmbs' => $kfmbs]);
+//        dd($userCases);
+        return view('admin.user.userCase', ['admin' => $admin, 'datas' => $userCases, 'user' => $user
+            , 'zz_doctors' => $zz_doctors, 'kf_doctors' => $kf_doctors, 'kfmbs' => $kfmbs, 'xj_types' => $xj_types]);
     }
 
     /*
@@ -158,8 +139,36 @@ class UserController
             $useCase = UserManager::getUserCaseById($data['id']);
         }
         $useCase = UserManager::setUserCase($useCase, $data);
+//        $useCase
         $useCase->save();
-        return redirect('/admin/user/editUserCase?user_id=' . $useCase->user_id);
+
+        return redirect('/admin/user/userCaseIndex?user_id=' . $useCase->user_id);
+    }
+
+    /*
+     *
+     *
+     *
+     */
+    public function userKFJH(Request $request)
+    {
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'userCase_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
+        }
+
+        $userCase = UserManager::getUserCaseById($data['userCase_id']);
+        $userCase = UserManager::getUserCaseInfoByLevel($userCase, "0");
+        $user = UserManager::getUserInfoById($userCase->user_id);
+        $user->age = Utils::getAge($user->birthday);
+
+        return view('admin.user.userKFJH', ['admin' => $admin, 'user' => $user, 'userCase' => $userCase]);
     }
 
 

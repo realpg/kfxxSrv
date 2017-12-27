@@ -81,4 +81,8 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('kfjh/getKFJHByUserId', 'API\KFJHController@getKFJHByUserId');//获取康复计划
     Route::get('kfjh/getKFSJByUserId', 'API\KFJHController@getKFSJByUserId');//获取康复数据
 
+    //患者病例
+    Route::get('userCase/getUserCaseById', 'API\UserCaseController@getUserCaseInfoByCaseId');//获取病历
+
+
 });

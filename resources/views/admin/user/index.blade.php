@@ -55,15 +55,15 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-body">
-                        <table id="example2" class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>头像</th>
                                 <th>姓名</th>
                                 <th>性别</th>
+                                <th>年龄</th>
                                 <th>电话</th>
                                 <th>手术</th>
-                                <th>手术时间</th>
                                 <th>医师</th>
                                 <th>康复师</th>
                                 <th class="opt-th-width">操作</th>
@@ -92,12 +92,30 @@
                                         </span>
                                     </td>
                                     <td>
+                                        <span class="line-height-30">
+                                        @if ($data->age)
+                                                {{$data->age}}岁
+                                            @else
+                                                --
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td>
                                         <span class="line-height-30">{{$data->phonenum}}
                                     </td>
                                     <td>
+                                        <div class="line-height-30 text-oneline con-th-width-m">
+                                            @if ($data->userCase&&$data->userCase->kfmb)
+                                                {{$data->userCase->kfmb->name}}
+                                            @else
+                                                --
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
                                         <span class="line-height-30">
-                                        @if ($data->userCase)
-                                                {{$data->userCase}}
+                                            @if ($data->userCase&&$data->userCase->zz_doctor)
+                                                {{$data->userCase->zz_doctor->name}}
                                             @else
                                                 --
                                             @endif
@@ -105,26 +123,8 @@
                                     </td>
                                     <td>
                                         <span class="line-height-30">
-                                        @if ($data->userCase)
-                                                {{$data->userCase}}
-                                            @else
-                                                --
-                                            @endif
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="line-height-30">
-                                        @if ($data->userCase)
-                                                {{$data->userCase}}
-                                            @else
-                                                --
-                                            @endif
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="line-height-30">
-                                        @if ($data->userCase)
-                                                {{$data->userCase}}
+                                            @if ($data->userCase&&$data->userCase->kf_doctor)
+                                                {{$data->userCase->kf_doctor->name}}
                                             @else
                                                 --
                                             @endif
@@ -139,12 +139,12 @@
                                                   title="编辑该患者基本信息">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
-                                            <a href="{{URL::asset('/admin/user/editUserCase')}}?user_id={{$data->id}}"
+                                            <a href="{{URL::asset('/admin/user/userCaseIndex')}}?user_id={{$data->id}}"
                                                class="btn btn-social-icon btn-info opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"
-                                               title="设置患者病例及康复计划">
-                                                <i class="fa fa-calendar-plus-o opt-btn-i-size"></i>
+                                               title="管理患者病例">
+                                                <i class="fa fa-th-list opt-btn-i-size"></i>
                                             </a>
                                         </span>
                                     </td>
@@ -272,7 +272,6 @@
                 return false;
             }
             return true;
-
         }
 
         //点击新建康复患者信息

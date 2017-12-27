@@ -79,6 +79,11 @@
             max-width: 80px !important;
         }
 
+        .con-th-width-m {
+            min-width: 140px !important;
+            max-width: 140px !important;
+        }
+
         .con-th-width-l {
             min-width: 280px !important;
             max-width: 280px !important;

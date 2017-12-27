@@ -38,6 +38,11 @@ function getUserById(url, param, callBack) {
     ajaxRequest(url + "api/user/getById", param, "GET", callBack);
 }
 
+//根据id获取患者病例信息
+function getUserCaseById(url, param, callBack) {
+    ajaxRequest(url + "api/userCase/getUserCaseById", param, "GET", callBack);
+}
+
 //根据id获取医生信息
 function getDoctorById(url, param, callBack) {
     ajaxRequest(url + "api/doctor/getById", param, "GET", callBack);
