@@ -153,4 +153,31 @@ class LBController
 		$lb->save();
 		return redirect('/admin/lb/index');
 	}
+	public function editLBPost(Request $request)
+	{
+		$data = $request->all();
+		
+		$lb=null;
+		//存在id是保存
+		if (array_key_exists('id', $data)) {
+			$lb = LBMannager::getLBById($data['id']);
+		}
+		if(!$lb)
+			$lb = new LB();
+		$lb = LBMannager::setLB($lb, $data);
+		$lb->save();
+		
+		//删除
+		foreach ($data['deleted'] as $d_id){
+			$d_que=LBMannager::getQuestionByQId($d_id);
+			$d_que->delete();
+		}
+		$questions=$data['questions'];
+		$s=gettype($questions[0]);
+		
+		$questions=LBMannager::setQuestions($questions);
+		
+		return $questions;
+		return redirect('/admin/lb/setQue?id='.$data['id']);
+	}
 }

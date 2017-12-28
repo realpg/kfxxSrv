@@ -94,6 +94,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/lb/delQue/{id}', 'Admin\LBController@delQue');  //删除量表问题条目 ok
     Route::get('/lb/edit', 'Admin\LBController@edit');  //新建或编辑量表
     Route::post('/lb/edit', 'Admin\LBController@editPost');  //新建或编辑量表
+	Route::post('/lb/editLB', 'Admin\LBController@editLBPost');  //新建或编辑量表问题
     Route::get('/lb/del/{id}', 'Admin\LBController@del');  //删除量表ok
 
 });

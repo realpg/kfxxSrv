@@ -72,6 +72,9 @@ function getXJInfoById(url, param, callBack) {
 function getLBById(url, param, callBack) {
     ajaxRequest(url + "api/lb/getById", param, "get", callBack);
 }
+function editLB(url, param, callBack) {
+    ajaxRequest(url + "admin/lb/editLB", param, "post", callBack);
+}
 
 //编辑宣教
 function editXJ(url, param, callBack) {

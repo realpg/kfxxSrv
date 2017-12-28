@@ -53,6 +53,18 @@ class LBMannager
 		
 		return $lb;
 	}
+	public static function setQuestions($questions){
+		foreach ($questions as $question){
+			if(array_key_exists('id',$question))
+				$ques=self::getQuestionByQId($question['id']);
+			else
+				$ques=new LBQuestion();
+			$ques=self::setQuestion($ques,$question);
+			$ques->save();
+		}
+		return $questions;
+		
+	}
 	
 	//根据id获取问题
 	public static function getQuestionsByLBId($id)
@@ -70,7 +82,6 @@ class LBMannager
 	//设置量表
 	public static function setLB($lb, $data)
 	{
-		$lb->name="没进去";
 		if (array_key_exists('name', $data)) {
 			$lb->name = array_get($data, 'name');
 		}
