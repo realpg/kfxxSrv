@@ -33,82 +33,126 @@
             </button>
         </div>
     </section>
+
     <script id="LBinfo-content-template" type="text/x-dot-template">
-
-
-        <div class="form-group">
-            <label for="seq" class="col-sm-2 control-label">标题*:</label>
-
-            <div class="col-sm-10">
-                <input onchange="changeName(this)" type="text" class="form-control"
-                       placeholder="请输入" value=@{{=it.name}}>
+        <div class="white-bg">
+            <div style="padding: 15px;">
+                <h2 class="font-size-16 text-info">
+                    @{{=it.name}}
+                </h2>
+                <div class="margin-top-10 font-size-14 grey-bg">
+                    <div style="padding: 10px;">
+                        @{{=it.desc}}
+                    </div>
+                </div>
+                <div class="margin-top-10  font-size-14">
+                    点击查看：<a href="{{URL::asset('/admin/xj/editXJ')}}?id=@{{=it.xj_id}}" target="_blank"><span
+                                class="text-aqua">宣教信息<i
+                                    class="fa fa-link margin-left-5"></i></span></a>
+                </div>
             </div>
         </div>
-        <hr/>
-        <div class="form-group">
-            <label for="seq" class="col-sm-2 control-label">描述:</label>
-
-            <div class="col-sm-10">
-                     <textarea onchange="changeDesc(this)" type="text" placeholder="请输入描述" rows="4"
-                               style="resize: none;width: 100%"
-                     >@{{=it.desc}}</textarea>
-            </div>
-        </div>
-
 
     </script>
 
 
     <script id="message-content-template" type="text/x-dot-template">
-        @{{~it :question:index_que}}
-        <hr/>
-        <div class="form-group">
-            <label for="seq" class="col-sm-2 control-label">问题*:</label>
 
-            <div class="col-sm-9">
-                <input onchange="changeQuestion('@{{=index_que}}',this)" type="text"
-                       class="form-control" placeholder="请输入问题"
-                       value=@{{=question.question}}>
-            </div>
-            <div class="col-sm-1">
-            <img src="{{URL::asset('/img/delete_icon.png')}}" class=" opt-btn-size"
-                 onclick="delQue('@{{=index_que}}');">
-            </div>
-        </div>
-        @{{~question.options :option:index_opt}}
-        <hr/>
-        <div class="form-group">
-            <label for="opt@{{=index_opt}}" class="col-sm-2 control-label text-right">选项@{{=index_opt}}*</label>
-            <div class="col-sm-5">
-                <input id="opt@{{=index_opt}}" onchange="changeOption('@{{=index_que}}',
-                '@{{=index_opt}}',this)" type="text" placeholder="请输入选项"
-                       style="width: 100%" value=@{{=option.option }}>
-            </div>
-            <label for="point@{{=index_opt}}" class="col-sm-1 control-label text-right">分数*</label>
-            <div class="col-sm-3">
-                <input id="point@{{=index_opt}}" onchange="changePoint('@{{=index_que}}','@{{=index_opt}}',this)"
-                       type="number"
-                       class="form-control" value=@{{=option.point }}>
-            </div>
-            <button class="col-sm-1 btn btn-danger"
-                 onclick="delOpt('@{{=index_que}}','@{{=index_opt}}');">删除选项
-            </button>
-        </div>
-        @{{~}}
-        <hr/>
-        <div style="float: none;display: block;margin-left: auto;margin-right: auto;width: 30%">
-            <button onclick="addOpt('@{{=index_que}}')" class="btn btn-success">
-                添加问题
-            </button>
-        </div>
-        <hr/>
+        <div class="row margin-top-10">
+            <div class="col-md-12">
+                @{{~it :question:index_que}}
+                <div class="white-bg">
+                    <div style="padding: 15px;">
+                    {{--@{{~question.options :option:index_opt}}--}}
+                    <!-- row -->
+                        <div class="row margin-top-10">
+                            <div class="col-md-12">
+                                <!-- The time line -->
 
-        @{{~}}
-        <div>
-            <button onclick="addQue()" class="btn btn-success">
-                addQue
-            </button>
+                                <h3>
+                                    <input onchange="changeQuestion('@{{=index_que}}',this)" type="text"
+                                           class="form-control" placeholder="请输入问题"
+                                           value=@{{=question.question}}>
+                                </h3>
+                                <table class="table table-bordered">
+
+
+                                    <tr class="margin-top-10 grey-bg">
+                                        <th></th>
+                                        <th class="col-md-1">序号</th>
+                                        <th class="col-md-9">选项</th>
+                                        <th class="col-md-1">分数</th>
+                                        <th class="col-md-1">操作</th>
+                                    </tr>
+                                    @{{~question.options :option:index_opt}}
+                                    <tr class="row">
+                                        <th>
+                                            @{{=index_opt}}
+                                        </th>
+
+                                        <th>
+
+                                            <input id="opt@{{=index_opt}}"
+                                                   onchange="changeOption('@{{=index_que}}','@{{=index_opt}}',this)"
+                                                   style="border: none;width: 100%"
+                                                   type="text" placeholder="请输入选项"
+                                                   value=@{{=option.option }}>
+                                        </th>
+
+
+                                        <th>
+                                            <input id="point@{{=index_opt}}"
+                                                   onchange="changePoint('@{{=index_que}}','@{{=index_opt}}',this)"
+                                                   type="number" style="border: none"
+                                                   value=@{{=option.point }}>
+                                        </th>
+                                        <th>
+                                            <i class="fa fa-minus-circle text-info  btn"
+                                               onclick="delOpt('@{{=index_que}}','@{{=index_opt}}');"></i>
+                                        </th>
+
+
+                                    </tr>
+                                    @{{~}}
+
+
+                                </table>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div style="padding: 10px;" class="text-info btn  inline">
+                                    <i class="fa fa-plus-circle"></i>
+                                    <span class="margin-left-15"
+                                          onclick="addOpt('@{{=index_que}}')">添加选项</span>
+                                </div>
+
+                                <div class="text-right pull-right inline"><img
+                                            src="{{URL::asset('/img/up_pointer_icon.png')}}"
+                                            class="opt-btn-size margin-right-10"
+                                            onclick="moveQue('@{{=index_que}}',-1)"> <img
+                                            src="{{URL::asset('/img/down_pointer_icon.png')}}"
+                                            class="opt-btn-size margin-right-10" onclick="moveQue('@{{=index_que}}',1)">
+                                    <img
+                                            src="{{URL::asset('/img/delete_icon.png')}}"
+                                            class="opt-btn-size" onclick=""></div>
+                            </div>
+
+
+                        </div>
+
+                        {{--@{{~}}--}}
+                    </div>
+                </div>
+                @{{~}}
+                <div class="text-center margin-top-10">
+                    <img src="{{URL::asset('/img/add_button_icon.png')}}"
+                         style="width: 36px;height: 36px;"
+                         onclick="addQue()">
+                </div>
+            </div>
+            <!-- /.col -->
         </div>
+
 
     </script>
 
@@ -166,7 +210,7 @@
     <script type="application/javascript">
         var lb;
         var questions = [];
-        var deleted=[];
+        var deleted = [];
         //入口函数
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
@@ -199,7 +243,7 @@
             for (var i in Questions) {
                 Questions[i].options = [];
                 var opts = Questions[i].answer.split("@q=");
-                for (var j=1;j<opts.length ;j++) {
+                for (var j = 1; j < opts.length; j++) {
                     Questions[i].options.push({
                             option: opts[j].split('&p=')[0],
                             point: opts[j].split('&p=')[1]
@@ -214,7 +258,7 @@
         function zip(Questions) {
             for (var i in Questions) {
                 Questions[i].seq = i;
-                Questions[i].lb_id=lb.id;
+                Questions[i].lb_id = lb.id;
                 Questions[i].answer = "";
                 for (var j in Questions[i].options) {
                     Questions[i].answer += "@q=" + Questions[i].options[j].option + "&p=" + Questions[i].options[j].point;
@@ -241,12 +285,26 @@
             loadHtml();
         }
 
-        function addQue() {
+        function addQue(index_que) {
             questions.push({
                 question: "",
                 options: [{option: "", point: 0}]
             });
             loadHtml();
+        }
+
+        function moveQue(index_que, a) {
+
+            var x = index_que;
+            var y = parseInt(index_que) + a;
+            var l = questions.length;
+            if (x >= 0 && y >= 0 && x < l && y < l) {
+                var m = questions[x];
+                questions[x] = questions[y];
+                questions[y] = m;
+                console.log(JSON.stringify(questions));
+                loadHtml();
+            }
         }
 
         function changeQuestion(index_que, e) {
@@ -259,14 +317,16 @@
             questions[index_que].options[index_opt].option = e.value;
             loadHtml();
         }
+
         function delQue(index_que) {
-            if(questions[index_que].id)
-            deleted.push(questions[index_que].id);
-            questions.splice(index_que,1);
+            if (questions[index_que].id)
+                deleted.push(questions[index_que].id);
+            questions.splice(index_que, 1);
             loadHtml();
         }
-        function delOpt(index_que,index_opt) {
-            questions[index_que].options.splice(index_opt,1);
+
+        function delOpt(index_que, index_opt) {
+            questions[index_que].options.splice(index_opt, 1);
             loadHtml();
         }
 
@@ -286,21 +346,22 @@
         }
 
         function submitAll() {
-            lb.doctor_id={{$admin->id}};
+            lb.doctor_id ={{$admin->id}};
             var q = zip(questions);
-            lb.questions=q;
+            lb.questions = q;
             var s = JSON.stringify(lb)
 
-            console.log(s,deleted);
+            console.log(s, deleted);
             lb.doctor_id ={{$admin->id}};
             lb.questions = q;
-            lb.deleted=deleted;
+            lb.deleted = deleted;
             //获取tokenn
-            var token=$("#token").children().val();
-            alert(token);
-            lb._token=token;
+            var token = $("#token").children().val();
+            lb._token = token;
             editLB("{{URL::asset('')}}", JSON.stringify(lb), function (ret, err) {
+                console.log(ret)
 
+                alert("提交成功")
             })
         }
 
