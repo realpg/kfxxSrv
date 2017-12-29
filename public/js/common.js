@@ -90,6 +90,9 @@ function editXJweb(url, param, callBack) {
 function editKFMB(url, param, callBack) {
     ajaxRequest(url + "api/kfmb/editKFMB", param, "post", callBack);
 }
+function editKFMBweb(url, param, callBack) {
+    ajaxRequest(url + "admin/kfmb/editKFMB", param, "post", callBack);
+}
 
 
 //测试接口

@@ -15,7 +15,9 @@ use App\Components\DoctorManager;
 use App\Components\KFMBManager;
 use App\Components\QNManager;
 use App\Components\SJXManager;
+use App\Components\Utils;
 use App\Components\XJManager;
+use App\Http\Controllers\ApiResponse;
 use App\Models\AD;
 use App\Models\Admin;
 use App\Models\KFMB;
@@ -101,7 +103,51 @@ class KFMBController
         }
         return view('admin.kfmb.edit', ['admin' => $admin, 'data' => $kfmb]);
     }
-
+	
+	public function editKFMB(Request $request)
+	{
+		//获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
+		$data = $request->all();
+		//新建/编辑康复模板
+		$kfmb = new KFMB();
+		if (array_key_exists('id', $data) && !Utils::isObjNull($data['id'])) {
+			$kfmb = KFMBManager::getKFMBById($data['id']);
+		}
+		$kfmb = KFMBManager::setKFMB($kfmb, $data);
+		//保存康复模板
+		$kfmb->save();
+		
+		//编辑康复模板计划
+		//删除已经无用的康复计划
+		$ori_jhs = KFMBManager::getJHListByKFMBId($kfmb->id);
+		//删除原有康复计划以及计划下关联的数据
+		foreach ($ori_jhs as $ori_jh) {
+			$ori_jhsjs = KFMBManager::getJHSJByJHId($ori_jh->id);
+			$ori_jh->delete();
+			foreach ($ori_jhsjs as $ori_jhsj) {
+				$ori_jhsj->delete();
+			}
+		}
+		//新建康复计划及数据
+		$new_jhs = $data['jhs'];
+		foreach ($new_jhs as $new_jh) {
+			$jh = new KFMBJH();
+			$jh = KFMBManager::setKFMBJH($jh, $new_jh);
+			$jh->kfmb_id = $kfmb->id;
+			$jh->save();
+			//新建康复计划采集数据
+			$new_jhsjs = $new_jh['jhsjs'];
+			foreach ($new_jhsjs as $new_jhsj) {
+				$jhsj = new KFMBJHSJ();
+				$jhsj = KFMBManager::setKFMBJHSJ($jhsj, $new_jhsj);
+				$jhsj->mbjh_id = $jh->id;
+				$jhsj->save();
+			}
+		}
+		//保存康复模板
+		$kfmb = KFMBManager::getKFMBInfoByLevel($kfmb, "03");
+		return ApiResponse::makeResponse(true, $kfmb, ApiResponse::SUCCESS_CODE);
+	}
     //编辑康复模板-post
     public function editPost(Request $request)
     {

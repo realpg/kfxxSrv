@@ -71,6 +71,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/kfmb/edit', 'Admin\KFMBController@edit');  //康复模板管理
     Route::get('/kfmb/setStatus/{id}', 'Admin\KFMBController@setStatus');  //设置康复模板状态
     Route::post('/kfmb/edit', 'Admin\KFMBController@editPost');  //新建或编辑宣教分类
+	Route::post('/kfmb/editKFMB', 'Admin\KFMBController@editKFMB');//提交接口
     Route::get('/kfmb/del/{id}', 'Admin\KFMBController@del');  //删除康复模板
     Route::get('/kfmb/editJH', 'Admin\KFMBController@editJH');  //删除康复模板
 
