@@ -17,6 +17,7 @@
                 </button>
             </div>
         </div>
+        <div id="token">{{csrf_field()}}</div>
     </section>
 
     <!-- Main content -->
@@ -501,8 +502,10 @@
             for (var i = 0; i < xjInfo.steps.length; i++) {
                 xjInfo.steps[i].seq = i;
             }
+            var token = $("#token").children().val();
+            xjInfo._token = token;
             //调用接口进行编辑
-            editXJ("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
+            editXJweb("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
                 //提示保存成功
                 if (ret.result == true) {
                     $("#tipModalBody").html('<p>宣教信息保存成功</p>');
