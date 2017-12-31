@@ -11,6 +11,8 @@ namespace App\Components;
 
 use App\Models\User;
 use App\Models\UserCase;
+use App\Models\UserKFJH;
+use App\Models\UserKFJHSJ;
 use App\Models\Vertify;
 use GuzzleHttp\Psr7\Request;
 
@@ -379,14 +381,13 @@ class UserManager
         //2级获取康复计划详情
         if (strpos($level, '2') !== false) {
             foreach ($userCase->jhs as $jh) {
-                $jhsjs = self::getJHSJByJHId($jh->id);
+                $jhsjs = self::getUserCaseJHSJByJHId($jh->id);
                 if ($jhsjs) {
-                    $jh->jhsjs = self::getJHSJByJHId($jh->id);
+                    $jh->jhsjs = $jhsjs;
                 } else {
                     $jh->jhsjs = [];
                 }
             }
-            $userCase->jhs = self::getUserKFJHByCaseId($userCase->id);
         }
         return $userCase;
     }
@@ -402,8 +403,22 @@ class UserManager
      */
     public static function getUserKFJHByCaseId($userCase_id)
     {
-        $jhs = UserCase::where('userCase_id', '=', $userCase_id)->orderby('seq', 'asc')->get();
+        $jhs = UserKFJH::where('userCase_id', '=', $userCase_id)->orderby('seq', 'asc')->get();
         return $jhs;
+    }
+
+    /*
+     * 获取用户病例康复计划关联的采集数据项
+     *
+     * By TerryQi
+     *
+     * 2017-12-28
+     *
+     */
+    public static function getUserKFJHSJByJHId($userCase_jh_id)
+    {
+        $jhsjs = UserKFJHSJ::where('kfjh_id', '=', $userCase_jh_id)->get();
+        return $jhsjs;
     }
 
     /*
@@ -448,6 +463,24 @@ class UserManager
         return $userCase;
     }
 
+    /*
+     * 根据患者病例计划id获取数据采集列表
+     *
+     * By TerryQi
+     *
+     * 2017-12-28
+     *
+     */
+
+    public static function getUserCaseJHSJByJHId($jh_id)
+    {
+        $jhsjs = UserKFJHSJ::where('kfjh_id', '=', $jh_id)->get();
+        foreach ($jhsjs as $jhsj) {
+            $jhsj->sjx = SJXManager::getSJXById($jhsj->sjx_id);
+        }
+        return $jhsjs;
+    }
+
 
     /*
      * 搜索用户信息
@@ -464,5 +497,75 @@ class UserManager
         return $users;
     }
 
+    //设置用户病例康复计划信息
+    public static function setKFJH($kfjh, $data)
+    {
+        if (array_key_exists('user_id', $data)) {
+            $kfjh->user_id = array_get($data, 'user_id');
+        }
+        if (array_key_exists('userCase_id', $data)) {
+            $kfjh->userCase_id = array_get($data, 'userCase_id');
+        }
+        if (array_key_exists('name', $data)) {
+            $kfjh->name = array_get($data, 'name');
+        }
+        if (array_key_exists('desc', $data)) {
+            $kfjh->desc = array_get($data, 'desc');
+        }
+        if (array_key_exists('important', $data)) {
+            $kfjh->important = array_get($data, 'important');
+        }
+        if (array_key_exists('seq', $data)) {
+            $kfjh->seq = array_get($data, 'seq');
+        }
+        if (array_key_exists('btime_type', $data)) {
+            $kfjh->btime_type = array_get($data, 'btime_type');
+        }
+        if (array_key_exists('start_time', $data)) {
+            $kfjh->start_time = array_get($data, 'start_time');
+        }
+        if (array_key_exists('start_unit', $data)) {
+            $kfjh->start_unit = array_get($data, 'start_unit');
+        }
+        if (array_key_exists('end_time', $data)) {
+            $kfjh->end_time = array_get($data, 'end_time');
+        }
+        if (array_key_exists('end_unit', $data)) {
+            $kfjh->end_unit = array_get($data, 'end_unit');
+        }
+        if (array_key_exists('set_date', $data)) {
+            $kfjh->set_date = array_get($data, 'set_date');
+        }
+        if (array_key_exists('xj_ids', $data)) {
+            $kfjh->xj_ids = array_get($data, 'xj_ids');
+        }
+        if (array_key_exists('status', $data)) {
+            $kfjh->status = array_get($data, 'status');
+        }
+        return $kfjh;
+    }
 
+    //设置康复计划数据
+    public static function setKFJHSJ($kfjhsj, $data)
+    {
+        if (array_key_exists('user_id', $data)) {
+            $kfjhsj->user_id = array_get($data, 'user_id');
+        }
+        if (array_key_exists('sjx_id', $data)) {
+            $kfjhsj->sjx_id = array_get($data, 'sjx_id');
+        }
+        if (array_key_exists('kfjh_id', $data)) {
+            $kfjhsj->kfjh_id = array_get($data, 'kfjh_id');
+        }
+        if (array_key_exists('userCase_id', $data)) {
+            $kfjhsj->userCase_id = array_get($data, 'userCase_id');
+        }
+        if (array_key_exists('min_value', $data)) {
+            $kfjhsj->min_value = array_get($data, 'min_value');
+        }
+        if (array_key_exists('max_value', $data)) {
+            $kfjhsj->max_value = array_get($data, 'max_value');
+        }
+        return $kfjhsj;
+    }
 }

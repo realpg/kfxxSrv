@@ -83,6 +83,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //患者病例
     Route::get('userCase/getUserCaseById', 'API\UserCaseController@getUserCaseInfoByCaseId');//获取病历
+    Route::post('userCase/editUserCaseKFJH', 'API\UserCaseController@editUserCaseKFJH');
 
 
 });

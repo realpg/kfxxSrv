@@ -14,12 +14,14 @@ use App\Components\DateTool;
 use App\Components\DoctorManager;
 use App\Components\KFMBManager;
 use App\Components\QNManager;
+use App\Components\SJXManager;
 use App\Components\UserManager;
 use App\Components\Utils;
 use App\Components\XJManager;
 use App\Libs\CommonUtils;
 use App\Models\Doctor;
 use App\Models\Enter;
+use App\Models\SJX;
 use App\Models\User;
 use App\Models\UserCase;
 use Illuminate\Http\Request;
@@ -167,8 +169,11 @@ class UserController
         $userCase = UserManager::getUserCaseInfoByLevel($userCase, "0");
         $user = UserManager::getUserInfoById($userCase->user_id);
         $user->age = Utils::getAge($user->birthday);
+        $sjxs = SJXManager::getSJXs();
+        $kfmbs = KFMBManager::getKFMBList('s1');
 
-        return view('admin.user.userKFJH', ['admin' => $admin, 'user' => $user, 'userCase' => $userCase]);
+        return view('admin.user.userKFJH', ['admin' => $admin, 'user' => $user
+            , 'userCase' => $userCase, 'sjxs' => $sjxs, 'kfmbs' => $kfmbs]);
     }
 
 

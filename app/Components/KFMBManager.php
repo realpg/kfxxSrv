@@ -129,6 +129,9 @@ class KFMBManager
     public static function getJHSJByJHId($jh_id)
     {
         $jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh_id)->get();
+        foreach ($jhsjs as $jhsj) {
+            $jhsj->sjx = SJXManager::getSJXById($jhsj->sjx_id);
+        }
         return $jhsjs;
     }
 

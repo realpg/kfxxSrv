@@ -1,7 +1,7 @@
 // 接口部分
 //基本的ajax访问后端接口类
 function ajaxRequest(url, param, method, callBack) {
-    console.log("url:" + url + " post:" + method + " param:" + param);
+    console.log("url:" + url + " method:" + method + " param:" + param);
     $.ajax({
         type: method,  //提交方式
         url: url,//路径
@@ -43,6 +43,11 @@ function getUserCaseById(url, param, callBack) {
     ajaxRequest(url + "api/userCase/getUserCaseById", param, "GET", callBack);
 }
 
+//编辑患者病例
+function editUserCaseKFJH(url, param, callBack) {
+    ajaxRequest(url + "api/userCase/editUserCaseKFJH", param, "POST", callBack);
+}
+
 //根据id获取医生信息
 function getDoctorById(url, param, callBack) {
     ajaxRequest(url + "api/doctor/getById", param, "GET", callBack);
@@ -82,7 +87,6 @@ function editXJ(url, param, callBack) {
 function editKFMB(url, param, callBack) {
     ajaxRequest(url + "api/kfmb/editKFMB", param, "post", callBack);
 }
-
 
 //测试接口
 function test(url, param, callBack) {
@@ -221,8 +225,22 @@ function getBtimeTypeStr(btime_type) {
             return "手术后";
         case "1":
             return "首次弯腿后";
+        case "2":
+            return "指定日期";
     }
     return "";
+}
+
+//获取康复计划状态字符串
+function getJHStatus(status) {
+    switch (status) {
+        case "0":
+            return "计划执行";
+        case "1":
+            return "执行中";
+        case "2":
+            return "已执行";
+    }
 }
 
 //获取时间基线单位
