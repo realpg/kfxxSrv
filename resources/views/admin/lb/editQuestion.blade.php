@@ -11,7 +11,7 @@
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
-                <button type="button" class="btn btn-primary" onclick="clickAdd();">
+                <button type="button" class="btn btn-primary" onclick="submitAll()">
                     保存量表
                 </button>
             </div>
@@ -20,35 +20,139 @@
 
     <!-- Main content -->
     <section class="content">
-        <div id="message-content">
+        <div class="box-body">
+            <div id="token">{{csrf_field()}}</div>
+            <div id="LBinfo">
 
+            </div>
+            <div id="message-content">
+
+            </div>
+            <button type="button" class="btn btn-primary" onclick="submitAll()">
+                保存量表
+            </button>
         </div>
-        <button onclick="submitAll()">
-            提交
-        </button>
     </section>
+
+    <script id="LBinfo-content-template" type="text/x-dot-template">
+        <div class="white-bg">
+            <div style="padding: 15px;">
+                <h2 class="font-size-16 text-info">
+                    @{{=it.name}}
+                </h2>
+                <div class="margin-top-10 font-size-14 grey-bg">
+                    <div style="padding: 10px;">
+                        @{{=it.desc}}
+                    </div>
+                </div>
+                <div class="margin-top-10  font-size-14">
+                    点击查看：<a href="{{URL::asset('/admin/xj/editXJ')}}?id=@{{=it.xj_id}}" target="_blank"><span
+                                class="text-aqua">宣教信息<i
+                                    class="fa fa-link margin-left-5"></i></span></a>
+                </div>
+            </div>
+        </div>
+
+    </script>
 
 
     <script id="message-content-template" type="text/x-dot-template">
-        @{{~it :question:index_que}}
-        <div>
-            <input onchange="changeQuestion('@{{=index_que}}',this)" type="text"placeholder="请输入问题" value=@{{=question.question}}>
-        </div>
-        @{{~question.options :option:index_opt}}
 
-        <div>@{{=index_opt}}
-            ：<input onchange="changeOption('@{{=index_que}}','@{{=index_opt}}',this)" type="text"placeholder="请输入选项" value=@{{=option.option }}>
-            分数：<input onchange="changePoint('@{{=index_que}}','@{{=index_opt}}',this)" type="number" id="point" value=@{{=option.point }}>
+        <div class="row margin-top-10">
+            <div class="col-md-12">
+                @{{~it :question:index_que}}
+                <div class="white-bg">
+                    <div style="padding: 15px;">
+                    {{--@{{~question.options :option:index_opt}}--}}
+                    <!-- row -->
+                        <div class="row margin-top-10">
+                            <div class="col-md-12">
+                                <!-- The time line -->
+
+                                <h3>
+                                    <input onchange="changeQuestion('@{{=index_que}}',this)" type="text"
+                                           class="form-control" placeholder="请输入问题"
+                                           value=@{{=question.question}}>
+                                </h3>
+                                <table class="table table-bordered">
+
+
+                                    <tr class="margin-top-10 grey-bg">
+                                        <th></th>
+                                        <th class="col-md-1">序号</th>
+                                        <th class="col-md-9">选项</th>
+                                        <th class="col-md-1">分数</th>
+                                        <th class="col-md-1">操作</th>
+                                    </tr>
+                                    @{{~question.options :option:index_opt}}
+                                    <tr class="row">
+                                        <th>
+                                            @{{=index_opt}}
+                                        </th>
+
+                                        <th>
+
+                                            <input id="opt@{{=index_opt}}"
+                                                   onchange="changeOption('@{{=index_que}}','@{{=index_opt}}',this)"
+                                                   style="border: none;width: 100%"
+                                                   type="text" placeholder="请输入选项"
+                                                   value=@{{=option.option }}>
+                                        </th>
+
+
+                                        <th>
+                                            <input id="point@{{=index_opt}}"
+                                                   onchange="changePoint('@{{=index_que}}','@{{=index_opt}}',this)"
+                                                   type="number" style="border: none"
+                                                   value=@{{=option.point }}>
+                                        </th>
+                                        <th>
+                                            <i class="fa fa-minus-circle text-info  btn"
+                                               onclick="delOpt('@{{=index_que}}','@{{=index_opt}}');"></i>
+                                        </th>
+
+
+                                    </tr>
+                                    @{{~}}
+
+
+                                </table>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div style="padding: 10px;" class="text-info btn  inline">
+                                    <i class="fa fa-plus-circle"></i>
+                                    <span class="margin-left-15"
+                                          onclick="addOpt('@{{=index_que}}')">添加选项</span>
+                                </div>
+
+                                <div class="text-right pull-right inline"><img
+                                            src="{{URL::asset('/img/up_pointer_icon.png')}}"
+                                            class="opt-btn-size margin-right-10"
+                                            onclick="moveQue('@{{=index_que}}',-1)"> <img
+                                            src="{{URL::asset('/img/down_pointer_icon.png')}}"
+                                            class="opt-btn-size margin-right-10" onclick="moveQue('@{{=index_que}}',1)">
+                                    <img
+                                            src="{{URL::asset('/img/delete_icon.png')}}"
+                                            class="opt-btn-size" onclick=""></div>
+                            </div>
+
+
+                        </div>
+
+                        {{--@{{~}}--}}
+                    </div>
+                </div>
+                @{{~}}
+                <div class="text-center margin-top-10">
+                    <img src="{{URL::asset('/img/add_button_icon.png')}}"
+                         style="width: 36px;height: 36px;"
+                         onclick="addQue()">
+                </div>
+            </div>
+            <!-- /.col -->
         </div>
-        @{{~}}
-        <button onclick="addOpt('@{{=index_que}}')">
-            addOpt
-        </button>
-        @{{~}}
-        <div>
-        <button onclick="addQue()">
-            addQue
-        </button></div>
+
 
     </script>
 
@@ -106,6 +210,7 @@
     <script type="application/javascript">
         var lb;
         var questions = [];
+        var deleted = [];
         //入口函数
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
@@ -122,8 +227,8 @@
                 getLBById("{{URL::asset('')}}", param, function (ret, err) {
                     //提示保存成功
                     if (ret.result == true) {
-                         lb=ret.ret;
-                         questions=unzip(lb.questions);
+                        lb = ret.ret;
+                        questions = unzip(lb.questions);
                         loadHtml();
                     }
                     else {
@@ -132,31 +237,36 @@
                 })
             }
         });
+
         //处理接收到的问题数据,将answer字符串转化为options对象
         function unzip(Questions) {
-            for(var i in Questions){
-                Questions[i].options=[];
-                var opts=Questions[i].answer.split("@q=");
-                for(var j in opts){
+            for (var i in Questions) {
+                Questions[i].options = [];
+                var opts = Questions[i].answer.split("@q=");
+                for (var j = 1; j < opts.length; j++) {
                     Questions[i].options.push({
-                            option:opts[j].split('&p=')[0],
-                            point:opts[j].split('&p=')[1]
-                    }
+                            option: opts[j].split('&p=')[0],
+                            point: opts[j].split('&p=')[1]
+                        }
                     );
                 }
             }
             return Questions;
         }
+
         //将options对象转换为字符串
         function zip(Questions) {
-            for(var i in Questions){
-                Questions[i].answer="";
-                for(var j in Questions[i].options) {
-                Questions[i].answer+="@q="+Questions[i].options[j].option+"&p="+Questions[i].options[j].point;
+            for (var i in Questions) {
+                Questions[i].seq = i;
+                Questions[i].lb_id = lb.id;
+                Questions[i].answer = "";
+                for (var j in Questions[i].options) {
+                    Questions[i].answer += "@q=" + Questions[i].options[j].option + "&p=" + Questions[i].options[j].point;
                 }
             }
             return Questions;
         }
+
         //加载界面
         function loadHtml() {
             //清理页面
@@ -165,38 +275,94 @@
             //加载页面
             var interText = doT.template($("#message-content-template").text());
             $("#message-content").html(interText(questions));
+            var interText2 = doT.template($("#LBinfo-content-template").text());
+            $("#LBinfo").html(interText2(lb));
         }
+
         function addOpt(index) {
 
-            questions[index].options.push({option:"",point:0})
+            questions[index].options.push({option: "", point: 0})
             loadHtml();
         }
-        function addQue() {
+
+        function addQue(index_que) {
             questions.push({
-                question:"",
-                options:[{option:"",point:0}]
+                question: "",
+                options: [{option: "", point: 0}]
             });
             loadHtml();
         }
-        function changeQuestion(index_que,e) {
-            questions[index_que].question=e.value;
-            loadHtml();
-        }
-        function changeOption(index_que,index_opt,e) {
 
-            questions[index_que].options[index_opt].option=e.value;
+        function moveQue(index_que, a) {
+
+            var x = index_que;
+            var y = parseInt(index_que) + a;
+            var l = questions.length;
+            if (x >= 0 && y >= 0 && x < l && y < l) {
+                var m = questions[x];
+                questions[x] = questions[y];
+                questions[y] = m;
+                console.log(JSON.stringify(questions));
+                loadHtml();
+            }
+        }
+
+        function changeQuestion(index_que, e) {
+            questions[index_que].question = e.value;
             loadHtml();
         }
-        function changePoint(index_que,index_opt,e) {
-            questions[index_que].options[index_opt].point=e.value;
+
+        function changeOption(index_que, index_opt, e) {
+
+            questions[index_que].options[index_opt].option = e.value;
+            loadHtml();
+        }
+
+        function delQue(index_que) {
+            if (questions[index_que].id)
+                deleted.push(questions[index_que].id);
+            questions.splice(index_que, 1);
+            loadHtml();
+        }
+
+        function delOpt(index_que, index_opt) {
+            questions[index_que].options.splice(index_opt, 1);
+            loadHtml();
+        }
+
+        function changePoint(index_que, index_opt, e) {
+            questions[index_que].options[index_opt].point = e.value;
+            loadHtml();
+        }
+
+        function changeName(e) {
+            lb.name = e.value;
+            loadHtml();
+        }
+
+        function changeDesc(e) {
+            lb.desc = e.value;
             loadHtml();
         }
 
         function submitAll() {
-            var q=zip(questions);
-            var s=JSON.stringify(q)
-            alert(s);
-            console.log(s)
+            lb.doctor_id ={{$admin->id}};
+            var q = zip(questions);
+            lb.questions = q;
+            var s = JSON.stringify(lb)
+
+            console.log(s, deleted);
+            lb.doctor_id ={{$admin->id}};
+            lb.questions = q;
+            lb.deleted = deleted;
+            //获取tokenn
+            var token = $("#token").children().val();
+            lb._token = token;
+            editLB("{{URL::asset('')}}", JSON.stringify(lb), function (ret, err) {
+                console.log(ret)
+
+                alert("提交成功")
+            })
         }
 
     </script>

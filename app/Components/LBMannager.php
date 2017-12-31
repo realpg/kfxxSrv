@@ -26,7 +26,7 @@ class LBMannager
 	//管理后台使用，获取所有量表
 	public static function lblist_all()
 	{
-		$list = Lb::orderBy('seq','desc')->orderBy('id','desc')->paginate(Utils::PAGE_SIZE);
+		$list = Lb::orderBy('seq', 'desc')->orderBy('id', 'desc')->paginate(Utils::PAGE_SIZE);
 		return $list;
 	}
 	
@@ -54,6 +54,20 @@ class LBMannager
 		return $lb;
 	}
 	
+	public static function setQuestions($questions)
+	{
+		foreach ($questions as $question) {
+			if (array_key_exists('id', $question))
+				$ques = self::getQuestionByQId($question['id']);
+			else
+				$ques = new LBQuestion();
+			$ques = self::setQuestion($ques, $question);
+			$ques->save();
+		}
+		return $questions;
+		
+	}
+	
 	//根据id获取问题
 	public static function getQuestionsByLBId($id)
 	{
@@ -70,7 +84,6 @@ class LBMannager
 	//设置量表
 	public static function setLB($lb, $data)
 	{
-		$lb->name="没进去";
 		if (array_key_exists('name', $data)) {
 			$lb->name = array_get($data, 'name');
 		}
@@ -135,13 +148,14 @@ class LBMannager
 		if ($user->phonenum) {
 			$ans->phonenum = $user->phonenum;
 		}
-		
 		$bl = KFJHManager::getBLById($data['user_id']);
-		if ($bl->ss_time) {
-			$ans->s_time = $bl->ss_time;
-		}
-		if ($bl->zz_doctor_id) {
-			$ans->s_doctor = DoctorManager::getDoctorById($bl->zz_doctor_id)->name;
+		if ($bl) {
+			if ($bl->ss_time) {
+				$ans->s_time = $bl->ss_time;
+			}
+			if ($bl->zz_doctor_id) {
+				$ans->s_doctor = DoctorManager::getDoctorById($bl->zz_doctor_id)->name;
+			}
 		}
 		$ans->save();
 		return $ans;

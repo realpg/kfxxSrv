@@ -46,7 +46,7 @@ class LBController extends Controller
 	public static function answerLB(Request $request)
 	{
 		$data=$request->all();
-		$requestValidationResult = RequestValidator::validator($request->all(), [
+		$requestValidationResult = RequestValidator::validator($data, [
 			'user_id' => 'required',
 			'lb_id'=>'required',
 			'result' => 'required',

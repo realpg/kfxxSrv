@@ -51,7 +51,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/xj/edit', 'Admin\XJController@edit');  //新建或编辑宣教
     Route::post('/xj/edit', 'Admin\XJController@editPost');  //新建或编辑宣教
     Route::get('/xj/del/{id}', 'Admin\XJController@del');  //删除宣教
-    Route::get('/xj/editXJ', 'Admin\XJController@editXJ');  //编辑宣教
+    Route::get('/xj/editXJ', 'Admin\XJController@editXJ');  //编辑宣教页面
+	Route::post('/xj/editXJ', 'Admin\XJController@editXJPost');
 
 
     //宣教分类管理
@@ -70,6 +71,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/kfmb/edit', 'Admin\KFMBController@edit');  //康复模板管理
     Route::get('/kfmb/setStatus/{id}', 'Admin\KFMBController@setStatus');  //设置康复模板状态
     Route::post('/kfmb/edit', 'Admin\KFMBController@editPost');  //新建或编辑宣教分类
+	Route::post('/kfmb/editKFMB', 'Admin\KFMBController@editKFMB');//提交接口
     Route::get('/kfmb/del/{id}', 'Admin\KFMBController@del');  //删除康复模板
     Route::get('/kfmb/editJH', 'Admin\KFMBController@editJH');  //删除康复模板
 
@@ -94,6 +96,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/lb/delQue/{id}', 'Admin\LBController@delQue');  //删除量表问题条目 ok
     Route::get('/lb/edit', 'Admin\LBController@edit');  //新建或编辑量表
     Route::post('/lb/edit', 'Admin\LBController@editPost');  //新建或编辑量表
+	Route::post('/lb/editLB', 'Admin\LBController@editLBPost');  //新建或编辑量表问题
     Route::get('/lb/del/{id}', 'Admin\LBController@del');  //删除量表ok
 
 });

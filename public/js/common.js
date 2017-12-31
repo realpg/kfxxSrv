@@ -78,14 +78,25 @@ function getLBById(url, param, callBack) {
     ajaxRequest(url + "api/lb/getById", param, "get", callBack);
 }
 
+function editLB(url, param, callBack) {
+    ajaxRequest(url + "admin/lb/editLB", param, "post", callBack);
+}
+
 //编辑宣教
 function editXJ(url, param, callBack) {
     ajaxRequest(url + "api/xj/editXJ", param, "post", callBack);
+}
+//编辑宣教
+function editXJweb(url, param, callBack) {
+    ajaxRequest(url + "admin/xj/editXJ", param, "post", callBack);
 }
 
 //编辑康复模板
 function editKFMB(url, param, callBack) {
     ajaxRequest(url + "api/kfmb/editKFMB", param, "post", callBack);
+}
+function editKFMBweb(url, param, callBack) {
+    ajaxRequest(url + "admin/kfmb/editKFMB", param, "post", callBack);
 }
 
 //测试接口
