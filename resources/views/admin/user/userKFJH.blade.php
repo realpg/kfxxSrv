@@ -17,7 +17,6 @@
                 </button>
             </div>
         </div>
-        <div id="token">{{csrf_field()}}</div>
     </section>
 
     <!-- Main content -->
@@ -712,8 +711,8 @@
             for (var i = 0; i < kfjhInfo.jhs.length; i++) {
                 kfjhInfo.jhs[i].seq = i;
             }
-            var token = $("#token").children().val();
-            kfjhInfo._token = token;
+            kfjhInfo._token = "{{ csrf_token() }}";
+            console.log("clickAdd after add token kfjhInfo:" + JSON.stringify(kfjhInfo));
             //调用接口进行编辑
             editUserCaseKFJH("{{URL::asset('')}}", JSON.stringify(kfjhInfo), function (ret, err) {
                 //提示保存成功

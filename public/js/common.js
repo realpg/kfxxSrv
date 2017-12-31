@@ -1,7 +1,7 @@
 // 接口部分
 //基本的ajax访问后端接口类
 function ajaxRequest(url, param, method, callBack) {
-    console.log("url:" + url + " method:" + method + " param:" + param);
+    console.log("url:" + url + " method:" + method + " param:" + JSON.stringify(param));
     $.ajax({
         type: method,  //提交方式
         url: url,//路径
