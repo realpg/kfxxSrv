@@ -18,12 +18,15 @@ use App\Components\SJXManager;
 use App\Components\UserManager;
 use App\Components\Utils;
 use App\Components\XJManager;
+use App\Http\Controllers\ApiResponse;
 use App\Libs\CommonUtils;
 use App\Models\Doctor;
 use App\Models\Enter;
 use App\Models\SJX;
 use App\Models\User;
 use App\Models\UserCase;
+use App\Models\UserKFJH;
+use App\Models\UserKFJHSJ;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
@@ -38,8 +41,8 @@ class UserController
     {
         $admin = $request->session()->get('admin');
         $users = UserManager::getAllUsers();
-        $users = UserManager::setUsersAge($users);  //设置用户年龄
         foreach ($users as $user) {
+            $user = UserManager::setUserAge($user);
             $userCase = UserManager::getTopUserCaseByUserId($user->id);
             if ($userCase) {
                 $userCase = UserManager::getUserCaseInfoByLevel($userCase, '0');
@@ -61,6 +64,14 @@ class UserController
             $data['nick_name'] = '';
         }
         $users = UserManager::searchUser($search_word);
+        foreach ($users as $user) {
+            $user = UserManager::setUserAge($user);
+            $userCase = UserManager::getTopUserCaseByUserId($user->id);
+            if ($userCase) {
+                $userCase = UserManager::getUserCaseInfoByLevel($userCase, '0');
+            }
+            $user->userCase = $userCase;
+        }
         return view('admin.user.index', ['admin' => $admin, 'datas' => $users]);
     }
 

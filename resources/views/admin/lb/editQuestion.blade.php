@@ -28,9 +28,6 @@
             <div id="message-content">
 
             </div>
-            <button type="button" class="btn btn-primary" onclick="submitAll()">
-                保存量表
-            </button>
         </div>
     </section>
 
@@ -350,7 +347,6 @@
             var q = zip(questions);
             lb.questions = q;
             var s = JSON.stringify(lb)
-
             console.log(s, deleted);
             lb.doctor_id ={{$admin->id}};
             lb.questions = q;
@@ -358,8 +354,9 @@
             //获取tokenn
             var token = $("#token").children().val();
             lb._token = token;
+            console.log("submitAll lb:" + JSON.stringify(lb));
             editLB("{{URL::asset('')}}", JSON.stringify(lb), function (ret, err) {
-                console.log(ret)
+                console.log(JSON.stringify(ret))
 
                 alert("提交成功")
             })

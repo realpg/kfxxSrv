@@ -147,7 +147,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理轮播图</h4>
+                    <h4 class="modal-title">管理患者病例</h4>
                 </div>
                 <form id="editUserCase" action="{{URL::asset('/admin/user/editUserCase')}}" method="post"
                       class="form-horizontal"
@@ -291,8 +291,9 @@
             $("#editUserCase")[0].reset();
             $("#user_id").val("{{$user->id}}");
             $("#doctor_id").val("{{$admin->id}}");
+            //展示modal
+            setICheck();
             $("#addUserCaseModal").modal('show');
-
         }
 
 

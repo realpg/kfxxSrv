@@ -17,7 +17,6 @@
                 </button>
             </div>
         </div>
-        <div id="token">{{csrf_field()}}</div>
     </section>
 
     <!-- Main content -->
@@ -492,18 +491,18 @@
 
         //保存宣教信息
         function clickSave() {
-
             //如果没有步骤信息，说明还没有录入，需要进行录入
             if (xjInfo.steps.length <= 0) {
-
+                $("#tipModalBody").html('<p>请录入宣教图文信息</p>');
+                $("#tipModal").modal('show');
                 return;
             }
             //进行排序
             for (var i = 0; i < xjInfo.steps.length; i++) {
                 xjInfo.steps[i].seq = i;
             }
-            var token = $("#token").children().val();
-            xjInfo._token = token;
+            xjInfo._token = "{{ csrf_token() }}";
+            console.log("cilckSave xjInfo:" + JSON.stringify(xjInfo));
             //调用接口进行编辑
             editXJ("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
                 //提示保存成功

@@ -14,6 +14,7 @@ function ajaxRequest(url, param, method, callBack) {
         },
         error: function (err) {
             console.log(JSON.stringify(err));
+            console.log("responseText:" + err.responseText);
             callBack(err)
         }
     });
@@ -86,7 +87,6 @@ function editLB(url, param, callBack) {
 function editXJ(url, param, callBack) {
     ajaxRequest(url + "admin/xj/editXJ", param, "post", callBack);
 }
-
 
 //编辑康复模板
 function editKFMB(url, param, callBack) {

@@ -248,7 +248,6 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('/admin/lb/edit')}}"><i class="fa fa-circle-o"></i>新建量表</a></li>
                         <li><a href="{{url('/admin/lb/index')}}"><i class="fa fa-circle-o"></i>量表管理</a></li>
                         <li><a href="#"><i class="fa fa-circle-o"></i>量表综合报表</a></li>
                     </ul>

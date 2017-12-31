@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin;
 use App\Components\AdminManager;
 use App\Components\DateTool;
 use App\Components\QNManager;
+use App\Components\Utils;
 use App\Components\XJManager;
 use App\Http\Controllers\ApiResponse;
 use App\Models\AD;
@@ -72,6 +73,7 @@ class XJController
     {
         //获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
         $data = $request->all();
+//        dd($data);
         //新建/编辑宣教信息
         $xj = new XJ();
         if (array_key_exists('id', $data) && $data['id'] != null) {

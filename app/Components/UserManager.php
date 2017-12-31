@@ -312,24 +312,6 @@ class UserManager
     }
 
     /*
-     * 设置用户的年龄，多个用户
-     *
-     * By TerryQi
-     *
-     * 2017-12-19
-     *
-     */
-    public static function setUsersAge($users)
-    {
-        foreach ($users as $user) {
-            if ($user->birthday) {
-                $user->age = Utils::getAge($user->birthday);
-            }
-        }
-        return $users;
-    }
-
-    /*
      * 设置用户的年龄，单个用户
      *
      * By TerryQi
