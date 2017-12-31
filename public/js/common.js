@@ -45,7 +45,7 @@ function getUserCaseById(url, param, callBack) {
 
 //编辑患者病例
 function editUserCaseKFJH(url, param, callBack) {
-    ajaxRequest(url + "api/userCase/editUserCaseKFJH", param, "POST", callBack);
+    ajaxRequest(url + "admin/user/editUserCaseKFJH", param, "POST", callBack);
 }
 
 //根据id获取医生信息
@@ -84,20 +84,15 @@ function editLB(url, param, callBack) {
 
 //编辑宣教
 function editXJ(url, param, callBack) {
-    ajaxRequest(url + "api/xj/editXJ", param, "post", callBack);
-}
-//编辑宣教
-function editXJweb(url, param, callBack) {
     ajaxRequest(url + "admin/xj/editXJ", param, "post", callBack);
 }
 
+
 //编辑康复模板
 function editKFMB(url, param, callBack) {
-    ajaxRequest(url + "api/kfmb/editKFMB", param, "post", callBack);
-}
-function editKFMBweb(url, param, callBack) {
     ajaxRequest(url + "admin/kfmb/editKFMB", param, "post", callBack);
 }
+
 
 //测试接口
 function test(url, param, callBack) {

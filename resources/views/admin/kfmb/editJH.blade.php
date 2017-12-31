@@ -548,7 +548,7 @@
             var token = $("#token").children().val();
             kfmbInfo._token = token;
             //调用接口进行编辑
-            editKFMBweb("{{URL::asset('')}}", JSON.stringify(kfmbInfo), function (ret, err) {
+            editKFMB("{{URL::asset('')}}", JSON.stringify(kfmbInfo), function (ret, err) {
                 //提示保存成功
                 if (ret.result == true) {
                     $("#tipModalBody").html('<p>康复模板计划保存成功</p>');

@@ -54,7 +54,6 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('xj/getByCon', 'API\XJController@getXJList');
     Route::get('xj/getXJInfoById', 'API\XJController@getXJInfoById');
     Route::get('xj/getAll', 'API\XJController@getAllXJs');
-    //Route::post('xj/editXJ', 'API\XJController@editXJ');
 
     //数据项相关
     Route::get('sjx/getList', 'API\SJXController@getList');
@@ -63,7 +62,6 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //康复模板相关
     Route::get('kfmb/getKFMBById', 'API\KFMBController@getKFMBById');
     Route::get('kfmb/getKFMBList', 'API\KFMBController@getKFMBList');
-    //Route::post('kfmb/editKFMB', 'API\KFMBController@editKFMB');
 
     //医生康复师相关
     Route::get('doctor/getDoctorsByRole', 'API\DoctorController@getDoctorsByRole');
@@ -83,7 +81,6 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //患者病例
     Route::get('userCase/getUserCaseById', 'API\UserCaseController@getUserCaseInfoByCaseId');//获取病历
-    Route::post('userCase/editUserCaseKFJH', 'API\UserCaseController@editUserCaseKFJH');
 
 
 });

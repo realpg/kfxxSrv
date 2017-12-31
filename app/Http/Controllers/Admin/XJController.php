@@ -58,42 +58,52 @@ class XJController
         $upload_token = QNManager::uploadToken();
         return view('admin.xj.editXJ', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token, 'xj_types' => $xj_types]);
     }
-	public function editXJPost(Request $request)
-	{
-		//获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
-		$data = $request->all();
-		//新建/编辑宣教信息
-		$xj = new XJ();
-		if (array_key_exists('id', $data) && $data['id'] != null) {
-			$xj = XJManager::getXJById($data['id']);
-		}
-		$xj = XJManager::setXJ($xj, $data);
-		$xj->save();
-		//获取数据库中原有的信息
-		$ori_steps = XJManager::getStepsByFidAndFtable($xj->id, 'xj');
-		$new_steps = $data['steps'];
-		//删除步骤
-		foreach ($ori_steps as $ori_step) {
-			if (!Utils::isIdInArray($ori_step->id, $new_steps)) {
-				$ori_step->delete();
-			}
-		}
-		//新建/编辑步骤
-		foreach ($new_steps as $new_step) {
-			$new_step['f_id'] = $xj->id;
-			$new_step['f_table'] = "xj";
-			$twStep = new TWStep();
-			if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
-				$twStep = XJManager::getStepById($new_step['id']);
-			}
-			$twStep = XJManager::setTWStep($twStep, $new_step);
-			$twStep->save();
-		}
-		//重新获取宣教信息并返回
-		$xj = XJManager::getXJInfoByLevel($xj, 3);
-		return ApiResponse::makeResponse(true, $xj, ApiResponse::SUCCESS_CODE);
-	}
-	
+
+
+    /*
+     * 编辑宣教详细信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-31
+     *
+     */
+    public function editXJPost(Request $request)
+    {
+        //获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
+        $data = $request->all();
+        //新建/编辑宣教信息
+        $xj = new XJ();
+        if (array_key_exists('id', $data) && $data['id'] != null) {
+            $xj = XJManager::getXJById($data['id']);
+        }
+        $xj = XJManager::setXJ($xj, $data);
+        $xj->save();
+        //获取数据库中原有的信息
+        $ori_steps = XJManager::getStepsByFidAndFtable($xj->id, 'xj');
+        $new_steps = $data['steps'];
+        //删除步骤
+        foreach ($ori_steps as $ori_step) {
+            if (!Utils::isIdInArray($ori_step->id, $new_steps)) {
+                $ori_step->delete();
+            }
+        }
+        //新建/编辑步骤
+        foreach ($new_steps as $new_step) {
+            $new_step['f_id'] = $xj->id;
+            $new_step['f_table'] = "xj";
+            $twStep = new TWStep();
+            if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
+                $twStep = XJManager::getStepById($new_step['id']);
+            }
+            $twStep = XJManager::setTWStep($twStep, $new_step);
+            $twStep->save();
+        }
+        //重新获取宣教信息并返回
+        $xj = XJManager::getXJInfoByLevel($xj, 3);
+        return ApiResponse::makeResponse(true, $xj, ApiResponse::SUCCESS_CODE);
+    }
+
 
     /*
      * 分类首页

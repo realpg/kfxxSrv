@@ -505,7 +505,7 @@
             var token = $("#token").children().val();
             xjInfo._token = token;
             //调用接口进行编辑
-            editXJweb("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
+            editXJ("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
                 //提示保存成功
                 if (ret.result == true) {
                     $("#tipModalBody").html('<p>宣教信息保存成功</p>');
