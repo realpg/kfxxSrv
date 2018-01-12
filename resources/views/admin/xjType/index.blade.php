@@ -86,7 +86,7 @@
     </section>
 
     {{--新建对话框--}}
-    <div class="modal fade modal-margin-top-m" id="addXJTypeModel" tabindex="-1" role="dialog">
+    <div class="modal fade -m" id="addXJTypeModel" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">
@@ -156,7 +156,7 @@
 
 
     {{--删除模态框--}}
-    <div class="modal fade modal-margin-top" id="delConfrimModel" tabindex="-1" role="dialog">
+    <div class="modal fade " id="delConfrimModel" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

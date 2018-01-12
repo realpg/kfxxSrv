@@ -105,7 +105,7 @@
 
 
     <!--新建编辑宣教对话框-->
-    <div class="modal fade modal-margin-top-m" id="editXJModal" tabindex="-1" role="dialog">
+    <div class="modal fade -m" id="editXJModal" tabindex="-1" role="dialog">
 
 
     </div>
@@ -204,7 +204,7 @@
     </script>
 
     <!--新建编辑宣教步骤对话框-->
-    <div class="modal fade modal-margin-top-m" id="editStepModal" tabindex="-1" role="dialog">
+    <div class="modal fade -m" id="editStepModal" tabindex="-1" role="dialog">
 
 
     </div>

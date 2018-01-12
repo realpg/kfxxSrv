@@ -48,11 +48,11 @@
         }
 
         /*模态框距离顶部边距*/
-        .modal-margin-top {
+        . {
             margin-top: 150px;
         }
 
-        .modal-margin-top-m {
+        .-m {
             margin-top: 20px;
         }
 

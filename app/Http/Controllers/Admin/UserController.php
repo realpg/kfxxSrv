@@ -101,6 +101,10 @@ class UserController
             $user = UserManager::getUserInfoById($data['id']);
         }
         $user = UserManager::setUser($user, $data);
+        //如果token为空，则设置患者的token
+        if (Utils::isObjNull($user->token)) {
+            $user->token = UserManager::getGUID();
+        }
         $user->save();
         return redirect('/admin/user/index');
     }

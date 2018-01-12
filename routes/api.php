@@ -81,6 +81,13 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //患者病例
     Route::get('userCase/getUserCaseById', 'API\UserCaseController@getUserCaseInfoByCaseId');//获取病历
+    Route::post('userCase/getUserZXJHByDate', 'API\UserCaseController@getUserZXJHByDate')->middleware('CheckToken');//根据日期获取当日的康复计划
+    Route::get('userCase/getZXJHById', 'API\UserCaseController@getZXJHById');//根据id获取患者执行计划详情
+    Route::post('userCase/executeZXJH', 'API\UserCaseController@executeZXJH')->middleware('CheckToken');//上传执行计划结果
 
+
+    //启动生成康复计划
+    Route::post('schedule/autoCreateUserZXJH', 'API\ScheduleController@autoCreateUserZXJH');     //每日自动生成患者执行计划任务
+    Route::post('schedule/autoFinishUserZXJH', 'API\ScheduleController@autoFinishUserZXJH');     //每日自动结束患者康复计划
 
 });

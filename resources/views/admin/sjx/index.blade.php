@@ -83,7 +83,7 @@
             </div>
         </div>
         {{--模态框--}}
-        <div class="modal fade modal-margin-top" id="tip_modal" tabindex="-1" role="dialog"
+        <div class="modal fade " id="tip_modal" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -106,7 +106,7 @@
         </div>
 
         {{--新建对话框--}}
-        <div class="modal fade modal-margin-top-m" id="addSJXModal" tabindex="-1" role="dialog">
+        <div class="modal fade -m" id="addSJXModal" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content message_align">
                     <div class="modal-header">

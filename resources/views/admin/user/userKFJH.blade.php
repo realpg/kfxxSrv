@@ -244,8 +244,8 @@
         </script>
 
 
-        <!--新建编辑宣教步骤对话框-->
-        <div class="modal fade modal-margin-top-m" id="editJHModal" tabindex="-1" role="dialog">
+        <!--新建编辑计划步骤对话框-->
+        <div class="modal fade -m" id="editJHModal" tabindex="-1" role="dialog">
 
 
         </div>
@@ -357,7 +357,7 @@
 
 
         <!--数据采集模板-->
-        <div class="modal fade modal-margin-top-m" id="editSJModal" tabindex="-1" role="dialog">
+        <div class="modal fade -m" id="editSJModal" tabindex="-1" role="dialog">
 
         </div>
 
@@ -613,7 +613,7 @@
         }
 
 
-        //上移宣教信息
+        //上移计划信息
         function moveUpJH(index) {
             if (index == 0) {
                 return;
@@ -624,7 +624,7 @@
             loadHtml();
         }
 
-        //下移宣教信息
+        //下移计划信息
         function moveDownJH(index) {
             if (index == kfjhInfo.jhs.length - 1) {
                 return;
@@ -710,6 +710,7 @@
             //进行计划排序
             for (var i = 0; i < kfjhInfo.jhs.length; i++) {
                 kfjhInfo.jhs[i].seq = i;
+                delete kfjhInfo.jhs[i].status;  //删除康复计划的状态
             }
             kfjhInfo._token = "{{ csrf_token() }}";
             console.log("clickAdd after add token kfjhInfo:" + JSON.stringify(kfjhInfo));
@@ -722,7 +723,7 @@
                     kfjhInfo = ret.ret;
                     loadHtml();
                 } else {
-                    $("#tipModalBody").html("<p>宣教信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
+                    $("#tipModalBody").html("<p>计划信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
                     $("#tipModal").modal('show');
                 }
             })

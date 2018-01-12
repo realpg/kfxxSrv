@@ -9,11 +9,14 @@
 
 namespace App\Components;
 
+use App\Models\KFJH;
 use App\Models\User;
 use App\Models\UserCase;
 use App\Models\UserKFJH;
 use App\Models\UserKFJHSJ;
 use App\Models\Vertify;
+use App\Models\ZXJH;
+use App\Models\ZXJHSJ;
 use GuzzleHttp\Psr7\Request;
 
 class UserManager
@@ -550,4 +553,217 @@ class UserManager
         }
         return $kfjhsj;
     }
+
+
+    //处理过期的康复计划
+    /*
+     * 遍历全量为0或者1的康复计划，当已经超过了执行时间，则将status==2,
+     *
+     * By TerryQi
+     *
+     */
+    public static function handleToFinisheKFJH($kfjh)
+    {
+        $userCase = self::getUserCaseById($kfjh->userCase_id);
+        //如果未找到患者病历，则返回false
+        if (!$userCase) {
+            $kfjh->status = "2";        //康复计划设置为已经完成
+            $kfjh->save();
+            return false;
+        }
+        //存在患者病历，则根据btime_type获取btime，即为康复计划的基线日期
+        $btime = self::getKFJHBtime($kfjh, $userCase);
+        //如果得到基线时间，可以继续向下执行
+        if ($btime) {
+            $end_time = self::getKFJHEndTime($kfjh, $btime);
+            $today = DateTool::getToday();
+            $diff = DateTool::dateDiff('D', $end_time, $today);
+            //若diff>0，则应该结束执行计划
+            if ($diff > 0) {
+                //则应结束康复计划
+                $kfjh->status = "2";
+                $kfjh->save();
+            }
+        }
+
+    }
+
+
+    //处理计划执行的康复计划
+    /*
+     * 根据kfjh获取开始执行的时间，如果没有开始时间，则返回false（例如还没有设置ss_time和wt_time等）
+     *
+     * By TerryQi
+     *
+     */
+    public static function handleStartKFJH($kfjh)
+    {
+        $userCase = self::getUserCaseById($kfjh->userCase_id);
+        //如果未找到患者病历，则返回false
+        if (!$userCase) {
+            $kfjh->status = "2";        //康复计划设置为已经完成
+            $kfjh->save();
+            return false;
+        }
+        //存在患者病历，则根据btime_type获取btime，即为康复计划的基线日期
+        $btime = self::getKFJHBtime($kfjh, $userCase);
+        //如果得到了基线时间，可以继续向下执行
+        if ($btime) {
+            $start_time = self::getKFJHStartTime($kfjh, $btime);
+            $today = DateTool::getToday();
+            $diff = DateTool::dateDiff('D', $start_time, $today);
+            //若diff>=0，则应该开始执行计划
+            if ($diff >= 0) {
+                //康复计划状态变为执行中
+                $kfjh->status = "1";
+                $kfjh->save();
+                //生成患者的执行计划
+                if (!ZXJHManager::isZXJHExist($kfjh, DateTool::getToday())) {
+                    ZXJHManager::createZXJH($kfjh);
+                    //进行通知
+                    NoticeManager::sendNotice($userCase->user_id, 'user', '您有新的康复计划，请按照完成');
+                }
+            }
+        }
+    }
+
+    /*
+     * 处理执行中的康复计划
+     *
+     * 根据kfjh获取执行结束的时间，若没到结束时间，则生成执行计划，若到了结束时间，则将康复计划状态置为2，并且不再生成康复计划
+     *
+     * By TerryQi
+     */
+    public static function handleExecutingKFJH($kfjh)
+    {
+        $userCase = self::getUserCaseById($kfjh->userCase_id);
+        //如果未找到患者病历，则返回false
+        if (!$userCase) {
+            $kfjh->status = "2";        //康复计划设置为已经完成
+            $kfjh->save();
+            return false;
+        }
+        //存在患者病历，则根据btime_type获取btime，即为康复计划的基线日期
+        $btime = self::getKFJHBtime($kfjh, $userCase);
+        //如果得到基线时间，可以继续向下执行
+        if ($btime) {
+            $end_time = self::getKFJHEndTime($kfjh, $btime);
+            $today = DateTool::getToday();
+            $diff = DateTool::dateDiff('D', $end_time, $today);
+            //若diff>0，则应该结束执行计划
+            if ($diff <= 0) {
+                //生成患者的执行计划
+                if (!ZXJHManager::isZXJHExist($kfjh, DateTool::getToday())) {
+                    ZXJHManager::createZXJH($kfjh);
+                    //进行通知
+                    NoticeManager::sendNotice($userCase->user_id, 'user', '您有新的康复计划，请按照完成');
+                }
+            }
+        }
+    }
+
+
+
+
+
+    //获取基线日期
+    /*
+     * 根据kfjh和userCase获取基线日期，如果还未设置，则返回false（例如还没有设置ss_time和wt_time等）
+     *
+     * By TerryQi
+     */
+    public static function getKFJHBtime($kfjh, $userCase)
+    {
+        $btime = null;
+        if (Utils::isObjNull($kfjh) || Utils::isObjNull($userCase)) {
+            return false;
+        }
+        switch ($kfjh->btime_type) {
+            case "0":   //手术后
+                if (Utils::isObjNull($userCase->ss_time)) {   //如果手术时间为空，则返回false
+                    return false;
+                }
+                $btime = $userCase->ss_time;
+                break;
+            case "1":   //首次弯腿后
+                if (Utils::isObjNull($userCase->wt_time)) {     //如果首次弯腿时间为空，则返回false
+                    return false;
+                }
+                $btime = $userCase->wt_time;
+            case "2":   //制定日期
+                if (Utils::isObjNull($kfjh->set_date)) {
+                    return false;
+                }
+                $btime = $kfjh->set_date;
+        }
+        return $btime;
+    }
+
+    //根据基线日期获取康复计划的开始执行日期
+    /*
+     * By TerryQi
+     *
+     * 2017-12-31
+     */
+    public static function getKFJHStartTime($kfjh, $btime)
+    {
+        $start_time = null;
+        $start_o_time = $kfjh->start_time;
+        if ($start_o_time == 0) {
+            $start_o_time = 1;
+        }
+        switch ($kfjh->btime_type) {
+            case "0":   //手术后
+                $days = Utils::computeDaysByUnit(($start_o_time - 1), $kfjh->start_unit) + 1;
+                $start_time = DateTool::dateAdd('D', $days, $btime, 'Y-m-d');
+                break;
+            case "1":   //首次弯腿后
+                $days = Utils::computeDaysByUnit(($start_o_time - 1), $kfjh->start_unit) + 1;
+                $start_time = DateTool::dateAdd('D', $days, $btime, 'Y-m-d');
+                break;
+            case "2":   //指定日期
+                $start_time = $kfjh->set_date;
+                break;
+        }
+        return $start_time;
+    }
+
+    //根据基线日期获取康复计划的结束日期
+    public static function getKFJHEndTime($kfjh, $btime)
+    {
+        $end_time = null;
+        switch ($kfjh->btime_type) {
+            case "0":   //手术后
+                $days = Utils::computeDaysByUnit($kfjh->end_time, $kfjh->end_unit);
+                $end_time = DateTool::dateAdd('D', $days, $btime, 'Y-m-d');
+                break;
+            case "1":   //首次弯腿后
+                $days = Utils::computeDaysByUnit($kfjh->start_time, $kfjh->end_unit);
+                $end_time = DateTool::dateAdd('D', $days, $btime, 'Y-m-d');
+                break;
+            case "2":   //指定日期
+                $end_time = $kfjh->set_date;
+                break;
+        }
+        return $end_time;
+    }
+
+
+    /*
+     * 根据状态生成获取用户的康复计划列表信息
+     *
+     * By TerryQi
+     *
+     * 2017-12-31
+     *
+     * $status为数组，即["0"]\["0","1"]
+     *
+     */
+    public static function getKFJHListByStatus($status)
+    {
+        $kfjhs = KFJH::whereIn('status', $status)->get();
+        return $kfjhs;
+    }
+
+
 }

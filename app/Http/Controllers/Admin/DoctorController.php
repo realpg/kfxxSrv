@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin;
 use App\Components\DoctorManager;
 use App\Components\QNManager;
 use App\Components\UserManager;
+use App\Components\Utils;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
@@ -67,12 +68,12 @@ class DoctorController
 //        dd($data);
         $doctor = new Doctor();
         //存在id是保存
-        if (array_key_exists('id', $data)) {
+        if (array_key_exists('id', $data) && !Utils::isObjNull($data['id'])) {
             $doctor = DoctorManager::getDoctorById($data['id']);
         }
         $doctor = DoctorManager::setDoctor($doctor, $data);
         //如果不存在id代表新建，则默认设置密码
-        if (!array_key_exists('id', $data)) {
+        if (!array_key_exists('id', $data) || Utils::isObjNull($data['id'])) {
             $doctor->password = 'afdd0b4ad2ec172c586e2150770fbf9e';  //该password为Aa123456的码
             $doctor->token = UserManager::getGUID();
         }

@@ -11,6 +11,7 @@ namespace App\Http\Controllers\API;
 use App\Components\ADManager;
 use App\Components\HomeManager;
 use App\Components\UserManager;
+use App\Components\ZXJHManager;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
@@ -50,58 +51,88 @@ class UserCaseController extends Controller
     }
 
     /*
-     * 编辑患者病例康复计划
+    * 根据user_id和日期获取执行计划
+    *
+    * By TerryQi
+    *
+    * 2018-1-2
+    */
+    public function getUserZXJHByDate(Request $request)
+    {
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'user_id' => 'required',
+            'date' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $data = $request->all();
+        $zxjhs = ZXJHManager::getZXJHByUserIdAndDate($data['user_id'], $data['date']);
+        //如果有执行计划，则补充数据项
+        if ($zxjhs) {
+            foreach ($zxjhs as $zxjh) {
+                $zxjh->jhsjs = ZXJHManager::getZXJHSJsByZXJHId($zxjh->id);
+            }
+        }
+        return ApiResponse::makeResponse(true, $zxjhs, ApiResponse::SUCCESS_CODE);
+    }
+
+    /*
+     * 根据id获取执行计划信息
      *
      * By TerryQi
      *
-     * 2017-12-28
+     * 2018-1-2
      */
-    public function editUserCaseKFJH(Request $request)
+    public function getZXJHById(Request $request)
     {
-        //获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
-        $data = $request->all();
-//        dd($data);
         $requestValidationResult = RequestValidator::validator($request->all(), [
             'id' => 'required',
         ]);
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        //新建/编辑康复模板
-        $userCase = UserManager::getUserCaseById($data['id']);
-        $userCase = UserManager::getUserCaseInfoByLevel($userCase, "12");
-        //根据用户病例id获取全部康复计划
-        $ori_jhs = $userCase->jhs;
-        //删除原有康复计划以及计划下关联的数据
-        foreach ($ori_jhs as $ori_jh) {
-            $ori_jhsjs = UserManager::getUserCaseJHSJByJHId($ori_jh->id);
-            $ori_jh->delete();
-            foreach ($ori_jhsjs as $ori_jhsj) {
-                $ori_jhsj->delete();
+        $data = $request->all();
+        $zxjh = ZXJHManager::getZXJHById($data['id']);
+        //如果有执行计划，则补充数据项
+        if ($zxjh) {
+            $zxjh->jhsjs = ZXJHManager::getZXJHSJsByZXJHId($zxjh->id);
+        }
+        return ApiResponse::makeResponse(true, $zxjh, ApiResponse::SUCCESS_CODE);
+    }
+
+    //患者进行计划执行，POST执行结果及采集数据的复杂结果
+    /*
+     * By TerryQi
+     *
+     * 2018-1-2
+     */
+    public function executeZXJH(Request $request)
+    {
+        //获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
+        $data = $request->all();
+        //新建/编辑宣教信息
+        $zxjh = ZXJHManager::getZXJHById($data['id']);
+        $zxjh = ZXJHManager::setZXJH($zxjh, $data);
+        $zxjh->status = "2";  //代表已经执行完成
+        $zxjh->save();      //保存执行结果
+        //获取计划数据
+        $new_jhsjs = $data['jhsjs'];
+        foreach ($new_jhsjs as $new_jhsj) {
+            //保存计划数据
+            $zxjhsj = ZXJHManager::getZXJHSJById($new_jhsj['id']);
+            $zxjhsj = ZXJHManager::setZXJHSJ($zxjhsj, $new_jhsj);
+            $zxjhsj->save();
+            //是否超过阈值
+            if ($zxjhsj->value < $zxjhsj->min_value || $zxjhsj->value > $zxjhsj->max_value) {
+                //进行预警，并记录预警信息
+                //预留代码
             }
         }
-        //新建康复计划及数据
-        $new_jhs = $data['jhs'];
-        foreach ($new_jhs as $new_jh) {
-            $jh = new UserKFJH();
-            $jh = UserManager::setKFJH($jh, $new_jh);
-            $jh->user_id = $userCase->user_id;
-            $jh->userCase_id = $userCase->id;
-            $jh->save();
-            //新建康复计划采集数据
-            $new_jhsjs = $new_jh['jhsjs'];
-            foreach ($new_jhsjs as $new_jhsj) {
-                $jhsj = new UserKFJHSJ();
-                $jhsj = UserManager::setKFJHSJ($jhsj, $new_jhsj);
-                $jhsj->user_id = $userCase->user_id;
-                $jhsj->kfjh_id = $jh->id;
-                $jhsj->userCase_id = $userCase->id;
-                $jhsj->save();
-            }
-        }
-        //保存患者病例的康复计划
-        $userCase = UserManager::getUserCaseInfoByLevel($userCase, "12");
-        return ApiResponse::makeResponse(true, $userCase, ApiResponse::SUCCESS_CODE);
+        //返回执行结果
+        $zxjh = ZXJHManager::getZXJHById($zxjh->id);
+        $zxjh->jhsjs = ZXJHManager::getZXJHSJsByZXJHId($zxjh->id);
+        return ApiResponse::makeResponse(true, $zxjh, ApiResponse::SUCCESS_CODE);
     }
 
 }

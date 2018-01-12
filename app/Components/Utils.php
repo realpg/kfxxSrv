@@ -74,4 +74,31 @@ class Utils
         }
         return $age;
     }
+
+
+    /*
+     * 根据times和unit获取以天为单位的数值，用于后续的日期计算
+     *
+     * By TerryQI
+     *
+     * 2017-12-31
+     *
+     */
+    public static function computeDaysByUnit($times, $unit)
+    {
+        $unit_value = 1;
+        switch ($unit) {
+            case "0":       //日
+                $unit_value = 1;
+                break;
+            case "1":       //周
+                $unit_value = 7;
+                break;
+            case "2":       //月
+                $unit_value = 30;
+                break;
+
+        }
+        return ($times * $unit_value);
+    }
 }

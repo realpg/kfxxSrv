@@ -141,7 +141,7 @@
         </div>
     </section>
 
-    <div class="modal fade modal-margin-top-m" id="addUserCaseModal" tabindex="-1" role="dialog">
+    <div class="modal fade -m" id="addUserCaseModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">

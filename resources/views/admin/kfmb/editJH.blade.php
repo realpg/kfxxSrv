@@ -146,7 +146,7 @@
 
 
     <!--新建编辑计划对话框-->
-    <div class="modal fade modal-margin-top-m" id="editJHModal" tabindex="-1" role="dialog">
+    <div class="modal fade -m" id="editJHModal" tabindex="-1" role="dialog">
 
 
     </div>
@@ -235,7 +235,7 @@
 
 
     <!--数据采集模板-->
-    <div class="modal fade modal-margin-top-m" id="editSJModal" tabindex="-1" role="dialog">
+    <div class="modal fade -m" id="editSJModal" tabindex="-1" role="dialog">
 
     </div>
 

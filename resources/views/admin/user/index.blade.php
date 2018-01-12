@@ -170,7 +170,7 @@
         </div>
 
         {{--新建对话框--}}
-        <div class="modal fade modal-margin-top-m" id="addUserModal" tabindex="-1" role="dialog">
+        <div class="modal fade -m" id="addUserModal" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content message_align">
                     <div class="modal-header">

@@ -139,7 +139,7 @@
     </section>
 
     {{--新建对话框--}}
-    <div class="modal fade modal-margin-top-m" id="addDoctorModal" tabindex="-1" role="dialog">
+    <div class="modal fade -m" id="addDoctorModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">
@@ -262,7 +262,7 @@
 
 
     {{--删除对话框--}}
-    <div class="modal fade modal-margin-top" id="delConfrimModal" tabindex="-1" role="dialog">
+    <div class="modal fade " id="delConfrimModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">
