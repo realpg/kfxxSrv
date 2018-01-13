@@ -274,8 +274,10 @@ class UserManager
          * 预留，需要触发短信端口进行验证码下发
          */
         if ($vertify) {
+            SMSManager::sendSMSVerification($phonenum, $vertify_code);
             return true;
         }
+        return false;
     }
 
     /*
