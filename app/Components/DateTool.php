@@ -24,6 +24,9 @@ class DateTool
      */
     public static function formateData($date_str, $style)
     {
+        if (Utils::isObjNull($date_str)) {
+            return $date_str;
+        }
         switch ($style) {
             case 0:
                 return self::getYMDChi($date_str);

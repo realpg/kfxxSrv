@@ -283,12 +283,25 @@
                         </li>
                     </ul>
                 </li>
-                <li class="">
-                    <a href="{{url('/admin/sjx/index')}}">
+                <li class="treeview">
+                    <a href="#">
                         <i class="fa fa-database"></i>
-                        <span>数据模板</span>
-                        <small class="label bg-red pull-right">！</small>
+                        <span>配置数据</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('/admin/sjx/index')}}"><i class="fa fa-circle-o"></i>数据模板
+                                <small class="label bg-red pull-right">！</small>
+                            </a>
+                        </li>
+                        <li><a href="{{url('/admin/hPos/index')}}"> <i class="fa fa-circle-o"></i>
+                                患处位置
+                                <small class="label bg-red pull-right">！</small>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </section>

@@ -66,6 +66,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/sjx/edit', 'Admin\SJXController@edit');  //新建或编辑数据项
     Route::post('/sjx/edit', 'Admin\SJXController@editPost');  //新建或编辑数据项
 
+    //患处位置管理
+    Route::get('/hPos/index', 'Admin\HPosController@index');
+    Route::post('/hPos/edit', 'Admin\HPosController@editPost');
+
     //康复模板管理
     Route::get('/kfmb/index', 'Admin\KFMBController@index');  //康复模板管理首页
     Route::get('/kfmb/edit', 'Admin\KFMBController@edit');  //康复模板管理

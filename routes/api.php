@@ -85,6 +85,9 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('userCase/getZXJHById', 'API\UserCaseController@getZXJHById');//根据id获取患者执行计划详情
     Route::post('userCase/executeZXJH', 'API\UserCaseController@executeZXJH')->middleware('CheckToken');//上传执行计划结果
 
+    //患处位置图
+    Route::get('hPos/getList', 'API\HPosController@getHPosList');//获取患处位置列表
+    Route::get('hPos/getById', 'API\HPosController@getHPosById');//根据id获取患处位置
 
     //启动生成康复计划
     Route::post('schedule/autoCreateUserZXJH', 'API\ScheduleController@autoCreateUserZXJH');     //每日自动生成患者执行计划任务

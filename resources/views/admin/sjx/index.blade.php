@@ -185,7 +185,6 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-
     </section>
 @endsection
 
