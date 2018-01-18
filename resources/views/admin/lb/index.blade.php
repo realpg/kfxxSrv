@@ -29,6 +29,7 @@
                             <thead>
                             <tr>
                                 <th>标题</th>
+                                <th>类型</th>
                                 <th>描述</th>
                                 <th>时间</th>
                                 <th>录入人</th>
@@ -42,6 +43,18 @@
                                     <td>
                                         <div class="line-height-30  text-oneline ">
                                             {{$data->name}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="line-height-30  text-oneline ">
+                                            @if($data->type == '0')
+                                                普通量表
+                                            @elseif($data->type == '1')
+                                                验证量表
+                                            @else
+                                                随访量表
+                                            @endif
+                                            {{$data->type}}
                                         </div>
                                     </td>
 
@@ -175,6 +188,18 @@
                                     <input id="name" name="name" type="text" class="form-control"
                                            placeholder="请输入"
                                            value="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="seq" class="col-sm-2 control-label">类型</label>
+
+                                <div class="col-sm-10">
+                                    <select name="type">
+                                        <option value="0">普通量表</option>
+                                        <option value="1">验证量表</option>
+                                        <option value="2">随访量表</option>
+                                    </select>
                                 </div>
                             </div>
 

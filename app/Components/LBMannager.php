@@ -87,6 +87,9 @@ class LBMannager
 		if (array_key_exists('name', $data)) {
 			$lb->name = array_get($data, 'name');
 		}
+		if (array_key_exists('type', $data)) {
+			$lb->type = array_get($data, 'type');
+		}
 		if (array_key_exists('desc', $data)) {
 			$lb->desc = array_get($data, 'desc');
 		}

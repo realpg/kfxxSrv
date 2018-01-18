@@ -168,6 +168,7 @@
         <img id="@{{=i}}" class="margin-top-10"
              src="@{{=it.img_arr[i]}}?imageView2/2/w/120/h/70/interlace/1/q/75|imageslim"
              style="width: 120px;height: 70px;">
+        <div onclick="delImg(@{{=i}})">删除</div>
         @{{}}}
         <img id="pickfiles" class="margin-top-10"
              src="{{URL::asset('/img/upload.png')}}"
@@ -295,7 +296,10 @@
                 if (ret.result) {
                     //对象配置
                     hPos_info = ret.ret;
+                    if (hPos_info.img)
                     hPos_info.img_arr = hPos_info.img.split(",");
+                    else
+                        hPos_info.img_arr=[];
                     loadHtml(hPos_info);
                     //展示modal
                     $("#editHposModal").modal('show');
@@ -303,6 +307,10 @@
             })
         }
 
+        function delImg(i){
+            hPos_info.img_arr.splice(i,1);
+            loadHtml();
+        }
         //点击保存
         function clickSave() {
             console.log("clickSave");
@@ -322,12 +330,12 @@
                 $("#seq").focus();
                 return;
             }
-            if (hPos_info.img_arr.length <= 0) {
-                $("#tipModalBody").html('<p>请上传患处位置的图片</p>');
-                $("#tipModal").modal('show');
-                return;
-                return;
-            }
+//            if (hPos_info.img_arr.length <= 0) {
+//                $("#tipModalBody").html('<p>请上传患处位置的图片</p>');
+//                $("#tipModal").modal('show');
+//                return;
+//                return;
+//            }
             //赋值准备保存
             hPos_info.img = hPos_info.img_arr.toString();
             hPos_info.name = name;

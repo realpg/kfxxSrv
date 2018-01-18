@@ -58,6 +58,8 @@
         <div class="row margin-top-10">
             <div class="col-md-12">
                 @{{~it :question:index_que}}
+
+
                 <div class="white-bg">
                     <div style="padding: 15px;">
                     {{--@{{~question.options :option:index_opt}}--}}
@@ -65,20 +67,49 @@
                         <div class="row margin-top-10">
                             <div class="col-md-12">
                                 <!-- The time line -->
-
-                                <h3>
+                                <h3 class="form-control">
+                                    问题:
                                     <input onchange="changeQuestion('@{{=index_que}}',this)" type="text"
-                                           class="form-control" placeholder="请输入问题"
+                                            placeholder="请输入问题"style="border: none;width: 60%"
                                            value=@{{=question.question}}>
+                                    权重:
+                                    <input
+                                            onchange="changequan('@{{=index_que}}',this)"
+                                            type="number" style="border: none"
+                                            value=@{{=question.quan }}>
+                                    问题类型:
+                                    <select name="type" style="border: none" value="@{{=question.type}}"
+                                            onchange="changeType('@{{=index_que}}',this)">
+                                        @{{? question.type==='0'}}
+                                        <option value="0" selected='selected'>单选题</option>
+                                        @{{?? }}
+                                        <option value="0">单选题</option>
+                                        @{{?}}
+                                        @{{? question.type==='1'}}
+                                        <option value="1" selected='selected'>多选题</option>
+                                        @{{?? }}
+                                        <option value="1" >多选题</option>
+                                        @{{?}}
+                                        @{{? question.type==='2'}}
+                                        <option value="2" selected='selected'>填空题</option>
+                                        @{{?? }}
+                                        <option value="2" >填空题</option>
+                                        @{{?}}
+                                        @{{? question.type==='3'}}
+                                        <option value="3" selected='selected'>表格题</option>
+                                        @{{?? }}
+                                        <option value="3" >表格题</option>
+                                        @{{?}}
+                                    </select>
                                 </h3>
+                                @{{? question.type==='0'||question.type==='1'}}
                                 <table class="table table-bordered">
-
-
                                     <tr class="margin-top-10 grey-bg">
                                         <th></th>
                                         <th class="col-md-1">序号</th>
                                         <th class="col-md-9">选项</th>
                                         <th class="col-md-1">分数</th>
+                                        <th class="col-md-1">最终分数</th>
                                         <th class="col-md-1">操作</th>
                                     </tr>
                                     @{{~question.options :option:index_opt}}
@@ -99,8 +130,15 @@
 
                                         <th>
                                             <input id="point@{{=index_opt}}"
-                                                   onchange="changePoint('@{{=index_que}}','@{{=index_opt}}',this)"
+                                                   onchange="changePoint0('@{{=index_que}}','@{{=index_opt}}',this)"
                                                    type="number" style="border: none"
+                                                   value=@{{=option.point0 }}>
+                                        </th>
+
+                                        <th>
+                                            <input id="point@{{=index_opt}}"
+                                                   onchange="changePoint('@{{=index_que}}','@{{=index_opt}}',this)"
+                                                   type="number" style="border: none"disabled="true"
                                                    value=@{{=option.point }}>
                                         </th>
                                         <th>
@@ -114,6 +152,13 @@
 
 
                                 </table>
+                                @{{?? question.type==='2'}}
+                                <input type="text">
+                                填空题,使用"&bk"代替空格
+                                @{{?? question.type==='3'}}
+                                表格
+                                @{{?}}
+
                             </div>
 
                             <div class="col-md-12">
@@ -240,10 +285,12 @@
             for (var i in Questions) {
                 Questions[i].options = [];
                 var opts = Questions[i].answer.split("@q=");
+                Questions[i].quan = 1;
                 for (var j = 1; j < opts.length; j++) {
                     Questions[i].options.push({
                             option: opts[j].split('&p=')[0],
-                            point: opts[j].split('&p=')[1]
+                            point: opts[j].split('&p=')[1],
+                            point0:opts[j].split('&p=')[1],
                         }
                     );
                 }
@@ -285,7 +332,8 @@
         function addQue(index_que) {
             questions.push({
                 question: "",
-                options: [{option: "", point: 0}]
+                quan:1,
+                options: [{option: "",point0:0, point: 0}]
             });
             loadHtml();
         }
@@ -331,7 +379,24 @@
             questions[index_que].options[index_opt].point = e.value;
             loadHtml();
         }
-
+        function changePoint0(index_que, index_opt, e) {
+            var q=questions[index_que].options[index_opt];
+            q.point0 = e.value;
+            q.point=q.point0*questions[index_que].quan;
+            loadHtml();
+        }
+        function changequan(index_que, e) {
+            questions[index_que].quan= e.value;
+            var q=questions[index_que].options;
+            for(var i=0;i<q.length;i++)
+                q[i].point=q[i].point0*questions[index_que].quan;
+            loadHtml();
+        }
+        function changeType(index_que, e) {
+            questions[index_que].type= e.value;
+            console.log(e.options[e.value])
+            loadHtml();
+        }
         function changeName(e) {
             lb.name = e.value;
             loadHtml();
