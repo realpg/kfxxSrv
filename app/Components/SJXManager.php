@@ -32,6 +32,48 @@ class SJXManager
     }
 
     /*
+     * 根据患处位置搜索数据项-分页
+     *
+     * By TerryQi
+     *
+     * 2018-01-19
+     *
+     */
+    public static function getSJXsByHPosPaginate($hpos_id)
+    {
+        $sjxs = SJX::where('hpos_id', '=', $hpos_id)->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $sjxs;
+    }
+
+    /*
+     * 根据患处位置搜索数据项
+     *
+     * By TerryQi
+     *
+     * 2018-01-19
+     *
+     */
+    public static function getSJXsByHPos($hpos_id)
+    {
+        $sjxs = SJX::where('hpos_id', '=', $hpos_id)->orderby('id', 'desc')->get();
+        return $sjxs;
+    }
+
+    /*
+     * 获取全部数据项-分页
+     *
+     * By TerryQi
+     *
+     * 2017-11-27
+     *
+     */
+    public static function getSJXsPaginate()
+    {
+        $sjx = SJX::orderby('seq', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $sjx;
+    }
+
+    /*
      * 获取全部数据项
      *
      * By TerryQi
@@ -41,7 +83,7 @@ class SJXManager
      */
     public static function getSJXs()
     {
-        $sjx = SJX::orderby('seq', 'asc')->paginate(Utils::PAGE_SIZE);
+        $sjx = SJX::orderby('seq', 'desc')->get();
         return $sjx;
     }
 
@@ -57,6 +99,15 @@ class SJXManager
     {
         if (array_key_exists('name', $data)) {
             $sjx->name = array_get($data, 'name');
+        }
+        if (array_key_exists('hpos_id', $data)) {
+            $sjx->hpos_id = array_get($data, 'hpos_id');
+        }
+        if (array_key_exists('type', $data)) {
+            $sjx->type = array_get($data, 'type');
+        }
+        if (array_key_exists('side', $data)) {
+            $sjx->side = array_get($data, 'side');
         }
         if (array_key_exists('desc', $data)) {
             $sjx->desc = array_get($data, 'desc');

@@ -48,35 +48,6 @@ class XJManager
     }
 
     /*
-     * 获取全部类别
-     *
-     * By TerryQi
-     *
-     * 2017-11-27
-     *
-     */
-    public static function getXJTypes()
-    {
-        $xj_types = XJType::orderby('seq', 'asc')->paginate(Utils::PAGE_SIZE);
-        return $xj_types;
-    }
-
-    /*
-     * 根据id获取类型
-     *
-     * By TerryQi
-     *
-     * 2017-12-07
-     *
-     */
-    public static function getXJTypeById($id)
-    {
-        $xj_type = XJType::where('id', '=', $id)->first();
-        return $xj_type;
-    }
-
-
-    /*
      * 根据条件获取宣教信息
      *
      * By TerryQi
@@ -86,17 +57,18 @@ class XJManager
      * type为类型，可以组合传入
      *
      */
-    public static function getXJListByCon($types_arr)
+    public static function getXJListByCon($hpos_arr)
     {
+
         $xjs = XJ::orderby('id', 'desc')->where('status', '=', '1');
-        for ($i = 0; $i < count($types_arr); $i++) {
+        for ($i = 0; $i < count($hpos_arr); $i++) {
             if ($i == 0) {
-                $xjs = $xjs->where('type', 'like', '%' . $types_arr[$i] . '%');
+                $xjs = $xjs->where('hpos_ids', 'like', '%' . $hpos_arr[$i] . '%');
             } else {
-                $xjs = $xjs->orwhere('type', 'like', '%' . $types_arr[$i] . '%');
+                $xjs = $xjs->orwhere('hpos_ids', 'like', '%' . $hpos_arr[$i] . '%');
             }
         }
-        $xjs = $xjs->paginate(Utils::PAGE_SIZE);
+        $xjs = $xjs->orderby('created_at', 'desc')->paginate(Utils::PAGE_SIZE);
         return $xjs;
     }
 
@@ -147,7 +119,7 @@ class XJManager
      * 根据level级别不同获取宣教样式
      * 0:最简级别，只带宣教基本信息
      * 1:基本级别，带录入人员信息
-     * 2:中级级别，带type的含义
+     * 2:中级级别，待患处位置信息
      * 3:高级级别，带录入医师信息、类型信息、图文步骤信息
      *
      */
@@ -157,14 +129,14 @@ class XJManager
             $xj->doctor = DoctorManager::getDoctorById($xj->doctor_id);
         }
         if ($level >= 2) {
-            $type_ids = $xj->type;
-            $type_ids_arr = explode(",", $type_ids);
-            $types_collection = collect(['data' => collect()]);
-            foreach ($type_ids_arr as $type_id) {
-                $type = self::getXJTypeById($type_id);
-                $types_collection['data']->push($type);
+            $hpos_ids = $xj->hpos_ids;
+            $hpos_id_arr = explode(",", $hpos_ids);
+            $hposs_collection = collect(['data' => collect()]);
+            foreach ($hpos_id_arr as $hpos_id) {
+                $hpos = HposManager::getHPosById($hpos_id);
+                $hposs_collection['data']->push($hpos);
             }
-            $xj->types = $types_collection;
+            $xj->hposs = $hposs_collection;
         }
         if ($level >= 3) {
             $xj->steps = self::getStepsByXJId($xj->id);
@@ -275,8 +247,8 @@ class XJManager
         if (array_key_exists('status', $data)) {
             $xj->status = array_get($data, 'status');
         }
-        if (array_key_exists('type', $data) && !Utils::isObjNull($data['type'])) {
-            $xj->type = array_get($data, 'type');
+        if (array_key_exists('hpos_ids', $data) && !Utils::isObjNull($data['hpos_ids'])) {
+            $xj->hpos_ids = array_get($data, 'hpos_ids');
         }
         if (array_key_exists('show_num', $data)) {
             $xj->show_num = array_get($data, 'show_num');

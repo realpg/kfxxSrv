@@ -170,17 +170,17 @@
                             </div>
 
                             <div class="form-group margin-top-10">
-                                <label for="type" class="col-sm-2 control-label">类型</label>
+                                <label for="type" class="col-sm-2 control-label">位置</label>
                                 <div class="col-sm-10">
                                     <div class="margin-top-10 row">
                                         <div class="row">
-                                            @foreach($xj_types as $xj_type)
+                                            @foreach($hposs as $hpos)
                                                 <div class="col-xs-4">
-                                                    <input type="checkbox" name="xj_type" id="xj_type{{$xj_type->id}}"
-                                                           value="{{$xj_type->id}}"
+                                                    <input type="checkbox" name="hpos_id" id="hpos_id{{$hpos->id}}"
+                                                           value="{{$hpos->id}}"
                                                            class="minimal">
                                                     <span
-                                                            class="margin-left-10">{{$xj_type->name}}</span>
+                                                            class="margin-left-10">{{$hpos->name}}</span>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -292,10 +292,6 @@
 @section('script')
     <script type="application/javascript">
 
-        //入口函数
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
 
         //优化icheck展示
         function setICheck() {
@@ -318,7 +314,7 @@
             "created_at": getCurrentTime(),
             "doctor_id":{{$admin->id}},
             "img": "",
-            "type": "10000",
+            "hpos_ids": "",
             "show_num": 0,
             "steps": []
         }
@@ -326,6 +322,8 @@
 
         //入口函数
         $(document).ready(function () {
+            //tooltip
+            $('[data-toggle="tooltip"]').tooltip()
             //从url中获取id
             var xj_id = getQueryString("id");
             if (judgeIsNullStr(xj_id)) {
@@ -333,6 +331,7 @@
                 xjInfo = empty_xjInfo;
                 loadHtml();
             } else {
+                //加载计划页面
                 var param = {
                     id: xj_id
                 }
@@ -366,10 +365,13 @@
             console.log("editXJInfo");
             var interText = doT.template($("#editXJModal-content-template").text());
             $("#editXJModal").html(interText(xjInfo));
-            //专门设置类型
-            var type_arr = xjInfo.type.split(',');
-            for (var i = 0; i < type_arr.length; i++) {
-                $("#xj_type" + type_arr[i]).attr('checked', 'true');
+            //专门设置位置
+            var hpos_arr = [];
+            if (!judgeIsNullStr(xjInfo.hpos_ids)) {
+                var hpos_arr = xjInfo.hpos_ids.split(',');
+            }
+            for (var i = 0; i < hpos_arr.length; i++) {
+                $("#hpos_id" + hpos_arr[i]).attr('checked', 'true');
             }
             //初始化七牛
             initQNUploader('container', 'img', 'pickfiles');
@@ -384,14 +386,14 @@
             xjInfo.author = $("#author").val();
             xjInfo.desc = $("#desc").val();
             xjInfo.img = $("#img").val();
-            xjInfo.type = "";
-            var type_arr = [];
+            xjInfo.hpos_ids = "";
+            var hpos_arr = [];
             $('input:checkbox').each(function () {
                 if ($(this).is(':checked') == true) {
-                    type_arr.push($(this).attr('value'));
+                    hpos_arr.push($(this).attr('value'));
                 }
             });
-            xjInfo.type = type_arr.toString();
+            xjInfo.hpos_ids = hpos_arr.toString();
             //合规校验
             if (judgeIsNullStr(xjInfo.title)) {
                 $("#title").focus();

@@ -20,16 +20,53 @@
 
     <!-- Main content -->
     <section class="content">
+        {{--条件搜索--}}
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- Horizontal Form -->
+                <div class="">
+                    <!-- form start -->
+                    <form action="{{URL::asset('/admin/sjx/search')}}" method="post" class="form-horizontal">
+                        {{csrf_field()}}
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <select name="hpos_id" class="form-control">
+                                        @foreach($hposs as $hpos)
+                                            <option value="{{$hpos->id}}"
+                                            @if(isset($search_hpos_id))
+                                                {{ $hpos->id == $search_hpos_id ? 'selected':''}}
+                                                    @endif
+                                            >{{$hpos->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="submit" class="btn btn-info btn-block btn-flat" onclick="">
+                                        搜索
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
         <!--列表-->
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-body">
-                        <table   class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>数据项</th>
-                                <th class="con-th-width-l">描述</th>
+                                <th>类型</th>
+                                <th>位置</th>
+                                <th>单/双侧</th>
                                 <th>单位</th>
                                 <th>录入时间</th>
                                 <th class="opt-th-width-m">操作</th>
@@ -39,9 +76,22 @@
                             @foreach($datas as $data)
                                 <tr id="tr_{{$data->id}}">
                                     <td><span class="line-height-30">{{$data->name}}</span></td>
-                                    <td class="con-th-width-l"><span
-                                                class="line-height-30 text-oneline">{{$data->desc}}</span>
+                                    <td>
+                                        @if($data->type=="1")
+                                            <span class="line-height-30">皮温</span>
+                                        @endif
+                                        @if($data->type=="2")
+                                            <span class="line-height-30">皮疼</span>
+                                        @endif
+                                        @if($data->type=="3")
+                                            <span class="line-height-30">角度</span>
+                                        @endif
+                                        @if($data->type=="4")
+                                            <span class="line-height-30">围度</span>
+                                        @endif
                                     </td>
+                                    <td><span class="line-height-30">{{$data->hpos->name}}</span></td>
+                                    <td><span class="line-height-30">{{$data->side == 0 ? '单侧':'双侧'}}</span></td>
                                     <td><span class="line-height-30">{{$data->unit}}</span></td>
                                     <td><span class="line-height-30">{{$data->created_at_str}}</span></td>
                                     <td class="opt-th-width-m">
@@ -53,12 +103,13 @@
                                                   title="编辑该数据项">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
-                                            <a href=""
-                                               class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
-                                               data-toggle="modal" data-target="#tip_modal"
-                                               onclick="">
+                                            <span class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
+                                                  onclick="clickDel({{$data->id}});"
+                                                  data-toggle="tooltip"
+                                                  data-placement="top"
+                                                  title="删除该数据项">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
-                                            </a>
+                                            </span>
                                         </span>
                                     </td>
                                 </tr>
@@ -74,14 +125,16 @@
         </div>
         <!-- /.row -->
 
-
+        {{--分页--}}
         <div class="row">
             <div class="col-sm-5">
 
             </div>
             <div class="col-sm-7 text-right">
+                {!! $datas->links() !!}
             </div>
         </div>
+
         {{--模态框--}}
         <div class="modal fade " id="tip_modal" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLabel">
@@ -114,7 +167,7 @@
                                     aria-hidden="true">×</span></button>
                         <h4 class="modal-title">新建/编辑数据项</h4>
                     </div>
-                    <form action="{{URL::asset('/admin/sjx/edit')}}" method="post" class="form-horizontal"
+                    <form id="editSJX" action="{{URL::asset('/admin/sjx/edit')}}" method="post" class="form-horizontal"
                           onsubmit="return checkValid();">
                         <div class="modal-body">
                             {{csrf_field()}}
@@ -148,11 +201,34 @@
                                                value="">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="desc" class="col-sm-2 control-label">描述</label>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label for="hpos_id" class="col-sm-2 control-label">患处</label>
                                     <div class="col-sm-10">
-                                    <textarea id="desc" name="desc" class="form-control" rows="3"
-                                              placeholder="请输入 ..."></textarea>
+                                        <select id="hpos_id" name="hpos_id" class="form-control">
+                                            @foreach($hposs as $hpos)
+                                                <option value="{{$hpos->id}}">{{$hpos->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label for="side" class="col-sm-2 control-label">采集侧</label>
+                                    <div class="col-sm-10">
+                                        <select id="side" name="side" class="form-control">
+                                            <option value="0">单侧</option>
+                                            <option value="1">双侧</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label for="type" class="col-sm-2 control-label">数据类型</label>
+                                    <div class="col-sm-10">
+                                        <select id="type" name="type" class="form-control">
+                                            <option value="1">皮温</option>
+                                            <option value="2">皮疼</option>
+                                            <option value="3">角度</option>
+                                            <option value="4">围度</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -196,27 +272,26 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
 
-
         //点击新建数据项
         function clickAdd() {
             //清空模态框
-            $("#id").val("");
-            $("#name").val("");
-            $("#desc").val("");
-            $("#unit").val("cm");
+            $("#editSJX")[0].reset();
             $("#addSJXModal").modal('show');
         }
 
         //点击编辑
         function clickEdit(sjx_id) {
             console.log("clickEdit sjx_id:" + sjx_id);
-            getSJXById("{{URL::asset('')}}", {id: sjx_id}, function (ret) {
+            getSJXById("{{URL::asset('')}}", {id: sjx_id, _token: "{{ csrf_token() }}"}, function (ret) {
                 if (ret.result) {
                     var msgObj = ret.ret;
                     //对象配置
                     $("#id").val(msgObj.id);
                     $("#name").val(msgObj.name);
-                    $("#desc").val(msgObj.desc);
+                    console.log("hpos_id:" + msgObj.hpos_id);
+                    $("#hpos_id").val(msgObj.hpos_id);
+                    $("#side").val(msgObj.side);
+                    $("#type").val(msgObj.type);
                     $("#unit").val(msgObj.unit);
                     //展示modal
                     $("#addSJXModal").modal('show');
@@ -233,6 +308,19 @@
                 return false;
             }
             return true;
+        }
+
+
+        //点击删除数据项
+        function clickDel(sjx_id) {
+            console.log("clickDel sjx_id:" + sjx_id);
+            //为删除按钮赋值
+            $("#tip_modal").modal('show');
+        }
+
+        //点击搜索全部
+        function searchAll() {
+            window.location = "{{URL::asset('/admin/sjx/index')}}";
         }
 
     </script>

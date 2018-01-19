@@ -35,6 +35,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/ad/edit', 'Admin\ADController@edit');  //新建或编辑轮播
     Route::post('/ad/edit', 'Admin\ADController@editPost');  //新建或编辑轮播
 
+    //手术管理
+    Route::get('/surgery/index', 'Admin\SurgeryController@index');  //手术首页
+    Route::get('/surgery/del/{id}', 'Admin\SurgeryController@del');  //删除手术
+    Route::get('/surgery/edit', 'Admin\SurgeryController@edit');  //新建或编辑手术
+    Route::post('/surgery/edit', 'Admin\SurgeryController@editPost');  //新建或编辑手术
+
+
     //管理员管理
     Route::get('/doctor/index', 'Admin\DoctorController@index');  //管理员管理首页
     Route::get('/doctor/del/{id}', 'Admin\DoctorController@del');  //删除管理员
@@ -54,15 +61,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/xj/editXJ', 'Admin\XJController@editXJ');  //编辑宣教页面
     Route::post('/xj/editXJ', 'Admin\XJController@editXJPost'); //编辑宣教Post
 
-
-    //宣教分类管理
-    Route::get('/xjType/index', 'Admin\XJController@indexType');  //宣教分类管理首页
-    Route::get('/xjType/edit', 'Admin\XJController@editType');  //新建或编辑宣教分类
-    Route::post('/xjType/edit', 'Admin\XJController@editTypePost');  //新建或编辑宣教分类
-
-
     //数据项管理
     Route::get('/sjx/index', 'Admin\SJXController@index');  //数据项管理首页
+    Route::post('/sjx/search', 'Admin\SJXController@search');  //根据患处位置搜索数据项
     Route::get('/sjx/edit', 'Admin\SJXController@edit');  //新建或编辑数据项
     Route::post('/sjx/edit', 'Admin\SJXController@editPost');  //新建或编辑数据项
 

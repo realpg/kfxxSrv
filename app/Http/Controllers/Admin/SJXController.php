@@ -12,9 +12,11 @@ namespace App\Http\Controllers\Admin;
 use App\Components\AdminManager;
 use App\Components\DateTool;
 use App\Components\DoctorManager;
+use App\Components\HposManager;
 use App\Components\QNManager;
 use App\Components\SJXManager;
 use App\Components\XJManager;
+use App\Http\Controllers\ApiResponse;
 use App\Models\AD;
 use App\Models\Admin;
 use App\Models\SJX;
@@ -34,12 +36,30 @@ class SJXController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $sjxs = SJXManager::getSJXs();
+        $sjxs = SJXManager::getSJXsPaginate();
         foreach ($sjxs as $sjx) {
             $sjx->created_at_str = DateTool::formateData($sjx->created_at, 1);
             $sjx->doctor = DoctorManager::getDoctorById($sjx->doctor_id);
+            $sjx->hpos = HposManager::getHPosById($sjx->hpos_id);
         }
-        return view('admin.sjx.index', ['admin' => $admin, 'datas' => $sjxs]);
+        $hposs = HposManager::getHPosList();
+        return view('admin.sjx.index', ['admin' => $admin, 'datas' => $sjxs, 'hposs' => $hposs]);
+    }
+
+    //根据患处位置搜索数据项
+    public function search(Request $request)
+    {
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+        $search_hpos_id = $data['hpos_id'];
+        $sjxs = SJXManager::getSJXsByHPosPaginate($search_hpos_id);
+        foreach ($sjxs as $sjx) {
+            $sjx->created_at_str = DateTool::formateData($sjx->created_at, 1);
+            $sjx->doctor = DoctorManager::getDoctorById($sjx->doctor_id);
+            $sjx->hpos = HposManager::getHPosById($sjx->hpos_id);
+        }
+        $hposs = HposManager::getHPosList();
+        return view('admin.sjx.index', ['admin' => $admin, 'datas' => $sjxs, 'hposs' => $hposs, 'search_hpos_id' => $search_hpos_id]);
     }
 
     //新建或编辑数据项-get
@@ -48,12 +68,10 @@ class SJXController
         $admin = $request->session()->get('admin');
         $data = $request->all();
         $sjx = new SJX();
-
         if (array_key_exists('id', $data)) {
             $sjx = SJXManager::getSJXById($data['id']);
         }
-
-        return view('admin.sjx.edit', ['admin' => $admin, 'data' => $sjx]);
+        return ApiResponse::makeResponse(true, $sjx, ApiResponse::SUCCESS_CODE);
     }
 
     //新建或编辑数据项->post

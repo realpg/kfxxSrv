@@ -31,8 +31,6 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('ad/getADs', 'API\ADController@getADs');
     Route::get('ad/getById', 'API\ADController@getADById');
 
-    Route::get('ad/getADs', 'API\ADController@getADs');
-
     //根据id获取用户信息
     Route::get('user/getById', 'API\UserController@getUserById');
     //根据id获取用户信息带token
@@ -57,6 +55,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //数据项相关
     Route::get('sjx/getList', 'API\SJXController@getList');
+    Route::get('sjx/getListByHPosId', 'API\SJXController@getListByHPosId');
     Route::get('sjx/getById', 'API\SJXController@getSJXById');
 
     //康复模板相关
@@ -85,7 +84,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('userCase/getZXJHById', 'API\UserCaseController@getZXJHById');//根据id获取患者执行计划详情
     Route::post('userCase/executeZXJH', 'API\UserCaseController@executeZXJH')->middleware('CheckToken');//上传执行计划结果
 
-    //患处位置图
+    //患处位置
     Route::get('hPos/getList', 'API\HPosController@getHPosList');//获取患处位置列表
     Route::get('hPos/getById', 'API\HPosController@getHPosById');//根据id获取患处位置
 

@@ -56,7 +56,7 @@ function getDoctorById(url, param, callBack) {
 
 //根据id获取数据项
 function getSJXById(url, param, callBack) {
-    ajaxRequest(url + "api/sjx/getById", param, "GET", callBack);
+    ajaxRequest(url + "admin/sjx/edit", param, "GET", callBack);
 }
 
 //获取全部生效宣教信息
@@ -101,6 +101,11 @@ function getHPosById(url, param, callBack) {
 //编辑患处信息
 function editHPos(url, param, callBack) {
     ajaxRequest(url + "admin/hPos/edit", param, "post", callBack);
+}
+
+//手术信息
+function getSurgeryById(url, param, callBack) {
+    ajaxRequest(url + "admin/surgery/edit", param, "get", callBack);
 }
 
 

@@ -11,12 +11,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Components\AdminManager;
 use App\Components\DateTool;
+use App\Components\HposManager;
 use App\Components\QNManager;
 use App\Components\Utils;
 use App\Components\XJManager;
 use App\Http\Controllers\ApiResponse;
 use App\Models\AD;
 use App\Models\Admin;
+use App\Models\HPos;
 use App\Models\XJ;
 use App\Models\TWStep;
 use App\Models\XJType;
@@ -47,7 +49,7 @@ class XJController
         $admin = $request->session()->get('admin');
         $data = $request->all();
         //types
-        $xj_types = XJType::all();
+        $hposs = HposManager::getHPosList();
         $xj = new XJ();
         if (array_key_exists('id', $data)) {
             $xj = XJManager::getXJById($data['id']);
@@ -57,7 +59,7 @@ class XJController
         }
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.xj.editXJ', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token, 'xj_types' => $xj_types]);
+        return view('admin.xj.editXJ', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token, 'hposs' => $hposs]);
     }
 
 

@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Components\HomeManager;
+use App\Components\HposManager;
 use App\Components\UserManager;
 use App\Components\Utils;
 use App\Components\XJManager;
@@ -37,11 +38,18 @@ class XJController extends Controller
     public function getXJList(Request $request)
     {
         $data = $request->all();    //request转array
-        $types_arr = [];
-        if (array_key_exists('type', $data)) { //如果不存在type
-            $types_arr = explode(',', $data['type']);
+        $hpos_arr = [];
+        //如果存在hpos，则获取hpos数组
+        if (array_key_exists('hpos_ids', $data) && !Utils::isObjNull($data['hpos_ids'])) { //如果不存在hpos
+            $hpos_arr = explode(',', $data['hpos_ids']);
+        } else {
+            $all_hposs = HposManager::getHPosList();
+            //如果不存在hpos，则获取全部的hpos_ids
+            foreach ($all_hposs as $hpos) {
+                array_push($hpos_arr, $hpos->id);
+            }
         }
-        $xjs = XJManager::getXJListByCon($types_arr);
+        $xjs = XJManager::getXJListByCon($hpos_arr);
         return ApiResponse::makeResponse(true, $xjs, ApiResponse::SUCCESS_CODE);
     }
 
@@ -82,33 +90,6 @@ class XJController extends Controller
         }
         $xj = XJManager::getXJInfoByLevel($xj, 3);
         return ApiResponse::makeResponse(true, $xj, ApiResponse::SUCCESS_CODE);
-    }
-
-    /*
-     * 获取宣教类型
-     *
-     * By TerryQi
-     *
-     * 2017-12-07
-     */
-    public function getXJTypes(Request $request)
-    {
-        $xj_types = XJManager::getXJTypes();
-        return ApiResponse::makeResponse(true, $xj_types, ApiResponse::SUCCESS_CODE);
-    }
-
-    public function getXJTypeById(Request $request)
-    {
-        $data = $request->all();
-        $requestValidationResult = RequestValidator::validator($request->all(), [
-            'id' => 'required',
-        ]);
-        if ($requestValidationResult !== true) {
-            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
-        }
-
-        $xjType = XJManager::getXJTypeById($data['id']);
-        return ApiResponse::makeResponse(true, $xjType, ApiResponse::SUCCESS_CODE);
     }
 
 }

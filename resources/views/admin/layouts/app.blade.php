@@ -275,12 +275,18 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('/admin/xj/index')}}"><i class="fa fa-circle-o"></i>宣教管理</a></li>
-                        <li><a href="{{url('/admin/xjType/index')}}">
-                                <i class="fa fa-circle-o"></i>
-                                宣教类别管理
-                                <small class="label bg-red pull-right">！</small>
-                            </a>
-                        </li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-edit"></i>
+                        <span>手术管理</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('/admin/surgery/index')}}"><i class="fa fa-circle-o"></i>手术管理</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
