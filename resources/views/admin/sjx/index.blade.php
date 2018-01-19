@@ -221,6 +221,24 @@
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-top: 15px;">
+                                    <label for="is_dis_lr" class="col-sm-2 control-label">区分左右</label>
+                                    <div class="col-sm-10">
+                                        <select id="is_dis_lr" name="is_dis_lr" class="form-control">
+                                            <option value="0">不区分</option>
+                                            <option value="1">区分</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label for="is_dis_pos" class="col-sm-2 control-label">区分位置</label>
+                                    <div class="col-sm-10">
+                                        <select id="is_dis_pos" name="is_dis_pos" class="form-control">
+                                            <option value="0">不区分</option>
+                                            <option value="1">区分</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
                                     <label for="type" class="col-sm-2 control-label">数据类型</label>
                                     <div class="col-sm-10">
                                         <select id="type" name="type" class="form-control">
@@ -276,6 +294,7 @@
         function clickAdd() {
             //清空模态框
             $("#editSJX")[0].reset();
+            $("#doctor_id").val("{{$admin->id}}");
             $("#addSJXModal").modal('show');
         }
 
@@ -293,6 +312,8 @@
                     $("#side").val(msgObj.side);
                     $("#type").val(msgObj.type);
                     $("#unit").val(msgObj.unit);
+                    $("#is_dis_lr").val(msgObj.is_dis_lr);
+                    $("#is_dis_pos").val(msgObj.is_dis_pos);
                     //展示modal
                     $("#addSJXModal").modal('show');
                 }

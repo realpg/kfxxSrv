@@ -12,9 +12,11 @@ namespace App\Http\Controllers\Admin;
 use App\Components\ADManager;
 use App\Components\DateTool;
 use App\Components\DoctorManager;
+use App\Components\HposManager;
 use App\Components\KFMBManager;
 use App\Components\QNManager;
 use App\Components\SJXManager;
+use App\Components\SurgeryManager;
 use App\Components\UserManager;
 use App\Components\Utils;
 use App\Components\XJManager;
@@ -26,7 +28,6 @@ use App\Models\SJX;
 use App\Models\User;
 use App\Models\UserCase;
 use App\Models\UserKFJH;
-use App\Models\UserKFJHSJ;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
@@ -60,9 +61,6 @@ class UserController
         $data = $request->all();
 //        dd($data);
         $search_word = $data['search_word'];
-        if (!array_key_exists('nick_name', $data)) {
-            $data['nick_name'] = '';
-        }
         $users = UserManager::searchUser($search_word);
         foreach ($users as $user) {
             $user = UserManager::setUserAge($user);
@@ -100,6 +98,11 @@ class UserController
         if (array_key_exists('id', $data) && $data['id'] != null) {
             $user = UserManager::getUserInfoById($data['id']);
         }
+        //根据手机号判断用户是否存在
+        $is_user_exist = UserManager::getUserInfoByPhonenum($data['phonenum']);
+        if ($is_user_exist) {
+            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '手机号' . $data['phonenum'] . "已经存在，请检索该用户"]);
+        }
         $user = UserManager::setUser($user, $data);
         //如果token为空，则设置患者的token
         if (Utils::isObjNull($user->token)) {
@@ -124,10 +127,9 @@ class UserController
         $user = UserManager::getUserInfoById($data['user_id']); //需要编辑的患者信息
         $user = UserManager::setUserAge($user);
 //        dd($user);
-        $zz_doctors = DoctorManager::getDoctorsByRole("0"); //全部主治医师
         $kf_doctors = DoctorManager::getDoctorsByRole("1"); //全部康复医师
-        $kfmbs = KFMBManager::getKFMBList("s1");    //生效康复模板
-        $xj_types = XJManager::getXJTypes();
+        $surgerys = SurgeryManager::getAllSurgerys();
+        $hposs = HposManager::getHPosList();
         //获取用户病例
         $userCases = UserManager::getUserCaseByUserId($data['user_id']);
         foreach ($userCases as $userCase) {
@@ -135,7 +137,7 @@ class UserController
         }
 //        dd($userCases);
         return view('admin.user.userCase', ['admin' => $admin, 'datas' => $userCases, 'user' => $user
-            , 'zz_doctors' => $zz_doctors, 'kf_doctors' => $kf_doctors, 'kfmbs' => $kfmbs, 'xj_types' => $xj_types]);
+            , 'kf_doctors' => $kf_doctors, 'surgerys' => $surgerys, 'hposs' => $hposs]);
     }
 
     /*
@@ -156,9 +158,7 @@ class UserController
             $useCase = UserManager::getUserCaseById($data['id']);
         }
         $useCase = UserManager::setUserCase($useCase, $data);
-//        $useCase
         $useCase->save();
-
         return redirect('/admin/user/userCaseIndex?user_id=' . $useCase->user_id);
     }
 
@@ -185,20 +185,19 @@ class UserController
         $user = UserManager::getUserInfoById($userCase->user_id);
         $user->age = Utils::getAge($user->birthday);
         $sjxs = SJXManager::getSJXs();
-        $kfmbs = KFMBManager::getKFMBList('s1');
+        $kfmbs = KFMBManager::getIndexList($admin->id);
 
         return view('admin.user.userKFJH', ['admin' => $admin, 'user' => $user
             , 'userCase' => $userCase, 'sjxs' => $sjxs, 'kfmbs' => $kfmbs]);
     }
 
-
     /*
-        * 编辑患者病例康复计划
-        *
-        * By TerryQi
-        *
-        * 2017-12-28
-        */
+     * 编辑患者病例康复计划
+     *
+     * By TerryQi
+     *
+     * 2017-12-28
+     */
     public function editUserCaseKFJH(Request $request)
     {
         //获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
@@ -217,13 +216,9 @@ class UserController
         $ori_jhs = $userCase->jhs;
         //删除原有康复计划以及计划下关联的数据
         foreach ($ori_jhs as $ori_jh) {
-            $ori_jhsjs = UserManager::getUserCaseJHSJByJHId($ori_jh->id);
             $ori_jh->delete();
-            foreach ($ori_jhsjs as $ori_jhsj) {
-                $ori_jhsj->delete();
-            }
         }
-        //新建康复计划及数据
+        //新建康复计划
         $new_jhs = $data['jhs'];
         foreach ($new_jhs as $new_jh) {
             $jh = new UserKFJH();
@@ -231,16 +226,6 @@ class UserController
             $jh->user_id = $userCase->user_id;
             $jh->userCase_id = $userCase->id;
             $jh->save();
-            //新建康复计划采集数据
-            $new_jhsjs = $new_jh['jhsjs'];
-            foreach ($new_jhsjs as $new_jhsj) {
-                $jhsj = new UserKFJHSJ();
-                $jhsj = UserManager::setKFJHSJ($jhsj, $new_jhsj);
-                $jhsj->user_id = $userCase->user_id;
-                $jhsj->kfjh_id = $jh->id;
-                $jhsj->userCase_id = $userCase->id;
-                $jhsj->save();
-            }
         }
         //保存患者病例的康复计划
         $userCase = UserManager::getUserCaseInfoByLevel($userCase, "12");

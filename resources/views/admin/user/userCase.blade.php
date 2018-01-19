@@ -71,11 +71,11 @@
                             <thead>
                             <tr>
                                 <th>病例ID</th>
-                                <th class="con-th-width-l">关联模板</th>
-                                <th>主治医师</th>
-                                <th>康复医师</th>
+                                <th class="con-th-width-l">手术名称</th>
+                                <th>医师</th>
+                                <th>位置</th>
+                                <th>患侧</th>
                                 <th>手术时间</th>
-                                <th>弯腿时间</th>
                                 <th class="opt-th-width">操作</th>
                             </tr>
                             </thead>
@@ -85,26 +85,40 @@
                                     <td><span class="line-height-30">{{$data->id}}</span>
                                     <td class="con-th-width-l">
                                         <div class="line-height-30 text-oneline">
-                                            {{$data->kfmb->name}}
+                                            @if(isset($data->surgery))
+                                                {{$data->surgery->name}}
+                                            @endif
                                         </div>
                                     </td>
-                                    <td><span class="line-height-30">{{$data->zz_doctor->name}}</span>
+                                    <td><span class="line-height-30">
+                                             @if(isset($data->kf_doctor))
+                                                {{$data->kf_doctor->name}}
+                                            @endif
+                                        </span>
                                     </td>
-                                    <td><span class="line-height-30">{{$data->kf_doctor->name}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="line-height-30">
-                                            @if ($data->ss_time)
-                                                {{$data->ss_time}}
-                                            @else
-                                                --
+                                    <td><span class="line-height-30">
+                                            @if(isset($data->hpos))
+                                                {{$data->hpos->name}}
                                             @endif
                                         </span>
                                     </td>
                                     <td>
                                         <span class="line-height-30">
-                                            @if ($data->wt_time)
-                                                {{$data->wt_time}}
+                                            @if ($data->side == "l")
+                                                左侧
+                                            @endif
+                                            @if ($data->side == "r")
+                                                右侧
+                                            @endif
+                                            @if ($data->side == "n")
+                                                无
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="line-height-30">
+                                            @if ($data->ss_time)
+                                                {{$data->ss_time}}
                                             @else
                                                 --
                                             @endif
@@ -179,17 +193,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="zz_doctor_id" class="col-sm-2 control-label">主治医师</label>
-                                <div class="col-sm-10">
-                                    <select id="zz_doctor_id" name="zz_doctor_id" class="form-control">
-                                        @foreach($zz_doctors as $zz_doctor)
-                                            <option value="{{$zz_doctor->id}}">{{$zz_doctor->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="kf_doctor_id" class="col-sm-2 control-label">康复医师</label>
+                                <label for="kf_doctor_id" class="col-sm-2 control-label">医师</label>
                                 <div class="col-sm-10">
                                     <select id="kf_doctor_id" name="kf_doctor_id" class="form-control">
                                         @foreach($kf_doctors as $kf_doctor)
@@ -198,13 +202,33 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-top: 15px;">
-                                <label for="kfmb_id" class="col-sm-2 control-label">康复模板</label>
+                            <div class="form-group">
+                                <label for="surgery_id" class="col-sm-2 control-label">手术</label>
                                 <div class="col-sm-10">
-                                    <select id="kfmb_id" name="kfmb_id" class="form-control">
-                                        @foreach($kfmbs as $kfmb)
-                                            <option value="{{$kfmb->id}}">{{$kfmb->name}}</option>
+                                    <select id="surgery_id" name="surgery_id" class="form-control">
+                                        @foreach($surgerys as $surgery)
+                                            <option value="{{$surgery->id}}">{{$surgery->name}}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="hpos_id" class="col-sm-2 control-label">位置</label>
+                                <div class="col-sm-10">
+                                    <select id="hpos_id" name="hpos_id" class="form-control">
+                                        @foreach($hposs as $hpos)
+                                            <option value="{{$hpos->id}}">{{$hpos->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="side" class="col-sm-2 control-label">患侧</label>
+                                <div class="col-sm-10">
+                                    <select id="side" name="side" class="form-control">
+                                        <option value="l">左侧</option>
+                                        <option value="r">右侧</option>
+                                        <option value="n">无</option>
                                     </select>
                                 </div>
                             </div>
@@ -217,36 +241,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="wt_time" class="col-sm-2 control-label">弯腿时间</label>
-                                <div class="col-sm-10">
-                                    <input id="wt_time" name="wt_time" type="date" class="form-control"
-                                           placeholder="请选择弯腿时间"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="desc" class="col-sm-2 control-label">病例描述</label>
                                 <div class="col-sm-10">
                                     <textarea id="desc" name="desc" class="form-control" rows="5"
                                               placeholder="请输入 ..."></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group margin-top-10">
-                                <label for="type" class="col-sm-2 control-label">类型</label>
-                                <div class="col-sm-10">
-                                    <div class="margin-top-10 row">
-                                        <div class="row">
-                                            @foreach($xj_types as $xj_type)
-                                                <div class="col-xs-4">
-                                                    <input type="checkbox" name="xj_type[]" id="xj_type{{$xj_type->id}}"
-                                                           value="{{$xj_type->id}}"
-                                                           class="minimal">
-                                                    <span
-                                                            class="margin-left-10">{{$xj_type->name}}</span>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -271,19 +269,10 @@
 @section('script')
     <script type="application/javascript">
 
-
+        //入口函数
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
-
-        //优化icheck展示
-        function setICheck() {
-            //iCheck for checkbox and radio inputs
-            $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                checkboxClass: 'icheckbox_minimal-blue',
-                radioClass: 'iradio_minimal-blue'
-            })
-        }
 
         function clickAdd() {
             console.log("clickAdd()");
@@ -292,7 +281,6 @@
             $("#user_id").val("{{$user->id}}");
             $("#doctor_id").val("{{$admin->id}}");
             //展示modal
-            setICheck();
             $("#addUserCaseModal").modal('show');
         }
 
@@ -305,21 +293,12 @@
                     var msgObj = ret.ret;
                     //对象配置
                     $("#id").val(msgObj.id);
-                    $("#zz_doctor_id").val(msgObj.zz_doctor_id);
                     $("#kf_doctor_id").val(msgObj.kf_doctor_id);
-                    $("#wt_time").val(msgObj.wt_time);
                     $("#ss_time").val(msgObj.ss_time);
                     $("#desc").val(msgObj.desc);
-                    //宣教类型
-                    if (!judgeIsNullStr(msgObj.xj_type)) {
-                        var xj_type = msgObj.xj_type;
-                        var xj_type_arr = xj_type.split(',');
-                        for (var i = 0; i < xj_type_arr.length; i++) {
-                            $("#xj_type" + xj_type_arr[i]).attr("checked", true);
-                        }
-                    }
-                    //展示modal
-                    setICheck();
+                    $("#surgery_id").val(msgObj.surgery_id);
+                    $("#hpos_id").val(msgObj.hpos_id);
+                    $("#side").val(msgObj.side);
                     $("#addUserCaseModal").modal('show');
                 }
             })
@@ -328,7 +307,10 @@
 
         //合规校验
         function checkValid() {
-
+            var ss_time = $("#ss_time").val();
+            if (judgeIsNullStr(ss_time)) {
+                return false;
+            }
             return true;
         }
 

@@ -12,10 +12,8 @@ namespace App\Components;
 use App\Models\User;
 use App\Models\UserCase;
 use App\Models\UserKFJH;
-use App\Models\UserKFJHSJ;
 use App\Models\Vertify;
 use App\Models\ZXJH;
-use App\Models\ZXJHSJ;
 use GuzzleHttp\Psr7\Request;
 
 class ZXJHManager
@@ -55,16 +53,6 @@ class ZXJHManager
         $zxjh->kfjh_id = $kfjh->id;
         $zxjh->jh_date = DateTool::getToday();
         $zxjh->save();
-        //如果有采集数据的要求，则生成数据采集要求
-        $jhsjs = self::getUserCaseJHSJByJHId($kfjh->id);
-        if ($jhsjs) {
-            foreach ($jhsjs as $jhsj) {
-                $zxjhsj = new ZXJHSJ();
-                $zxjhsj = self::setZXJHSJ($zxjhsj, $jhsj->toArray());
-                $zxjhsj->zxjh_id = $zxjh->id;
-                $zxjhsj->save();
-            }
-        }
     }
 
     /*
@@ -120,49 +108,6 @@ class ZXJHManager
         return $zxjh;
     }
 
-    /*
-     * 生成执行计划数据
-     *
-     * By TerryQi
-     *
-     * 2017-12-31
-     */
-    public static function setZXJHSJ($zxjhsj, $data)
-    {
-        if (array_key_exists('user_id', $data)) {
-            $zxjhsj->user_id = array_get($data, 'user_id');
-        }
-        if (array_key_exists('userCase_id', $data)) {
-            $zxjhsj->userCase_id = array_get($data, 'userCase_id');
-        }
-        if (array_key_exists('sjx_id', $data)) {
-            $zxjhsj->sjx_id = array_get($data, 'sjx_id');
-        }
-        if (array_key_exists('zxjh_id', $data)) {
-            $zxjhsj->zxjh_id = array_get($data, 'zxjh_id');
-        }
-        if (array_key_exists('min_value', $data)) {
-            $zxjhsj->min_value = array_get($data, 'min_value');
-        }
-        if (array_key_exists('max_value', $data)) {
-            $zxjhsj->max_value = array_get($data, 'max_value');
-        }
-        if (array_key_exists('value', $data)) {
-            $zxjhsj->value = array_get($data, 'value');
-        }
-        if (array_key_exists('zx_time', $data)) {
-            $zxjhsj->zx_time = array_get($data, 'zx_time');
-        }
-        if (array_key_exists('attach', $data)) {
-            $zxjhsj->attach = array_get($data, 'attach');
-        }
-        if (array_key_exists('result', $data)) {
-            $zxjhsj->result = array_get($data, 'result');
-        }
-        return $zxjhsj;
-    }
-
-
     //根据患者id和日期获取当日的执行计划
     public static function getZXJHByUserIdAndDate($user_id, $date)
     {
@@ -176,29 +121,6 @@ class ZXJHManager
     {
         $zxjh = ZXJH::where('id', '=', $id)->first();
         return $zxjh;
-    }
-
-    //根据zxjh_id获取zxjh的采集数据列表
-    public static function getZXJHSJsByZXJHId($zxjh_id)
-    {
-        $zxjhsjs = ZXJHSJ::where('zxjh_id', '=', $zxjh_id)->get();
-        foreach ($zxjhsjs as $zxjhsj) {
-            $zxjhsj->sjx = SJXManager::getSJXById($zxjhsj->sjx_id);
-        }
-        return $zxjhsjs;
-    }
-
-    /*
-     * 根据zxjhsj_id获取zxjhsj的信息
-     *
-     * By TerryQi
-     *
-     * 2018-1-2
-     */
-    public static function getZXJHSJById($zxjhsj_id)
-    {
-        $zxjhsj = ZXJHSJ::where('id', '=', $zxjhsj_id)->first();
-        return $zxjhsj;
     }
 
 

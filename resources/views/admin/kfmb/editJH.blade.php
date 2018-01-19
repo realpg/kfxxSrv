@@ -70,7 +70,7 @@
 
                         <div class="timeline-item">
                             <!--右侧-->
-                            <span class="time font-size-14">@{{=it.jhs[i].btime_type_str}}</span>
+                            <span class="time font-size-14">手术后</span>
 
                             <h3 class="timeline-header">
 
@@ -85,28 +85,6 @@
                             <div class="timeline-body">
                                 <div>
                                     @{{=it.jhs[i].desc_str}}
-                                </div>
-                                <div class="margin-top-10 grey-bg">
-
-                                    @{{for(var j=0;j
-                                    <it.jhs
-                                            [i].jhsjs.length;j++){}}
-                                    <div style="padding: 10px;">
-                                        <i class="fa fa-align-justify"></i>
-                                        <span class="margin-left-15">@{{=it.jhs[i].jhsjs[j].sjx.name}}
-                                            (@{{=it.jhs[i].jhsjs[j].sjx.unit}})</span>
-                                        <span class="margin-left-5 text-aqua">阈值范围 @{{=it.jhs[i].jhsjs[j].min_value}}
-                                            - @{{=it.jhs[i].jhsjs[j].max_value}}</span>
-
-                                        <i class="fa fa-minus-circle text-info pull-right btn"
-                                           onclick="delSJ(@{{=i}},@{{=j}})"></i>
-                                    </div>
-                                    @{{}}}
-
-                                    <div style="padding: 10px;" class="text-info btn">
-                                        <i class="fa fa-plus-circle"></i>
-                                        <span class="margin-left-15" onclick="editSJ(@{{=i}},'add');">添加数据采集</span>
-                                    </div>
                                 </div>
                             </div>
 
@@ -170,14 +148,11 @@
                                               placeholder="请输入 ...">@{{=it.desc}}</textarea>
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-top: 15px;">
-                                <label for="btime_type" class="col-sm-2 control-label">基线*</label>
-
+                            <div class="form-group">
+                                <label for="btime_type" class="col-sm-2 control-label">基线时间</label>
                                 <div class="col-sm-10">
                                     <select id="btime_type" name="btime_type" class="form-control">
                                         <option value="0">手术后</option>
-                                        <option value="1">首次弯腿后
-                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -232,71 +207,6 @@
         </div>
         <!-- /.modal-dialog -->
     </script>
-
-
-    <!--数据采集模板-->
-    <div class="modal fade -m" id="editSJModal" tabindex="-1" role="dialog">
-
-    </div>
-
-
-    <script id="editSJModal-content-template" type="text/x-dot-template">
-        <div class="modal-dialog">
-            <div class="modal-content message_align">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理采集数据</h4>
-                </div>
-                <form id="editSJ" action="" method="post" class="form-horizontal">
-                    <div class="modal-body">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="sjx_id" class="col-sm-2 control-label">采集数据</label>
-                                <div class="col-sm-10">
-                                    <select id="sjx_id" name="sjx_id" class="form-control">
-                                        @foreach($sjxs as $sjx)
-                                            <option id="sjx_{{$sjx->id}}" data-name="{{$sjx->name}}"
-                                                    data-unit="{{$sjx->unit}}"
-                                                    value="{{$sjx->id}}">{{$sjx->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="min_value" class="col-sm-2 control-label">最小值*</label>
-
-                                <div class="col-sm-10">
-                                    <input id="min_value" name="min_value" type="number" class="form-control"
-                                           placeholder="该值为阈值最小值，小于最小值将报警"
-                                           value="@{{=it.min_value}}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="max_value" class="col-sm-2 control-label">最大值*</label>
-
-                                <div class="col-sm-10">
-                                    <input id="max_value" name="max_value" type="number" class="form-control"
-                                           placeholder="该值为阈值最大值，大于最大值将报警"
-                                           value="@{{=it.max_value}}">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" data-value="" class="btn btn-success"
-                                onclick="clickEditSJ(@{{=it.jh_index}},'add');">确定
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </script>
-
 
     <!--提示modal-->
     <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
@@ -366,7 +276,6 @@
                 end_unit: 0,
                 "index": index,
                 "opt": edit_or_add,
-                jhsjs: []
             };
             //如果是新建
             if (edit_or_add == "add") {
@@ -400,7 +309,6 @@
                 start_unit: $("#start_unit").val(),
                 end_time: $("#end_time").val(),
                 end_unit: $("#end_unit").val(),
-                jhsjs: []
             };
 
             //合规校验
@@ -480,53 +388,6 @@
             var tempObj = kfmbInfo.jhs[index];
             kfmbInfo.jhs[index] = kfmbInfo.jhs[index + 1];
             kfmbInfo.jhs[index + 1] = tempObj;
-            loadHtml();
-        }
-
-        //编辑数据
-        function editSJ(jh_index, edit_or_add) {
-
-            console.log("editSJ index:" + jh_index + " edit_or_add:" + edit_or_add);
-            //新建数据项
-            var jhsjObj = {
-                sjx_id: 0,
-                min_value: 0,
-                max_value: 0,
-                jh_index: jh_index
-            };
-            //如果是新建
-            if (edit_or_add == "add") {
-
-            } else {        //如果是编辑
-
-            }
-//        console.log("jhObj:" + JSON.stringify(jhObj));
-            var interText = doT.template($("#editSJModal-content-template").text());
-            $("#editSJModal").html(interText(jhsjObj));
-            $("#editSJModal").modal('show');
-        }
-
-
-        //点击编辑
-        function clickEditSJ(jh_index, edit_or_add) {
-            console.log("kfmbInfo:" + JSON.stringify(kfmbInfo) + " jh_index:" + jh_index);
-            var jhsjObj = {};
-            jhsjObj.sjx_id = $("#sjx_id").val();
-            jhsjObj.min_value = $("#min_value").val();
-            jhsjObj.max_value = $("#max_value").val();
-            jhsjObj.sjx = {
-                name: $("#sjx_" + jhsjObj.sjx_id).attr("data-name"),
-                unit: $("#sjx_" + jhsjObj.sjx_id).attr("data-unit")
-            }
-            kfmbInfo.jhs[jh_index].jhsjs.push(jhsjObj);
-            console.log("kfmbInfo:" + JSON.stringify(kfmbInfo));
-            loadHtml();
-            $("#editSJModal").modal('hide');
-        }
-
-        //删除数据项
-        function delSJ(jh_index, sj_index) {
-            kfmbInfo.jhs[jh_index].jhsjs.splice(sj_index, 1);
             loadHtml();
         }
 

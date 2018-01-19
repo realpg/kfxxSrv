@@ -11,10 +11,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ZXJH extends Model
+class CJSJ extends Model
 {
     use SoftDeletes;    //使用软删除
-    protected $table = 't_zxjh_info';     //表名
+    protected $table = 't_cjsj_info';     //表名
     public $timestamps = true;  //自动管理时间戳
     protected $dates = ['deleted_at'];  //软删除
 }

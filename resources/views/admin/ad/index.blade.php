@@ -258,6 +258,7 @@
         function clickAdd() {
             //清空模态框
             $("#editAD")[0].reset();
+            $("#doctor_id").val("{{$admin->id}}");
             $("#pickfiles").attr("src", '{{URL::asset('/img/upload.png')}}');
             $("#addADModal").modal('show');
         }

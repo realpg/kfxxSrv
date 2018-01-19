@@ -79,7 +79,8 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('kfjh/getKFSJByUserId', 'API\KFJHController@getKFSJByUserId');//获取康复数据
 
     //患者病例
-    Route::get('userCase/getUserCaseById', 'API\UserCaseController@getUserCaseInfoByCaseId');//获取病历
+    Route::get('userCase/getUserCaseById', 'API\UserCaseController@getUserCaseInfoByCaseId')->middleware('CheckToken');//获取病历
+    Route::get('userCase/getUserCasesByUserId', 'API\UserCaseController@getUserCasesByUserId')->middleware('CheckToken');//获取病历
     Route::post('userCase/getUserZXJHByDate', 'API\UserCaseController@getUserZXJHByDate')->middleware('CheckToken');//根据日期获取当日的康复计划
     Route::get('userCase/getZXJHById', 'API\UserCaseController@getZXJHById');//根据id获取患者执行计划详情
     Route::post('userCase/executeZXJH', 'API\UserCaseController@executeZXJH')->middleware('CheckToken');//上传执行计划结果
@@ -91,5 +92,11 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //启动生成康复计划
     Route::post('schedule/autoCreateUserZXJH', 'API\ScheduleController@autoCreateUserZXJH');     //每日自动生成患者执行计划任务
     Route::post('schedule/autoFinishUserZXJH', 'API\ScheduleController@autoFinishUserZXJH');     //每日自动结束患者康复计划
+
+    //上报数据
+    Route::post('cjsj/reportCJSJ', 'API\CJSJController@reportCJSJ')->middleware('CheckToken');     //上报采集数据
+    Route::get('cjsj/getCJSJsByUserId', 'API\CJSJController@getCJSJsByUserId')->middleware('CheckToken');     //根据用户id获取采集上报数据列表
+    Route::get('cjsj/getCJSJsByUserCaseId', 'API\CJSJController@getCJSJsByUserCaseId')->middleware('CheckToken');     //根据用户病例id获取采集上报数据列表
+
 
 });

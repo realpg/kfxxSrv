@@ -11,8 +11,7 @@ namespace App\Components;
 
 class Utils
 {
-    const PAGE_SIZE = 8;
-
+    const PAGE_SIZE = 10;
 
     /*
      * 判断一个对象是不是空

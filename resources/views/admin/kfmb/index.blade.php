@@ -32,6 +32,7 @@
                                 <th>录入时间</th>
                                 <th>录入医师</th>
                                 <th>状态</th>
+                                <th>形式</th>
                                 <th class="opt-th-width-l">操作</th>
                             </tr>
                             </thead>
@@ -59,6 +60,13 @@
                                             <span class="label label-default line-height-30">失效</span>
                                         @else
                                             <span class="label label-success line-height-30">生效</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($data->is_personal === '0')
+                                            <span class="label label-danger line-height-30">公共</span>
+                                        @else
+                                            <span class="label label-info line-height-30">私有</span>
                                         @endif
 
                                     </td>
@@ -171,6 +179,15 @@
                                     <div class="col-sm-10">
                                     <textarea id="desc" name="desc" class="form-control" rows="5"
                                               placeholder="请输入 ..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="is_personal" class="col-sm-2 control-label">私有/公共</label>
+                                    <div class="col-sm-10">
+                                        <select id="is_personal" name="is_personal" class="form-control">
+                                            <option value="1">私有模板</option>
+                                            <option value="0">公共模板</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -292,6 +309,7 @@
                     $("#id").val(msgObj.id);
                     $("#name").val(msgObj.name);
                     $("#desc").val(msgObj.desc);
+                    $("#is_personal").val(msgObj.is_personal);
                     //宣教id非空
                     if (!judgeIsNullStr(msgObj.xj_id)) {
                         $("#xj_id").val(msgObj.xj_id);

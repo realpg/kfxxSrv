@@ -28,7 +28,7 @@ class UserCaseController extends Controller
 {
 
     /*
-     * 根据user_id获取用户病例信息
+     * 根据病例id获取用户病例信息
      *
      * By TerryQi
      *
@@ -48,6 +48,31 @@ class UserCaseController extends Controller
         $userCase = UserManager::getUserCaseById($data['id']);
         $userCase = UserManager::getUserCaseInfoByLevel($userCase, $data['level']);
         return ApiResponse::makeResponse(true, $userCase, ApiResponse::SUCCESS_CODE);
+    }
+
+
+    /*
+     * 根据user_id获取用户病例信息
+     *
+     * By TerryQi
+     *
+     * 2017-11-27
+     */
+    public function getUserCasesByUserId(Request $request)
+    {
+        $data = $request->all();
+//        dd($data);
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $userCases = UserManager::getUserCasesByUserId($data['user_id']);
+        foreach ($userCases as $userCase) {
+            $userCase = UserManager::getUserCaseInfoByLevel($userCase, "0");
+        }
+        return ApiResponse::makeResponse(true, $userCases, ApiResponse::SUCCESS_CODE);
     }
 
     /*

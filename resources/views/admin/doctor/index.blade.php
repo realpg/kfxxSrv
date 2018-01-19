@@ -83,19 +83,16 @@
                                     <td>
                                         <span class="line-height-30">
                                         @if($data->role==='0')
-                                                <span class="label label-info line-height-30">主治医师</span>
+                                                <span class="label label-info line-height-30">管理人员</span>
                                             @endif
                                             @if($data->role==='1')
-                                                <span class="label label-success line-height-30">康复医师</span>
-                                            @endif
-                                            @if($data->role==='2')
-                                                <span class="label label-warning line-height-30">管理人员</span>
+                                                <span class="label label-success line-height-30">医师人员</span>
                                             @endif
                                         </span>
                                     </td>
                                     <td>
                                          <span class="line-height-30">
-                                        {{$data->phonenum}}
+                                            {{$data->phonenum}}
                                          </span>
                                     </td>
                                     <td class="opt-th-width-m">
@@ -145,7 +142,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理医师/康复师/管理员（初始密码：Aa123456）</h4>
+                    <h4 class="modal-title">管理人员（初始密码：Aa123456）</h4>
                 </div>
                 <form id="editDoctor" action="{{URL::asset('/admin/doctor/edit')}}" method="post"
                       class="form-horizontal"
@@ -207,40 +204,13 @@
                                 <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传200*200尺寸图片</div>
                             </div>
                             <div class="form-group" style="margin-top: 15px;">
-                                <label for="duty" class="col-sm-2 control-label">职务*</label>
-
-                                <div class="col-sm-10">
-                                    <select id="duty" name="duty" class="form-control">
-                                        <option value="普通医师">普通医师</option>
-                                        <option value="专家医师">专家医师</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin-top: 15px;">
-                                <label for="dep" class="col-sm-2 control-label">部门*</label>
-
-                                <div class="col-sm-10">
-                                    <select id="dep" name="dep" class="form-control">
-                                        <option value="运动医学一科室">运动医学一科室
-                                        </option>
-                                        <option value="运动医学二科室">运动医学二科室
-                                        </option>
-                                        <option value="康复医学一科室">康复医学一科室
-                                        </option>
-                                        <option value="康复医学二科室">康复医学二科室
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin-top: 15px;">
                                 <label for="role" class="col-sm-2 control-label">角色*</label>
 
                                 <div class="col-sm-10">
                                     <select id="role" name="role" class="form-control"
                                             value="">
-                                        <option value="0">主治医师</option>
-                                        <option value="1">康复医师</option>
-                                        <option value="2">管理人员</option>
+                                        <option value="0">管理人员</option>
+                                        <option value="1">医师人员</option>
                                     </select>
                                 </div>
                             </div>

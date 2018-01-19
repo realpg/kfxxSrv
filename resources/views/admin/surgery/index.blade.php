@@ -198,6 +198,7 @@
         function clickAdd() {
             //清空模态框
             $("#editUser")[0].reset();
+            $("#doctor_id").val("{{$admin->id}}");
             $("#addSurgeryModal").modal('show');
         }
 

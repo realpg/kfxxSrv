@@ -64,8 +64,8 @@
                                 <th>年龄</th>
                                 <th>电话</th>
                                 <th>手术</th>
+                                <th>位置</th>
                                 <th>医师</th>
-                                <th>康复师</th>
                                 <th class="opt-th-width">操作</th>
                             </tr>
                             </thead>
@@ -105,8 +105,8 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30 text-oneline con-th-width-m">
-                                            @if ($data->userCase&&$data->userCase->kfmb)
-                                                {{$data->userCase->kfmb->name}}
+                                            @if ($data->userCase&&$data->userCase->surgery)
+                                                {{$data->userCase->surgery->name}}
                                             @else
                                                 --
                                             @endif
@@ -114,8 +114,8 @@
                                     </td>
                                     <td>
                                         <span class="line-height-30">
-                                            @if ($data->userCase&&$data->userCase->zz_doctor)
-                                                {{$data->userCase->zz_doctor->name}}
+                                            @if ($data->userCase&&$data->userCase->hpos)
+                                                {{$data->userCase->hpos->name}}
                                             @else
                                                 --
                                             @endif
@@ -140,11 +140,18 @@
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
                                             <a href="{{URL::asset('/admin/user/userCaseIndex')}}?user_id={{$data->id}}"
-                                               class="btn btn-social-icon btn-info opt-btn-size"
+                                               class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"
                                                title="管理患者病例">
                                                 <i class="fa fa-th-list opt-btn-i-size"></i>
+                                            </a>
+                                            <a href="{{URL::asset('/admin/user/userCJSJ')}}?user_id={{$data->id}}"
+                                               class="btn btn-social-icon btn-danger opt-btn-size"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="管理患者数据">
+                                                <i class="fa fa-database opt-btn-i-size"></i>
                                             </a>
                                         </span>
                                     </td>
@@ -278,6 +285,7 @@
         function clickAdd() {
             //清空模态框
             $("#editUser")[0].reset();
+            $("#doctor_id").val("{{$admin->id}}");
             $("#addUserModal").modal('show');
         }
 

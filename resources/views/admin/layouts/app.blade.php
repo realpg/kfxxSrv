@@ -155,7 +155,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{ $admin->avatar ? $admin->avatar.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim': URL::asset('/img/default_headicon.png')}}"
                                  class="user-image" alt="User Image">
-                            <span class="hidden-xs">{{$admin->name}} {{$admin->duty}}</span>
+                            <span class="hidden-xs">{{$admin->name}} {{$admin->role == "0" ? "管理员":"医师"}}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -164,8 +164,8 @@
                                      class="img-circle" alt="User Image">
 
                                 <p>
-                                    {{$admin->duty}}
-                                    <small>{{$admin->dep}}</small>
+                                    {{$admin->role == "0" ? "管理员":"医师"}}
+                                    <small>Tel:{{$admin->phonenum}}</small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->

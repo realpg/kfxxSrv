@@ -29,7 +29,7 @@ class KFMBController extends Controller
 {
 
     /*
-     * 获取康复模板列表
+     * 获取全部康复模板列表
      *
      * By TerryQi
      *
@@ -38,11 +38,7 @@ class KFMBController extends Controller
     public function getKFMBList(Request $request)
     {
         $data = $request->all();
-        //合规校验account_type
-        $requestValidationResult = RequestValidator::validator($request->all(), [
-            'type' => 'required',
-        ]);
-        $kfmbs = KFMBManager::getKFMBList($data['type']);
+        $kfmbs = KFMBManager::getListByStatus(["1"]);
         return ApiResponse::makeResponse(true, $kfmbs, ApiResponse::SUCCESS_CODE);
     }
 
@@ -64,7 +60,6 @@ class KFMBController extends Controller
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-
         $kfmb = KFMBManager::getKFMBById($data['id']);
         $kfmb = KFMBManager::getKFMBInfoByLevel($kfmb, $data['level']);
         return ApiResponse::makeResponse(true, $kfmb, ApiResponse::SUCCESS_CODE);

@@ -69,7 +69,7 @@ class SJXManager
      */
     public static function getSJXsPaginate()
     {
-        $sjx = SJX::orderby('seq', 'desc')->paginate(Utils::PAGE_SIZE);
+        $sjx = SJX::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $sjx;
     }
 
@@ -105,6 +105,15 @@ class SJXManager
         }
         if (array_key_exists('type', $data)) {
             $sjx->type = array_get($data, 'type');
+        }
+        if (array_key_exists('side', $data)) {
+            $sjx->side = array_get($data, 'side');
+        }
+        if (array_key_exists('is_dis_lr', $data)) {
+            $sjx->is_dis_lr = array_get($data, 'is_dis_lr');
+        }
+        if (array_key_exists('is_dis_pos', $data)) {
+            $sjx->is_dis_pos = array_get($data, 'is_dis_pos');
         }
         if (array_key_exists('side', $data)) {
             $sjx->side = array_get($data, 'side');

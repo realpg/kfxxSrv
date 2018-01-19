@@ -48,6 +48,34 @@ class KFMBManager
     }
 
     /*
+     * 根据状态获取康复模板
+     *
+     * By TerryQi
+     *
+     * 2018-01-19
+     *
+     */
+    public static function getListByStatus($status)
+    {
+        $kfmbs = KFMB::wherein('status', $status)->paginate(Utils::PAGE_SIZE);
+        return $kfmbs;
+    }
+
+    /*
+     * 为admin.kfmb.index页面提供数据
+     *
+     * By TerryQi
+     *
+     * 2018-01-20
+     */
+    public static function getIndexList($doctor_id)
+    {
+        $kfmbs = KFMB::wherein('status', ["1"]);
+        $kfmbs = $kfmbs->where('is_personal', '=', '0')->orwhere('doctor_id', '=', $doctor_id)->paginate(Utils::PAGE_SIZE);
+        return $kfmbs;
+    }
+
+    /*
      * 根据id获取康复模板
      *
      * By TerryQi
@@ -88,7 +116,6 @@ class KFMBManager
      * 1:级别，带录入人员信息
      * 2:级别，带宣教信息
      * 3:级别，带计划列表
-     * 4:级别，计划带采集列表
      */
     public static function getKFMBInfoByLevel($kfmb, $level)
     {
@@ -104,65 +131,6 @@ class KFMBManager
         if (strpos($level, '3') !== false) {
             $kfmb->jhs = self::getJHListByKFMBId($kfmb->id);
         }
-        if (strpos($level, '4') !== false) {
-            foreach ($kfmb->jhs as $jh) {
-                $jhsjs = self::getJHSJByJHId($jh->id);
-                if ($jhsjs) {
-                    $jh->jhsjs = self::getJHSJByJHId($jh->id);
-                } else {
-                    $jh->jhsjs = [];
-                }
-            }
-        }
-        return $kfmb;
-    }
-
-
-    /*
-     * 根据计划id获取关联的计划数据
-     * 
-     * By TerryQi
-     * 
-     * 2017-12-26
-     * 
-     */
-    public static function getJHSJByJHId($jh_id)
-    {
-        $jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh_id)->get();
-        foreach ($jhsjs as $jhsj) {
-            $jhsj->sjx = SJXManager::getSJXById($jhsj->sjx_id);
-        }
-        return $jhsjs;
-    }
-
-
-    /*
-     * 获取康复模板计划的采集数据列表信息
-     *
-     * By TerryQi
-     *
-     * 2017-12-13
-     *
-     */
-    public static function getJHSJById($id)
-    {
-        $sjmb = KFMBJHSJ::where('id', '=', $id)->first();
-        return $sjmb;
-    }
-
-
-    public static function getMBById($jh_id)
-    {
-        $jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh_id)->get();
-        foreach ($jhsjs as $jhsj) {
-            $jhsj->sjx = SJXManager::getSJXById($jhsj->sjx_id);
-        }
-        return $jhsjs;
-    }
-
-    public static function getSJMBById($id)
-    {
-        $kfmb = KFMB::where('id', '=', $id)->first;
         return $kfmb;
     }
 
@@ -177,46 +145,7 @@ class KFMBManager
     public static function getJHListByKFMBId($kfmb_id)
     {
         $jhs = KFMBJH::where('kfmb_id', '=', $kfmb_id)->orderby('seq', 'asc')->get();
-        foreach ($jhs as $jh) {
-            $jh->jhsjs = KFMBJHSJ::where('mbjh_id', '=', $jh->id)->get();
-            //为计划数据补充数据项信息
-            foreach ($jh->jhsjs as $jhsj) {
-                $jhsj->sjx = SJXManager::getSJXById($jhsj->sjx_id);
-            }
-        }
         return $jhs;
-    }
-
-
-    /*
-     * 根据康复模板id获取图文信息
-     *
-     * By TerryQi
-     *
-     * 2017-12-12
-     *
-     */
-    public
-    static function getStepsByKFMBId($kfmb_id)
-    {
-        $tw_steps = TWStep::where('f_table', '=', 'kfmb')->where('f_id', '=', $kfmb_id)->get();
-        return $tw_steps;
-    }
-
-
-    /*
-     * 根据图文id获取图文信息
-     *
-     * By TerryQi
-     *
-     * 2017-12-12
-     *
-     */
-    public
-    static function getTWById($tw_id)
-    {
-        $tw = TWStep::where('id', '=', $tw_id)->first();
-        return $tw;
     }
 
 
@@ -238,6 +167,9 @@ class KFMBManager
         }
         if (array_key_exists('doctor_id', $data)) {
             $kfmb->doctor_id = array_get($data, 'doctor_id');
+        }
+        if (array_key_exists('is_personal', $data)) {
+            $kfmb->is_personal = array_get($data, 'is_personal');
         }
         if (array_key_exists('xj_id', $data)) {
             $kfmb->xj_id = array_get($data, 'xj_id');
@@ -293,32 +225,5 @@ class KFMBManager
         }
         return $kfmbjh;
     }
-
-
-    /*
-     * 设置康复计划
-     *
-     * By TerryQi
-     *
-     * 2017-12-12
-     *
-     */
-    public static function setKFMBJHSJ($kfmbjhsj, $data)
-    {
-        if (array_key_exists('mbjh_id', $data)) {
-            $kfmbjhsj->mbjh_id = array_get($data, 'mbjh_id');
-        }
-        if (array_key_exists('sjx_id', $data)) {
-            $kfmbjhsj->sjx_id = array_get($data, 'sjx_id');
-        }
-        if (array_key_exists('min_value', $data)) {
-            $kfmbjhsj->min_value = array_get($data, 'min_value');
-        }
-        if (array_key_exists('max_value', $data)) {
-            $kfmbjhsj->max_value = array_get($data, 'max_value');
-        }
-        return $kfmbjhsj;
-    }
-
 
 }

@@ -13,10 +13,8 @@ use App\Models\KFJH;
 use App\Models\User;
 use App\Models\UserCase;
 use App\Models\UserKFJH;
-use App\Models\UserKFJHSJ;
 use App\Models\Vertify;
 use App\Models\ZXJH;
-use App\Models\ZXJHSJ;
 use GuzzleHttp\Psr7\Request;
 
 class UserManager
@@ -45,6 +43,22 @@ class UserManager
     public static function getUserInfoById($id)
     {
         $user = self::getUserInfoByIdWithToken($id);
+        if ($user) {
+            $user->token = null;
+        }
+        return $user;
+    }
+
+    /*
+     * 根据id获取用户信息
+     *
+     * By TerryQi
+     *
+     * 2017-09-28
+     */
+    public static function getUserInfoByPhonenum($phonenum)
+    {
+        $user = User::where('phonenum', '=', $phonenum)->first();
         if ($user) {
             $user->token = null;
         }
@@ -157,29 +171,29 @@ class UserManager
         if (array_key_exists('user_id', $data)) {
             $userCase->user_id = array_get($data, 'user_id');
         }
-        if (array_key_exists('desc', $data)) {
-            $userCase->desc = array_get($data, 'desc');
-        }
         if (array_key_exists('doctor_id', $data)) {
             $userCase->doctor_id = array_get($data, 'doctor_id');
         }
-        if (array_key_exists('zz_doctor_id', $data)) {
-            $userCase->zz_doctor_id = array_get($data, 'zz_doctor_id');
+        if (array_key_exists('desc', $data)) {
+            $userCase->desc = array_get($data, 'desc');
         }
-        if (array_key_exists('kf_doctor_id', $data)) {
-            $userCase->kf_doctor_id = array_get($data, 'kf_doctor_id');
-        }
-        if (array_key_exists('kfmb_id', $data)) {
-            $userCase->kfmb_id = array_get($data, 'kfmb_id');
+        if (array_key_exists('surgery_id', $data)) {
+            $userCase->surgery_id = array_get($data, 'surgery_id');
         }
         if (array_key_exists('ss_time', $data)) {
             $userCase->ss_time = array_get($data, 'ss_time');
         }
-        if (array_key_exists('wt_time', $data)) {
-            $userCase->wt_time = array_get($data, 'wt_time');
+        if (array_key_exists('hpos_id', $data)) {
+            $userCase->hpos_id = array_get($data, 'hpos_id');
         }
-        if (array_key_exists('xj_type', $data)) {
-            $userCase->xj_type = implode(',', array_get($data, 'xj_type'));
+        if (array_key_exists('side', $data)) {
+            $userCase->side = array_get($data, 'side');
+        }
+        if (array_key_exists('kf_doctor_id', $data)) {
+            $userCase->kf_doctor_id = array_get($data, 'kf_doctor_id');
+        }
+        if (array_key_exists('ss_time', $data)) {
+            $userCase->ss_time = array_get($data, 'ss_time');
         }
         return $userCase;
     }
@@ -351,30 +365,23 @@ class UserManager
     {
         //0级获取用户信息
         if (strpos($level, '0') !== false) {
-            if ($userCase->zz_doctor_id) {
-                $userCase->zz_doctor = DoctorManager::getDoctorById($userCase->zz_doctor_id);
-            }
+//            作废
+//            if ($userCase->zz_doctor_id) {
+//                $userCase->zz_doctor = DoctorManager::getDoctorById($userCase->zz_doctor_id);
+//            }
             if ($userCase->kf_doctor_id) {
                 $userCase->kf_doctor = DoctorManager::getDoctorById($userCase->kf_doctor_id);
             }
-            if ($userCase->kfmb_id) {
-                $userCase->kfmb = KFMBManager::getKFMBById($userCase->kfmb_id);
+            if ($userCase->surgery_id) {
+                $userCase->surgery = SurgeryManager::getSurgeryById($userCase->surgery_id);
+            }
+            if ($userCase->hpos_id) {
+                $userCase->hpos = HposManager::getHPosById($userCase->hpos_id);
             }
         }
         //1级获取康复计划信息
         if (strpos($level, '1') !== false) {
             $userCase->jhs = self::getUserKFJHByCaseId($userCase->id);
-        }
-        //2级获取康复计划详情
-        if (strpos($level, '2') !== false) {
-            foreach ($userCase->jhs as $jh) {
-                $jhsjs = self::getUserCaseJHSJByJHId($jh->id);
-                if ($jhsjs) {
-                    $jh->jhsjs = $jhsjs;
-                } else {
-                    $jh->jhsjs = [];
-                }
-            }
         }
         return $userCase;
     }
@@ -395,20 +402,6 @@ class UserManager
     }
 
     /*
-     * 获取用户病例康复计划关联的采集数据项
-     *
-     * By TerryQi
-     *
-     * 2017-12-28
-     *
-     */
-    public static function getUserKFJHSJByJHId($userCase_jh_id)
-    {
-        $jhsjs = UserKFJHSJ::where('kfjh_id', '=', $userCase_jh_id)->get();
-        return $jhsjs;
-    }
-
-    /*
      * 根据用户id获取病例，即获取该用户的全部病例
      *
      * By TerryQi
@@ -416,7 +409,7 @@ class UserManager
      * 2017-12-19
      *
      */
-    public static function getUserCaseByUserId($user_id)
+    public static function getUserCasesByUserId($user_id)
     {
         $userCases = UserCase::where('user_id', '=', $user_id)->orderby('id', 'desc')->get();
         return $userCases;
@@ -448,24 +441,6 @@ class UserManager
     {
         $userCase = UserCase::where('id', '=', $userCase_id)->first();
         return $userCase;
-    }
-
-    /*
-     * 根据患者病例计划id获取数据采集列表
-     *
-     * By TerryQi
-     *
-     * 2017-12-28
-     *
-     */
-
-    public static function getUserCaseJHSJByJHId($jh_id)
-    {
-        $jhsjs = UserKFJHSJ::where('kfjh_id', '=', $jh_id)->get();
-        foreach ($jhsjs as $jhsj) {
-            $jhsj->sjx = SJXManager::getSJXById($jhsj->sjx_id);
-        }
-        return $jhsjs;
     }
 
 
@@ -530,30 +505,6 @@ class UserManager
             $kfjh->status = array_get($data, 'status');
         }
         return $kfjh;
-    }
-
-    //设置康复计划数据
-    public static function setKFJHSJ($kfjhsj, $data)
-    {
-        if (array_key_exists('user_id', $data)) {
-            $kfjhsj->user_id = array_get($data, 'user_id');
-        }
-        if (array_key_exists('sjx_id', $data)) {
-            $kfjhsj->sjx_id = array_get($data, 'sjx_id');
-        }
-        if (array_key_exists('kfjh_id', $data)) {
-            $kfjhsj->kfjh_id = array_get($data, 'kfjh_id');
-        }
-        if (array_key_exists('userCase_id', $data)) {
-            $kfjhsj->userCase_id = array_get($data, 'userCase_id');
-        }
-        if (array_key_exists('min_value', $data)) {
-            $kfjhsj->min_value = array_get($data, 'min_value');
-        }
-        if (array_key_exists('max_value', $data)) {
-            $kfjhsj->max_value = array_get($data, 'max_value');
-        }
-        return $kfjhsj;
     }
 
 
