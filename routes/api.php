@@ -70,7 +70,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('lb/getList', 'API\LBController@getList');
     Route::get('lb/getById', 'API\LBController@getById');
     Route::get('lb/getQuestionsById', 'API\LBController@getQuestionsById');
-    Route::post('lb/answerLB', 'API\LBController@answerLB');
+    Route::post('lb/answerLB', 'API\LBController@answerLB')->middleware('CheckToken');
     Route::get('lb/getAnswerHistory', 'API\LBController@getAnswerHistoryByUserId');
 
     //康复计划
