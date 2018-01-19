@@ -55,9 +55,10 @@
 
     <script id="message-content-template" type="text/x-dot-template">
 
-        <div class="row margin-top-10">
+        @{{~it :question:index_que}}
+        <div class="row margin-top-20">
             <div class="col-md-12">
-                @{{~it :question:index_que}}
+
 
 
                 <div class="white-bg">
@@ -70,39 +71,43 @@
                                 <h3 class="form-control">
                                     问题:
                                     <input onchange="changeQuestion('@{{=index_que}}',this)" type="text"
-                                            placeholder="请输入问题"style="border: none;width: 60%"
+                                           placeholder="请输入问题" style="border: none;width: 60%"
                                            value=@{{=question.question}}>
+                                    @{{? question.type=='0'||question.type=='1'}}
                                     权重:
                                     <input
                                             onchange="changequan('@{{=index_que}}',this)"
-                                            type="number" style="border: none"
+                                            type="number" style="border: none" min="0"
                                             value=@{{=question.quan }}>
+                                    @{{? }}
+                                    <span class="pull-right">
                                     问题类型:
                                     <select name="type" style="border: none" value="@{{=question.type}}"
                                             onchange="changeType('@{{=index_que}}',this)">
-                                        @{{? question.type==='0'}}
+                                        @{{? question.type=='0'}}
                                         <option value="0" selected='selected'>单选题</option>
                                         @{{?? }}
                                         <option value="0">单选题</option>
                                         @{{?}}
-                                        @{{? question.type==='1'}}
+                                        @{{? question.type=='1'}}
                                         <option value="1" selected='selected'>多选题</option>
                                         @{{?? }}
-                                        <option value="1" >多选题</option>
+                                        <option value="1">多选题</option>
                                         @{{?}}
-                                        @{{? question.type==='2'}}
+                                        @{{? question.type=='2'}}
                                         <option value="2" selected='selected'>填空题</option>
                                         @{{?? }}
-                                        <option value="2" >填空题</option>
+                                        <option value="2">填空题</option>
                                         @{{?}}
-                                        @{{? question.type==='3'}}
+                                        @{{? question.type=='3'}}
                                         <option value="3" selected='selected'>表格题</option>
                                         @{{?? }}
-                                        <option value="3" >表格题</option>
+                                        <option value="3">表格题</option>
                                         @{{?}}
                                     </select>
+                                        </span>
                                 </h3>
-                                @{{? question.type==='0'||question.type==='1'}}
+                                @{{? question.type=='0'||question.type=='1'}}
                                 <table class="table table-bordered">
                                     <tr class="margin-top-10 grey-bg">
                                         <th></th>
@@ -131,14 +136,14 @@
                                         <th>
                                             <input id="point@{{=index_opt}}"
                                                    onchange="changePoint0('@{{=index_que}}','@{{=index_opt}}',this)"
-                                                   type="number" style="border: none"
+                                                   type="number" style="border: none" min="0"
                                                    value=@{{=option.point0 }}>
                                         </th>
 
                                         <th>
                                             <input id="point@{{=index_opt}}"
                                                    onchange="changePoint('@{{=index_que}}','@{{=index_opt}}',this)"
-                                                   type="number" style="border: none"disabled="true"
+                                                   type="number" style="border: none" disabled="true" min="0"
                                                    value=@{{=option.point }}>
                                         </th>
                                         <th>
@@ -152,22 +157,57 @@
 
 
                                 </table>
-                                @{{?? question.type==='2'}}
-                                <input type="text">
-                                填空题,使用"&bk"代替空格
-                                @{{?? question.type==='3'}}
-                                表格
+                                @{{?? question.type=='2'}}
+                                请在上方填写题目内容,使用半角字符"()"代替空格。具体分数将会由后台评判，请填写分数最大值:
+                                <input type="number" min="0" value="@{{=question.answer }}"
+                                       onchange="changePoint_b('@{{=index_que}}',this)">
+                                @{{?? question.type=='3'}}
+                                <table class="table table-bordered">
+                                    <tr class="margin-top-10 grey-bg">
+                                        <th style="width: 60px">问题</th>
+                                        @{{~question.options:val_opt:index_q_opt1 }}
+                                        <th style="width: 60px">
+                                            <input style="width: 60px" value="@{{= val_opt}}"
+                                                   onchange="changeOpt_q('@{{=index_que}}','@{{=index_q_opt1 }}',this)">
+                                        </th>
+                                        @{{~ }}
+                                        <th onclick="addOpt_q('@{{=index_que}}')">添加选项</th>
+                                    </tr>
+                                    @{{~question.questions:val_que:index_q_que }}
+                                    <tr>
+                                        <th>
+                                            <input style="width: 120px" value="@{{=val_que}}"
+                                                   onchange="changeQue_q('@{{=index_que}}','@{{=index_q_que }}',this)">
+                                        </th>
+                                        @{{~question.options:val_opt:index_q_opt }}
+                                        <th>
+                                            {{--@{{= question.points[index_q_que][index_q_opt] }}--}}
+                                            <input value="@{{= question.points[index_q_que][index_q_opt] }}"
+                                                   style="width: 60px" min="0"
+                                                   {{--onchange="changePoint_q('@{{=index_que}}','@{{index_q_que}}','@{{index_q_opt}}',this)"--}}
+                                                   type="number"
+                                                   onchange="changePoint_q('@{{=index_que}}','@{{=index_q_que}}','@{{=index_q_opt}}',this)">
+                                        </th>
+                                        @{{~ }}
+                                    </tr>
+
+                                    @{{~ }}
+                                    <tr>
+                                        <th onclick="addQue_q('@{{=index_que}}')">添加问题</th>
+                                    </tr>
+                                </table>
                                 @{{?}}
 
                             </div>
 
                             <div class="col-md-12">
+                                @{{? question.type=='0'||question.type=='1'}}
                                 <div style="padding: 10px;" class="text-info btn  inline">
                                     <i class="fa fa-plus-circle"></i>
                                     <span class="margin-left-15"
                                           onclick="addOpt('@{{=index_que}}')">添加选项</span>
                                 </div>
-
+                                @{{?}}
                                 <div class="text-right pull-right inline"><img
                                             src="{{URL::asset('/img/up_pointer_icon.png')}}"
                                             class="opt-btn-size margin-right-10"
@@ -185,17 +225,17 @@
                         {{--@{{~}}--}}
                     </div>
                 </div>
-                @{{~}}
-                <div class="text-center margin-top-10">
-                    <img src="{{URL::asset('/img/add_button_icon.png')}}"
-                         style="width: 36px;height: 36px;"
-                         onclick="addQue()">
-                </div>
+
+
             </div>
             <!-- /.col -->
         </div>
-
-
+        @{{~}}
+        <div class="text-center margin-top-10">
+            <img src="{{URL::asset('/img/add_button_icon.png')}}"
+                 style="width: 36px;height: 36px;"
+                 onclick="addQue()">
+        </div>
     </script>
 
 
@@ -283,16 +323,48 @@
         //处理接收到的问题数据,将answer字符串转化为options对象
         function unzip(Questions) {
             for (var i in Questions) {
-                Questions[i].options = [];
-                var opts = Questions[i].answer.split("@q=");
-                Questions[i].quan = 1;
-                for (var j = 1; j < opts.length; j++) {
-                    Questions[i].options.push({
-                            option: opts[j].split('&p=')[0],
-                            point: opts[j].split('&p=')[1],
-                            point0:opts[j].split('&p=')[1],
-                        }
-                    );
+                if (Questions[i].type == 0 || Questions[i].type == 1) {
+                    Questions[i].options = [];
+                    var opts = Questions[i].answer.split("@q=");
+                    Questions[i].quan = 1;
+                    for (var j = 1; j < opts.length; j++) {
+                        Questions[i].options.push({
+                                option: opts[j].split('&p=')[0],
+                                point: opts[j].split('&p=')[1],
+                                point0: opts[j].split('&p=')[1],
+                            }
+                        );
+                    }
+                }
+                else if (Questions[i].type == 2) {
+                    console.log('填空题', Questions[i]);
+
+                } else if (Questions[i].type == 3) {
+                    var question = Questions[i].answer.split("@q=")[1].split("&opt=")[0];
+                    var option = Questions[i].answer.split("&opt=")[1].split("&p=")[0];
+                    var point = Questions[i].answer.split("&p=")[1];
+                    console.log("type:3", 'q=', question, 'opt=', option, 'p=', point);
+                    Questions[i].questions = [];
+                    for (var j in question.split(',')) {
+                        Questions[i].questions.push(question.split(',')[j]);
+                    }
+                    Questions[i].questions.pop();
+
+                    Questions[i].options = [];
+                    for (var k in option.split(',')) {
+                        Questions[i].options.push(option.split(',')[k]);
+                    }
+                    Questions[i].options.pop();
+
+                    Questions[i].points = [];
+                    for (var j in point.split(';')) {
+                        var p = [];
+                        for (var k in point.split(';')[j].split(','))
+                            p.push(point.split(';')[j].split(',')[k]);
+                        p.pop()
+                        Questions[i].points.push(p);
+                    }
+                    Questions[i].points.pop();
                 }
             }
             return Questions;
@@ -303,9 +375,33 @@
             for (var i in Questions) {
                 Questions[i].seq = i;
                 Questions[i].lb_id = lb.id;
+                if(Questions[i].type != 2)
                 Questions[i].answer = "";
-                for (var j in Questions[i].options) {
-                    Questions[i].answer += "@q=" + Questions[i].options[j].option + "&p=" + Questions[i].options[j].point;
+                if (Questions[i].type == 0 || Questions[i].type == 1) {
+                    for (var j in Questions[i].options) {
+                        Questions[i].answer += "@q=" + Questions[i].options[j].option + "&p=" + Questions[i].options[j].point;
+                    }
+                }
+                else if (Questions[i].type == 2) {
+                    console.log('填空题',Questions[i])
+                }
+                else if (Questions[i].type == 3)
+                //表格题
+                {
+                    Questions[i].answer += "@q=";
+                    for (var j in Questions[i].questions)
+                        Questions[i].answer += Questions[i].questions[j] + ',';
+
+                    Questions[i].answer += "&opt=";
+                    for (var k in Questions[i].options)
+                        Questions[i].answer += Questions[i].options[k] + ',';
+
+                    Questions[i].answer += "&p=";
+                    for (var j in Questions[i].questions) {
+                        for (var k in Questions[i].options)
+                            Questions[i].answer += Questions[i].points[j][k] + ',';
+                        Questions[i].answer += ";"
+                    }
                 }
             }
             return Questions;
@@ -329,12 +425,33 @@
             loadHtml();
         }
 
+        function addOpt_q(index) {
+
+            questions[index].options.push("");
+            for (var i = 0; i < questions[index].questions.length; i++)
+                questions[index].points[i].push(0);//每行增加一个
+            loadHtml();
+        }
+
         function addQue(index_que) {
             questions.push({
                 question: "",
-                quan:1,
-                options: [{option: "",point0:0, point: 0}]
+                quan: 1,
+                options: [{option: "", point0: 0, point: 0}],
+                type: 0
             });
+            //console.log(questions);
+            loadHtml();
+        }
+
+        function addQue_q(index) {
+
+            questions[index].questions.push("");
+            //console.log(questions[index]);
+            var newArray = [];
+            for (var i = 0; i < questions[index].options.length; i++)
+                newArray.push(0);//每行增加一个
+            questions[index].points.push(newArray);
             loadHtml();
         }
 
@@ -347,13 +464,23 @@
                 var m = questions[x];
                 questions[x] = questions[y];
                 questions[y] = m;
-                console.log(JSON.stringify(questions));
+                //console.log(JSON.stringify(questions));
                 loadHtml();
             }
         }
 
         function changeQuestion(index_que, e) {
             questions[index_que].question = e.value;
+            loadHtml();
+        }
+
+        function changeQue_q(index_que, index_opt, e) {
+            questions[index_que].questions[index_opt] = e.value;
+            loadHtml();
+        }
+
+        function changeOpt_q(index_que, index_ques, e) {
+            questions[index_que].options[index_ques] = e.value;
             loadHtml();
         }
 
@@ -379,24 +506,50 @@
             questions[index_que].options[index_opt].point = e.value;
             loadHtml();
         }
+
+        function changePoint_q(index_que, index_que_q, index_opt_q, e) {
+            //console.log(e)
+            questions[index_que].points[index_que_q][index_opt_q] = e.value;
+            loadHtml();
+        }
+
+        function changePoint_b(index_que, e) {
+
+            questions[index_que].answer = e.value;
+            console.log(questions,questions[index_que])
+            loadHtml();
+        }
+
         function changePoint0(index_que, index_opt, e) {
-            var q=questions[index_que].options[index_opt];
+            var q = questions[index_que].options[index_opt];
             q.point0 = e.value;
-            q.point=q.point0*questions[index_que].quan;
+            q.point = q.point0 * questions[index_que].quan;
             loadHtml();
         }
+
         function changequan(index_que, e) {
-            questions[index_que].quan= e.value;
-            var q=questions[index_que].options;
-            for(var i=0;i<q.length;i++)
-                q[i].point=q[i].point0*questions[index_que].quan;
+            questions[index_que].quan = e.value;
+            var q = questions[index_que].options;
+            for (var i = 0; i < q.length; i++)
+                q[i].point = q[i].point0 * questions[index_que].quan;
             loadHtml();
         }
+
         function changeType(index_que, e) {
-            questions[index_que].type= e.value;
-            console.log(e.options[e.value])
+            questions[index_que].type = e.value;
+            if (e.value == 32) {
+                questions[index_que].questions = ["这是问题"];
+                questions[index_que].answer = 0;
+            }
+            if (e.value == 3) {
+                questions[index_que].questions = ["这是问题"];
+                questions[index_que].options = ["这是选项"];
+                questions[index_que].points = [[0]];
+            }
+            //console.log(e.options[e.value], "问题：", questions)
             loadHtml();
         }
+
         function changeName(e) {
             lb.name = e.value;
             loadHtml();
@@ -411,17 +564,18 @@
             lb.doctor_id ={{$admin->id}};
             var q = zip(questions);
             lb.questions = q;
-            var s = JSON.stringify(lb)
-            console.log(s, deleted);
+            var s = JSON.stringify(lb);
+            //console.log(s, deleted);
             lb.doctor_id ={{$admin->id}};
             lb.questions = q;
             lb.deleted = deleted;
             //获取tokenn
             var token = $("#token").children().val();
             lb._token = token;
-            console.log("submitAll lb:" + JSON.stringify(lb));
+            console.log(JSON.stringify(lb))
+            //console.log("submitAll lb:" + JSON.stringify(lb));
             editLB("{{URL::asset('')}}", JSON.stringify(lb), function (ret, err) {
-                console.log(JSON.stringify(ret))
+                //console.log(JSON.stringify(ret))
 
                 alert("提交成功")
             })
