@@ -97,12 +97,14 @@ class UserController
         //存在id是保存
         if (array_key_exists('id', $data) && $data['id'] != null) {
             $user = UserManager::getUserInfoById($data['id']);
+        } else {
+            //如果是新建，根据手机号判断用户是否存在
+            $is_user_exist = UserManager::getUserInfoByPhonenum($data['phonenum']);
+            if ($is_user_exist) {
+                return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '手机号' . $data['phonenum'] . "已经存在，请检索该用户"]);
+            }
         }
-        //根据手机号判断用户是否存在
-        $is_user_exist = UserManager::getUserInfoByPhonenum($data['phonenum']);
-        if ($is_user_exist) {
-            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '手机号' . $data['phonenum'] . "已经存在，请检索该用户"]);
-        }
+
         $user = UserManager::setUser($user, $data);
         //如果token为空，则设置患者的token
         if (Utils::isObjNull($user->token)) {
