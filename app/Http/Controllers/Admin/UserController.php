@@ -133,7 +133,7 @@ class UserController
         $surgerys = SurgeryManager::getAllSurgerys();
         $hposs = HposManager::getHPosList();
         //获取用户病例
-        $userCases = UserManager::getUserCaseByUserId($data['user_id']);
+        $userCases = UserManager::getUserCasesByUserId($data['user_id']);
         foreach ($userCases as $userCase) {
             $userCase = UserManager::getUserCaseInfoByLevel($userCase, "0");
         }

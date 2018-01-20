@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Components\SechduleManager;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,8 +27,14 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        //这里是每日生成康复计划的任务
-        
+        //这里是每日生成康复计划的任务-每日早8点开始生成康复计划
+        $schedule->call(function () {
+            SechduleManager::autoCreateUserZXJH();
+        })->dailyAt('7:00');
+        //这里是每日生成康复计划的任务-每日0点开始关闭康复计划
+        $schedule->call(function () {
+            SechduleManager::autoFinishUserZXJH();
+        })->dailyAt('1:00');
     }
 
     /**

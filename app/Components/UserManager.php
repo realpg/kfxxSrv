@@ -538,7 +538,6 @@ class UserManager
                 $kfjh->save();
             }
         }
-
     }
 
 
