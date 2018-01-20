@@ -12,6 +12,7 @@ namespace App\Components;
 use App\Models\User;
 use App\Models\UserCase;
 use App\Models\UserKFJH;
+use App\Models\UserZXJH;
 use App\Models\Vertify;
 use App\Models\ZXJH;
 use GuzzleHttp\Psr7\Request;
@@ -29,7 +30,7 @@ class ZXJHManager
      */
     public static function isZXJHExist($kfjh, $date)
     {
-        $zxjh = ZXJH::where('kfjh_id', '=', $kfjh->id)->where('jh_date', '=', $date)->first();
+        $zxjh = UserZXJH::where('kfjh_id', '=', $kfjh->id)->where('jh_date', '=', $date)->first();
         if ($zxjh) {
             return true;
         } else {
@@ -48,7 +49,7 @@ class ZXJHManager
     public static function createZXJH($kfjh)
     {
         //生成执行计划
-        $zxjh = new ZXJH();
+        $zxjh = new UserZXJH();
         $zxjh = self::setZXJH($zxjh, $kfjh->toArray());
         $zxjh->kfjh_id = $kfjh->id;
         $zxjh->jh_date = DateTool::getToday();
@@ -66,7 +67,7 @@ class ZXJHManager
      */
     public static function getZXJHListByStatus($status)
     {
-        $zxjhs = ZXJH::whereIn('status', $status)->get();
+        $zxjhs = UserZXJH::whereIn('status', $status)->get();
         return $zxjhs;
     }
 
@@ -111,7 +112,7 @@ class ZXJHManager
     //根据患者id和日期获取当日的执行计划
     public static function getZXJHByUserIdAndDate($user_id, $date)
     {
-        $zxjh = ZXJH::where('user_id', '=', $user_id)->where('jh_date', '=', $date)->get();
+        $zxjh = UserZXJH::where('user_id', '=', $user_id)->where('jh_date', '=', $date)->get();
         return $zxjh;
     }
 
@@ -119,7 +120,7 @@ class ZXJHManager
     //根据执行计划id获取执行计划信息
     public static function getZXJHById($id)
     {
-        $zxjh = ZXJH::where('id', '=', $id)->first();
+        $zxjh = UserZXJH::where('id', '=', $id)->first();
         return $zxjh;
     }
 
