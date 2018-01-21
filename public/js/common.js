@@ -26,7 +26,10 @@ function getADById(url, param, callBack) {
 }
 //根据id获取轮播图信息
 function getLBById(url, param, callBack) {
-    ajaxRequest(url + "api/lb/getById", param, "GET", callBack);
+    ajaxRequest(url + "api/lb/getQuestionsById", param, "GET", callBack);
+}
+function getLBAnswerByID(url,param,callBack) {
+    ajaxRequest(url + "api/lb/getAnswerHistoryByID", param, "GET", callBack);
 }
 
 //根据id获取康复模板信息

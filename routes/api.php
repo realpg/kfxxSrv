@@ -72,6 +72,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('lb/getQuestionsById', 'API\LBController@getQuestionsById');
     Route::post('lb/answerLB', 'API\LBController@answerLB')->middleware('CheckToken');
     Route::get('lb/getAnswerHistory', 'API\LBController@getAnswerHistoryByUserId');
+	Route::get('lb/getAnswerHistoryByID', 'API\LBController@getAnswerHistoryById');
 
     //康复计划
     Route::get('kfjh/getBLByUserId', 'API\KFJHController@getBLByUserId');//获取病历

@@ -81,6 +81,21 @@ class LBController extends Controller
 		
 		return ApiResponse::makeResponse(true, $ans, ApiResponse::SUCCESS_CODE);
 	}
+	public static function getAnswerHistoryById(Request $request){
+		$requestValidationResult = RequestValidator::validator($request->all(), [
+			'id' => 'required',
+		]);
+		if ($requestValidationResult !== true) {
+			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+		}
+		$data=$request->all();
+		$ans=LBMannager::getAnswersByAnsID($data['id']);
+		if (!$ans) {
+			return ApiResponse::makeResponse(false, '获取答案失败', ApiResponse::INNER_ERROR);
+		}
+		
+		return ApiResponse::makeResponse(true, $ans, ApiResponse::SUCCESS_CODE);
+	}
 	
 	//根据ID获取量表问题
 	public static function getQuestionsById(Request $request)

@@ -45,7 +45,7 @@
                                             {{$data->name}}
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="width: 8%">
                                         <div class="line-height-30  text-oneline ">
                                             @if($data->type == '0')
                                                 普通量表
@@ -54,7 +54,6 @@
                                             @else
                                                 随访量表
                                             @endif
-                                            {{$data->type}}
                                         </div>
                                     </td>
 
@@ -68,7 +67,7 @@
                                                 class="line-height-30">{{$data->created_at_str}}</span>
                                     </td>
 
-                                    <td>
+                                    <td >
                                         <span class="line-height-30">
                                         @if ($data->doctor)
                                                 {{$data->doctor->name}}

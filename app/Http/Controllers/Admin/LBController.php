@@ -9,12 +9,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Components\DateTool;
+use App\Components\DoctorManager;
 use App\Components\LBMannager;
 use App\Components\QNManager;
 use App\Components\RequestValidator;
 use App\Components\lbManager;
+use App\Components\UserManager;
 use App\Models\LB;
 use App\Models\LBQuestion;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LBController
@@ -27,6 +30,7 @@ class LBController
 		$LBList = LBMannager::lblist_all();
 		foreach ($LBList as $lb) {
 			$lb->created_at_str = DateTool::formateData($lb->created_at, 1);
+			$lb->doctor = DoctorManager::getDoctorById($lb->doctor_id);
 		}
 		return view('admin.lb.index', ['admin' => $admin, 'datas' => $LBList]);
 	}
@@ -179,5 +183,20 @@ class LBController
 		
 		return $questions;
 		return redirect('/admin/lb/setQue?id='.$data['id']);
+	}
+	public static function history(Request $request)
+	{
+		$admin = $request->session()->get('admin');
+		$Answers = LBMannager::getAllAnswer();
+		foreach ($Answers as $answer) {
+			$answer->created_at_str = DateTool::formateData($answer->created_at, 1);
+			$answer->user=UserManager::getUserInfoById($answer->user_id);
+			$answer->lb=LBMannager::getLBById($answer->lb_id);
+		}
+		return view('admin.lb.answerHistory', ['admin' => $admin, 'datas' => $Answers]);
+	}
+	public static function editHistory(Request $request){
+		$admin = $request->session()->get('admin');
+		return view('admin.lb.editHistory', ['admin' => $admin]);
 	}
 }

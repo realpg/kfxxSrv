@@ -170,5 +170,15 @@ class LBMannager
 		$ans = LBAnswer::where('user_id', '=', $u_id)->get();
 		return $ans;
 	}
+	public static function getAnswersByAnsID($id)
+	{
+		$ans = LBAnswer::where('id', '=', $id)->first();
+		return $ans;
+	}
+	
+	public static function getAllAnswer(){
+		$answers=LBAnswer::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(Utils::PAGE_SIZE);;
+		return $answers;
+	}
 	
 }
