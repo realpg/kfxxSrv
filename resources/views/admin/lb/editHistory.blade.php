@@ -6,13 +6,13 @@
         <div class="row">
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">编辑量表</li>
+                    <li><a href="#"><i class="fa fa-dashboard"></i> 答题记录</a></li>
+                    <li class="active">评分</li>
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
                 <button type="button" class="btn btn-primary" onclick="submitAll()">
-                    保存量表
+                    保存评分
                 </button>
             </div>
         </div>
@@ -73,7 +73,7 @@
                                     @{{~question.questions :que:idx}}
                                     <span style="border: none;width: 60%">@{{=que}}</span>
                                     @{{?idx< question.result.length}}
-                                    <span style="border-bottom: 1px solid black;font-weight: bold">
+                                    <span style="border-bottom: 1px solid black;font-weight: bold;background-color: yellow">
                                         @{{=question.result[idx]}}
                                     </span>
                                     @{{? }}
@@ -177,7 +177,10 @@
 
                             <div class="col-md-12">
                                 {{--//分数可以修改--}}
-                                @{{=question.score}}
+                                得分:
+                                <input value="@{{=question.score}}" onchange="changeScore('@{{=index_que}}',this)"
+                                type="number">
+
                             </div>
 
 
@@ -576,25 +579,29 @@
             lb.desc = e.value;
             loadHtml();
         }
+        function changeScore(index,e) {
+            questions[index].score=e.value;
+        }
 
         function submitAll() {
-            lb.doctor_id ={{$admin->id}};
+            var param={};
             var q = zip(questions);
-            lb.questions = q;
-            var s = JSON.stringify(lb);
+            var score=0;
+            for (var i in q){
+                score+=parseInt(q[i].score);
+            }
+            param.score = score;
             //console.log(s, deleted);
-            lb.doctor_id ={{$admin->id}};
-            lb.questions = q;
-            lb.deleted = deleted;
+            param.doctor_id ={{$admin->id}};
+            param.id=result.id;
             //获取tokenn
             var token = $("#token").children().val();
-            lb._token = token;
-            console.log(JSON.stringify(lb))
+            param._token = token;
+            console.log(JSON.stringify(param))
             //console.log("submitAll lb:" + JSON.stringify(lb));
-            editLB("{{URL::asset('')}}", JSON.stringify(lb), function (ret, err) {
-                //console.log(JSON.stringify(ret))
-
-                alert("提交成功")
+            checkAnswer("{{URL::asset('')}}", JSON.stringify(param), function (ret, err) {
+                console.log(JSON.stringify(ret));
+                alert("提交成功");
             })
         }
 

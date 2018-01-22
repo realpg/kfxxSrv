@@ -182,7 +182,6 @@ class LBController
 		$questions=LBMannager::setQuestions($questions);
 		
 		return $questions;
-		return redirect('/admin/lb/setQue?id='.$data['id']);
 	}
 	public static function history(Request $request)
 	{
@@ -198,5 +197,23 @@ class LBController
 	public static function editHistory(Request $request){
 		$admin = $request->session()->get('admin');
 		return view('admin.lb.editHistory', ['admin' => $admin]);
+	}
+	public static function CheckAnswer(Request $request){
+		
+		$admin = $request->session()->get('admin');
+//		LBMannager::checkAnswer()
+		$requestValidationResult = RequestValidator::validator($request->all(), [
+			'id' => 'required',
+		]);
+		if ($requestValidationResult !== true) {
+			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+		}
+		$data=$request->all();
+		$ans=LBMannager::getAnswersByAnsID($data['id']);
+		if (!$ans) {
+			return ApiResponse::makeResponse(false, '获取答案失败', ApiResponse::INNER_ERROR);
+		}
+		$ret=LBMannager::checkAnswer($ans,$data);
+		return $ret;
 	}
 }

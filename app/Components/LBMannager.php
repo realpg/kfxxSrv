@@ -139,6 +139,7 @@ class LBMannager
 		$ans->lb_id = array_get($data, 'lb_id');
 		$results = array_get($data, 'result');
 		$ans->result = $results;
+		$ans->status = 0;
 		
 		
 		$user = UserManager::getUserInfoById($data['user_id']);
@@ -180,5 +181,11 @@ class LBMannager
 		$answers=LBAnswer::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(Utils::PAGE_SIZE);;
 		return $answers;
 	}
-	
+	public static function checkAnswer($ans,$data){
+		$ans->score=array_get($data, 'score');
+		$ans->doctor_id=array_get($data, 'doctor_id');
+		$ans->status=1;
+		$ans->save();
+		return $ans;
+	}
 }

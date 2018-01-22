@@ -106,6 +106,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/lb/del/{id}', 'Admin\LBController@del');  //删除量表ok
 	Route::get('/lb/answerHistory', 'Admin\LBController@history');  //量表答题记录首页  ok
 	Route::get('/lb/editHistory', 'Admin\LBController@editHistory');  //量表答题记录首页  ok
-	
+	Route::post('/lb/checkAnswer', 'Admin\LBController@CheckAnswer');  //编辑量表问题 ok
 
 });

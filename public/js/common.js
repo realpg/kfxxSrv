@@ -28,10 +28,14 @@ function getADById(url, param, callBack) {
 function getLBById(url, param, callBack) {
     ajaxRequest(url + "api/lb/getQuestionsById", param, "GET", callBack);
 }
+//根据记录id获取量表答题记录
 function getLBAnswerByID(url,param,callBack) {
     ajaxRequest(url + "api/lb/getAnswerHistoryByID", param, "GET", callBack);
 }
-
+//评分
+function checkAnswer(url, param, callBack) {
+    ajaxRequest(url + "admin/lb/checkAnswer", param, "POST", callBack);
+}
 //根据id获取康复模板信息
 function getKFMBById(url, param, callBack) {
     ajaxRequest(url + "api/kfmb/getKFMBById", param, "GET", callBack);
