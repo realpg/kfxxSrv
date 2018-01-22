@@ -11,15 +11,46 @@
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
-                {{--<button type="button" class="btn btn-primary" onclick="clickAdd();">--}}
-                    {{--+新建量表--}}
-                {{--</button>--}}
+                <select onchange="changeList(this)">
+                    <option value="0">全部</option>
+                    <option value="1">全部未处理记录</option>
+                    <option value="2">我的已处理记录</option>
+                    {{--<option value="3">我的患者未处理记录</option>--}}
+                </select>
             </div>
         </div>
     </section>
 
     <!-- Main content -->
     <section class="content">
+        <div id="AnswerList"></div>
+        <div id="datas" style=" display:none;">
+            @foreach($datas as $data)
+                <div>{{$data}}</div>
+            @endforeach
+        </div>
+        <div id="PageFoot"></div>
+
+    </section>
+
+    <script id="PageFoot-content-template" type="text/x-dot-template">
+        <div class="row">
+            <div class="col-sm-5">
+
+            </div>
+            <div id="page" class="col-sm-7 text-right">
+                <button @{{?it.page<=1 }}disabled= 'true'@{{? }}type="button" class="btn btn-primary" onclick="changePage(-1)">
+                    上一页
+                </button>
+                <span>第 @{{=it.page }} 页/共 @{{=it.length }} 页</span>
+                <button @{{?(it.page>=it.length) }}disabled= 'true'@{{? }} type="button" class="btn btn-primary"
+                        onclick="changePage(1)">
+                    下一页
+                </button>
+            </div>
+        </div>
+    </script>
+    <script id="AnswerList-content-template" type="text/x-dot-template">
         <!--列表-->
         <div class="row">
             <div class="col-xs-12">
@@ -37,78 +68,78 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($datas as $data)
-                                <tr style="word-break:break-all;width: 17%" id="tr_{{$data->id}}">
-                                    <td>
-                                        <div class="line-height-30  text-oneline ">
-                                            {{$data->lb->name}}
-                                        </div>
-                                    </td>
-                                    <td style="width: 8%">
-                                        <div class="line-height-30  text-oneline ">
-                                            @if($data->lb->type == '0')
-                                                普通量表
-                                            @elseif($data->lb->type == '1')
-                                                验证量表
-                                            @else
-                                                随访量表
-                                            @endif
-                                        </div>
-                                    </td>
+                            @{{~it:data:index }}
+                            <tr style="word-break:break-all;width: 17%" id="tr_@{{=data.id}}">
+                                <td>
+                                    <div class="line-height-30  text-oneline ">
+                                        @{{=data.lb.name}}
+                                    </div>
+                                </td>
+                                <td style="width: 8%">
+                                    <div class="line-height-30  text-oneline ">
+                                        @{{? data.lb.type == '0'}}
+                                        普通量表
+                                        @{{?? data.lb.type == '1'}}
+                                        验证量表
+                                        @{{?? }}
+                                        随访量表
+                                        @{{? }}
+                                    </div>
+                                </td>
 
-                                    <td>
-                                        <a href="{{URL::asset('/admin/user/userCaseIndex')}}/?user_id={{$data->user_id}}">
-                                        <span class="line-height-30">
-                                        @if ($data->user)
-                                                {{$data->user->real_name}}
-                                            @else
-                                                未知
-                                            @endif
-                                        </span>
-                                        </a>
-                                    </td>
+                                <td>
+                                    <a href="{{URL::asset('/admin/user/userCaseIndex')}}/?user_id=@{{=data.user_id}}">
+            <span class="line-height-30">
+                @{{? data.user}}
+                        @{{=data.user.real_name}}
+                @{{?? }}
+                    未知
+                @{{? }}
+            </span>
+                                    </a>
+                                </td>
 
-                                    <td style="word-break:break-all;width: 17%"><span
-                                                class="line-height-30">{{$data->created_at_str}}</span>
-                                    </td>
+                                <td style="word-break:break-all;width: 17%"><span
+                                            class="line-height-30">@{{=data.created_at_str}}</span>
+                                </td>
 
-                                    <td>
-                                        @if($data->status === '0')
-                                            <span class="label label-default line-height-30">未处理</span>
-                                        @else
-                                            <span class="label label-success line-height-30">已处理</span>
-                                        @endif
+                                <td>
+                                    @{{?data.status == '0' }}
+                                    <span class="label label-default line-height-30">未处理</span>
+                                    @{{?? }}
+                                    <span class="label label-success line-height-30">已处理</span>
+                                    @{{? }}
 
-                                    </td>
+                                </td>
 
-                                    <td width="5%">
-                                        <span class="line-height-30">
+                                <td width="5%">
+            <span class="line-height-30">
 
-                                            {{--<span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"--}}
-                                                  {{--data-toggle="tooltip"--}}
-                                                  {{--data-placement="top"--}}
-                                                  {{--title="评分"--}}
-                                                  {{--onclick="clickEdit({{$data->id}})">--}}
-                                                {{--<i class="fa fa-edit opt-btn-i-size"></i>--}}
-                                            {{--</span>--}}
-                                            {{--<span class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"--}}
-                                                  {{--data-toggle="tooltip"--}}
-                                                  {{--data-placement="top"--}}
-                                                  {{--title="删除该量表"--}}
-                                                  {{--onclick="clickDel({{$data->id}})">--}}
-                                                {{--<i class="fa fa-trash-o opt-btn-i-size"></i>--}}
-                                            {{--</span>--}}
-                                            <a href="{{URL::asset('/admin/lb/editHistory')}}/?id={{$data->id}}"
-                                               class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
-                                               data-toggle="tooltip"
-                                               data-placement="top"
-                                               title="评分">
-                                                <i class="fa fa-edit opt-btn-i-size"></i>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                            @endforeach
+                {{--<span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"--}}
+                {{--data-toggle="tooltip"--}}
+                {{--data-placement="top"--}}
+                {{--title="评分"--}}
+                {{--onclick="clickEdit({{$data->id}})">--}}
+                {{--<i class="fa fa-edit opt-btn-i-size"></i>--}}
+                {{--</span>--}}
+                {{--<span class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"--}}
+                {{--data-toggle="tooltip"--}}
+                {{--data-placement="top"--}}
+                {{--title="删除该量表"--}}
+                {{--onclick="clickDel({{$data->id}})">--}}
+                {{--<i class="fa fa-trash-o opt-btn-i-size"></i>--}}
+                {{--</span>--}}
+                <a href="{{URL::asset('/admin/lb/editHistory')}}/?id=@{{=data.id}}"
+                   class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="评分">
+            <i class="fa fa-edit opt-btn-i-size"></i>
+            </a>
+            </span>
+                                </td>
+                            </tr>
+                            @{{~ }}
                             </tbody>
                         </table>
                     </div>
@@ -119,109 +150,81 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
-        <div class="row">
-            <div class="col-sm-5">
 
-            </div>
-            <div class="col-sm-7 text-right">
-                {!! $datas->links() !!}
-            </div>
-        </div>
-    </section>
-    {{--新建对话框--}}
+    </script>
 
-
-
-    {{--删除对话框--}}
-    <div class="modal fade " id="delConfrimModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content message_align">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">提示信息</h4>
-                </div>
-                <div class="modal-body">
-                    <p>您确认要删除该量表图片吗？</p>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" id="url"/>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button id="delConfrimModal_confirm_btn" data-value="" onclick="delAD();"
-                            class="btn btn-success"
-                            data-dismiss="modal">确定
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 @endsection
 
 @section('script')
     <script type="application/javascript">
-
+        var page = 1;
+        var list = [];
+        var newList = [];
         //入口函数
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip()
+            var children = $("#datas").children();
+            for (var x = 0; x < children.length; x++) {
+                var a = JSON.parse(children[x].innerText);
+                list.push(a);
+            }
+            newList = list
+            loadHtml(newList);
         });
 
-        //点击删除
-        function clickDel(ad_id) {
-            console.log("clickDel ad_id:" + ad_id);
-            //为删除按钮赋值
-            $("#delConfrimModal_confirm_btn").attr("data-value", ad_id);
-            $("#delConfrimModal").modal('show');
-        }
-
-        //删除量表
-        function delAD() {
-            var ad_id = $("#delConfrimModal_confirm_btn").attr("data-value");
-            console.log("delAD ad_id:" + ad_id);
-            //进行tr隐藏
-            $("#tr_" + ad_id).fadeOut();
-            //进行页面跳转
-            window.location.href = "{{URL::asset('/admin/lb/del')}}/" + ad_id;
-        }
-
-        //点击新建量表图
-        function clickAdd() {
-            //清空模态框
-            $("#editLB")[0].reset();
-
-            $("#addADModal").modal('show');
-        }
-
-        //点击编辑
-        function clickEdit(ad_id) {
-            console.log("clickEdit ad_id:" + ad_id);
-            getLBById("{{URL::asset('')}}", {id: ad_id}, function (ret) {
-                if (ret.result) {
-                    var msgObj = ret.ret;
-                    //对象配置
-                    $("#id").val(msgObj.id);
-                    $("#name").val(msgObj.name);
-                    $("#desc").val(msgObj.desc);
-                    //展示modal
-                    $("#addADModal").modal('show');
-                }
-            })
-        }
-
-        //合规校验
-        function checkValid() {
-            console.log("checkValid");
-            var name = $("#name").val();
-            //合规校验
-            if (judgeIsNullStr(name)) {
-                $("#name").focus();
-                return false;
+        function loadHtml(List) {
+            var LIST = List;
+            console.log(parseInt(List.length / 10 + 1));
+            if (List.length > 10) {
+                $("#page").html(page);
+                $("#PageFoot").empty();
+                var PageFoot = doT.template($("#PageFoot-content-template").text());
+                $("#PageFoot").html(PageFoot({'page': page, 'length': parseInt(List.length / 10 + 1)}));
+                LIST = LIST.slice((page - 1) * 10, page * 10)
             }
-            var desc = $("#desc").val();
-            if (judgeIsNullStr(desc)) {
-                $("#desc").focus();
-                return false;
+
+            $("#AnswerList").empty();
+            var interText = doT.template($("#AnswerList-content-template").text());
+            $("#AnswerList").html(interText(LIST));
+
+        }
+
+        function changeList(e) {
+            page = 1;
+            var m = e.value;
+            switch (m) {
+                case "0":
+                    newList = list;
+                    loadHtml(list);
+                    break;
+                case "1":
+                    changeList1(['status'], [0])
+                    break;
+                case "2":
+                    changeList1(['doctor_id'], [{{$admin->id}}])
+                    break;
+            {{--case "3":--}}
+                    {{--changeList1(['doctor_id', 'status'], [{{$admin->id}}, 0])--}}
+                    {{--break;--}}
             }
-            return true;
+        }
+
+        function changeList1(keys, values) {
+            newList = [];
+            for (var x in list) {
+                var flag = true;
+                for (var y in keys)
+                    if (list[x][keys[y]] != values[y])
+                        flag = false;
+                if (flag)
+                    newList.push(list[x]);
+            }
+            loadHtml(newList)
+        }
+
+        function changePage(delta) {
+            page += parseInt(delta);
+            loadHtml(newList)
         }
 
     </script>

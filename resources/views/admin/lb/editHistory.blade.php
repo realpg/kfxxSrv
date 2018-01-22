@@ -22,12 +22,8 @@
     <section class="content">
         <div class="box-body">
             <div id="token">{{csrf_field()}}</div>
-            <div id="LBinfo">
-
-            </div>
-            <div id="message-content">
-
-            </div>
+            <div id="LBinfo"></div>
+            <div id="message-content"></div>
         </div>
     </section>
 
@@ -179,7 +175,7 @@
                                 {{--//分数可以修改--}}
                                 得分:
                                 <input value="@{{=question.score}}" onchange="changeScore('@{{=index_que}}',this)"
-                                type="number">
+                                       type="number">
 
                             </div>
 
@@ -318,7 +314,7 @@
                     Questions[i].quan = 1;
                     for (var j = 1; j < opts.length; j++) {
                         Questions[i].options.push({
-                                style:"",
+                                style: "",
                                 option: opts[j].split('&p=')[0],
                                 point: opts[j].split('&p=')[1],
                                 point0: opts[j].split('&p=')[1],
@@ -331,7 +327,7 @@
                         Questions[i].result = R[i];
                         Questions[i].score = 0;
                         Questions[i].score += parseInt(Questions[i].options[R[i]].point);
-                        Questions[i].options[R[i]].style="background-color:yellow;"
+                        Questions[i].options[R[i]].style = "background-color:yellow;"
                     }
                     if (Questions[i].type == 1) {
                         var rrrr = R[i].split(',');
@@ -340,7 +336,7 @@
                         for (var x in rrrr) {
                             console.log("分数", Questions[i].type, Questions[i].options, rrrr);
                             Questions[i].score += parseInt(Questions[i].options[rrrr[x]].point);
-                            Questions[i].options[rrrr[x]].style="background-color:yellow;"
+                            Questions[i].options[rrrr[x]].style = "background-color:yellow;"
                         }
                     }
                 }
@@ -379,11 +375,11 @@
                         Questions[i].points.push(p);
                     }
                     Questions[i].points.pop();
-                    var rrrr=R[i].split(',');
+                    var rrrr = R[i].split(',');
                     rrrr.pop();
-                    console.log("结果",rrrr)
-                    for(var x in rrrr){
-                        Questions[i].score+=parseInt(Questions[i].points[x][rrrr[x]])
+                    console.log("结果", rrrr)
+                    for (var x in rrrr) {
+                        Questions[i].score += parseInt(Questions[i].points[x][rrrr[x]])
                     }
                 }
             }
@@ -579,21 +575,22 @@
             lb.desc = e.value;
             loadHtml();
         }
-        function changeScore(index,e) {
-            questions[index].score=e.value;
+
+        function changeScore(index, e) {
+            questions[index].score = e.value;
         }
 
         function submitAll() {
-            var param={};
+            var param = {};
             var q = zip(questions);
-            var score=0;
-            for (var i in q){
-                score+=parseInt(q[i].score);
+            var score = 0;
+            for (var i in q) {
+                score += parseInt(q[i].score);
             }
             param.score = score;
             //console.log(s, deleted);
             param.doctor_id ={{$admin->id}};
-            param.id=result.id;
+            param.id = result.id;
             //获取tokenn
             var token = $("#token").children().val();
             param._token = token;

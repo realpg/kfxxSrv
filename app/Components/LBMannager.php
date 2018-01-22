@@ -178,7 +178,7 @@ class LBMannager
 	}
 	
 	public static function getAllAnswer(){
-		$answers=LBAnswer::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(Utils::PAGE_SIZE);;
+		$answers=LBAnswer::orderBy('created_at', 'desc')->orderBy('id', 'desc')->get();;
 		return $answers;
 	}
 	public static function checkAnswer($ans,$data){
