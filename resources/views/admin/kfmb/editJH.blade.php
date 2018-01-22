@@ -84,7 +84,10 @@
                             </h3>
                             <div class="timeline-body">
                                 <div>
-                                    @{{=it.jhs[i].desc_str}}
+                                    名称：@{{=it.jhs[i].name_str}}
+                                </div>
+                                <div>
+                                    <div style="display: inline-block">@{{=it.jhs[i].desc_str}}</div>
                                 </div>
                             </div>
 
@@ -140,6 +143,14 @@
                 <form id="editJH" action="" method="post" class="form-horizontal">
                     <div class="modal-body">
                         <div class="box-body">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">名称*</label>
+
+                                <div class="col-sm-10">
+                                    <input id="name" name="name" class="form-control"
+                                              placeholder="请输入 ..."value="@{{=it.name}}"/>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="desc" class="col-sm-2 control-label">说明*</label>
 
@@ -269,6 +280,7 @@
             console.log("index index:" + index + " edit_or_add:" + edit_or_add);
             var jhs = kfmbInfo.jhs;
             var jhObj = {
+                name:"",
                 desc: "",
                 start_time: 0,
                 start_unit: 0,
@@ -281,6 +293,7 @@
             if (edit_or_add == "add") {
 
             } else {        //如果是编辑
+                jhObj.name = nullToEmptyStr(kfmbInfo.jhs[index].name);
                 jhObj.desc = nullToEmptyStr(kfmbInfo.jhs[index].desc);
                 jhObj.start_time = kfmbInfo.jhs[index].start_time;
                 jhObj.start_unit = kfmbInfo.jhs[index].start_unit;
@@ -303,6 +316,7 @@
         //点击保存
         function clickEditJH(index, edit_or_add) {
             var jhObj = {
+                name:$("#name").val(),
                 desc: $("#desc").val(),
                 btime_type: $("#btime_type").val(),
                 start_time: $("#start_time").val(),
@@ -312,6 +326,10 @@
             };
 
             //合规校验
+            if (judgeIsNullStr(jhObj.name)) {
+                $("#name").focus();
+                return;
+            }
             if (judgeIsNullStr(jhObj.desc)) {
                 $("#desc").focus();
                 return;
@@ -328,6 +346,7 @@
             if (edit_or_add == "add") {
                 kfmbInfo.jhs.splice(index, 0, jhObj);
             } else {
+                kfmbInfo.jhs[index].name = jhObj.name;
                 kfmbInfo.jhs[index].desc = jhObj.desc;
                 kfmbInfo.jhs[index].btime_type = jhObj.btime_type;
                 kfmbInfo.jhs[index].start_time = jhObj.start_time;
@@ -349,6 +368,7 @@
             kfmbInfo.desc_str = Text2Html(kfmbInfo.desc);
             //整理数据
             for (var i = 0; i < kfmbInfo.jhs.length; i++) {
+                kfmbInfo.jhs[i].name_str = Text2Html(kfmbInfo.jhs[i].name);
                 kfmbInfo.jhs[i].desc_str = Text2Html(kfmbInfo.jhs[i].desc);
                 kfmbInfo.jhs[i].btime_type_str = getBtimeTypeStr(kfmbInfo.jhs[i].btime_type);
                 kfmbInfo.jhs[i].start_unit_str = getTimeUnitStr(kfmbInfo.jhs[i].start_unit);

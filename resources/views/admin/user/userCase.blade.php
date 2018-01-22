@@ -288,7 +288,7 @@
         //点击编辑患者信息
         function clickEdit(userCase_id) {
             console.log("clickEdit userCase_id:" + userCase_id);
-            getUserCaseById("{{URL::asset('')}}", {id: userCase_id, level: "0"}, function (ret) {
+            getUserCaseById("{{URL::asset('')}}", {id: userCase_id, level: "0",'_token':"{{csrf_token()}}"}, function (ret) {
                 if (ret.result) {
                     var msgObj = ret.ret;
                     //对象配置

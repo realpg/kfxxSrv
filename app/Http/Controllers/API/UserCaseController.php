@@ -38,11 +38,11 @@ class UserCaseController extends Controller
     {
         $data = $request->all();
 //        dd($data);
-        $requestValidationResult = RequestValidator::validator($request->all(), [
+        $requestValidationResult = RequestValidator::validator($data, [
             'id' => 'required',
             'level' => 'required',
         ]);
-        if ($requestValidationResult !== true) {
+        if ($requestValidationResult != true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
         $userCase = UserManager::getUserCaseById($data['id']);

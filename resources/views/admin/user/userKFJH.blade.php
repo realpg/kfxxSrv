@@ -386,7 +386,7 @@
             //设置康复模板
             $("#kfmb_id").val({{$userCase->kfmb_id}});
             //从互联网加载数据
-            getUserCaseById("{{URL::asset('')}}", {id: {{$userCase->id}}, level: "012"}, function (ret, err) {
+            getUserCaseById("{{URL::asset('')}}", {id:{{$userCase->id}}, level: "012",'token':"{{csrf_token()}}"}, function (ret, err) {
                 var msgObj = ret.ret;
                 kfjhInfo.jhs = msgObj.jhs;
                 loadHtml();

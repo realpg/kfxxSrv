@@ -80,7 +80,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('kfjh/getKFSJByUserId', 'API\KFJHController@getKFSJByUserId');//获取康复数据
 
     //患者病例
-    Route::get('userCase/getUserCaseById', 'API\UserCaseController@getUserCaseInfoByCaseId')->middleware('CheckToken');//获取病历
+    Route::get('userCase/getUserCaseById', 'API\UserCaseController@getUserCaseInfoByCaseId');//->middleware('CheckToken');//获取病历
     Route::get('userCase/getUserCasesByUserId', 'API\UserCaseController@getUserCasesByUserId')->middleware('CheckToken');//获取病历
     Route::post('userCase/getUserZXJHByDate', 'API\UserCaseController@getUserZXJHByDate')->middleware('CheckToken');//根据日期获取当日的康复计划
     Route::get('userCase/getZXJHById', 'API\UserCaseController@getZXJHById');//根据id获取患者执行计划详情
