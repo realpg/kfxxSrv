@@ -21,6 +21,20 @@ class KFJHManager
         $kfjh = KFJH::where('user_id', '=', $u_id)->get();
         return $kfjh;
     }
+	//根据级别获取病历信息
+	//* 0:最简级别，只带量表基本信息
+	//* 1:普通级别，带病历
+	//* 2:高级级别,带病历详情
+	public static function getKFJHByLevel($kfjh, $level)
+	{
+		if ($level >= 1) {
+			$kfjh->bl=self::getBLById($kfjh[0]->user_id);
+		}
+		if ($level >= 2) {
+			$kfjh->bl=self::getBLByLevel($kfjh->bl,'2');
+		}
+		return $kfjh;
+	}
 
     //获取病历
     public static function getBLById($u_id)

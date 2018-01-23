@@ -143,6 +143,19 @@
 
 
         <script id="message-content-template" type="text/x-dot-template">
+            <div class="white-bg">
+                <div style="padding: 15px;">
+                    <div class="font-size-16 text-info">
+                        @{{=it.name}}
+                    </div>
+                    <div class="margin-top-10 font-size-14 grey-bg">
+                        <div style="padding: 10px;">
+                            @{{=it.desc_str}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             <!-- row -->
             <div class="row margin-top-10">
                 <div class="col-md-12">
@@ -151,7 +164,7 @@
                         <!-- timeline time label -->
                         <li class="time-label">
                   <span class="bg-aqua-active">
-                    患者康复计划
+                    康复计划
                   </span>
                         </li>
                         <!-- /.timeline-label -->
@@ -169,11 +182,9 @@
 
                             <div class="timeline-item">
                                 <!--右侧-->
-                                <span class="time font-size-14">@{{=it.jhs[i].btime_type_str}}</span>
+                                <span class="time font-size-14">手术后</span>
 
                                 <h3 class="timeline-header">
-
-                                    @{{? it.jhs[i].btime_type === '0' || it.jhs[i].btime_type === '1'}}
 
                                     <button type="button" class="btn btn-info">
                                         @{{=it.jhs[i].start_time}}@{{=it.jhs[i].start_unit_str}}
@@ -182,16 +193,13 @@
                                     <button type="button" class="btn btn-info">
                                         @{{=it.jhs[i].end_time}}@{{=it.jhs[i].end_unit_str}}
                                     </button>
-                                    @{{?}}
-                                    @{{? it.jhs[i].btime_type === '2' }}
-                                    <button type="button" class="btn btn-info">
-                                        @{{=it.jhs[i].set_date}}
-                                    </button>
-                                    @{{?}}
                                 </h3>
                                 <div class="timeline-body">
                                     <div>
-                                        @{{=it.jhs[i].desc_str}}
+                                        名称：@{{=it.jhs[i].name_str}}
+                                    </div>
+                                    <div>
+                                        <div style="display: inline-block">@{{=it.jhs[i].desc_str}}</div>
                                     </div>
                                 </div>
 
@@ -200,11 +208,9 @@
                                                 src="{{URL::asset('/img/up_pointer_icon.png')}}"
                                                 class="opt-btn-size margin-right-10" onclick="moveUpJH(@{{=i}});"> <img
                                                 src="{{URL::asset('/img/down_pointer_icon.png')}}"
-                                                class="opt-btn-size margin-right-10" onclick="moveDownJH(@{{=i}});">
-                                        <img
+                                                class="opt-btn-size margin-right-10" onclick="moveDownJH(@{{=i}});"> <img
                                                 src="{{URL::asset('/img/edit_icon.png')}}"
-                                                class="opt-btn-size margin-right-10" onclick="editJH(@{{=i}},'edit');">
-                                        <img
+                                                class="opt-btn-size margin-right-10" onclick="editJH(@{{=i}},'edit');"> <img
                                                 src="{{URL::asset('/img/delete_icon.png')}}"
                                                 class="opt-btn-size" onclick="delJH(@{{=i}});"></div>
                                 </div>
@@ -232,6 +238,7 @@
         </script>
 
 
+
         <!--新建编辑计划步骤对话框-->
         <div class="modal fade -m" id="editJHModal" tabindex="-1" role="dialog">
 
@@ -250,6 +257,14 @@
                         <div class="modal-body">
                             <div class="box-body">
                                 <div class="form-group">
+                                    <label for="name" class="col-sm-2 control-label">名称*</label>
+
+                                    <div class="col-sm-10">
+                                        <input id="name" name="name" class="form-control"
+                                               placeholder="请输入 ..."value="@{{=it.name}}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label for="desc" class="col-sm-2 control-label">说明*</label>
 
                                     <div class="col-sm-10">
@@ -257,71 +272,47 @@
                                               placeholder="请输入 ...">@{{=it.desc}}</textarea>
                                     </div>
                                 </div>
-                                <div class="form-group" style="margin-top: 15px;">
-                                    <label for="btime_type" class="col-sm-2 control-label">基线*</label>
-
+                                <div class="form-group">
+                                    <label for="btime_type" class="col-sm-2 control-label">基线时间</label>
                                     <div class="col-sm-10">
-                                        <select id="btime_type" name="btime_type" class="form-control"
-                                                onchange="clickSetDate();">
+                                        <select id="btime_type" name="btime_type" class="form-control">
                                             <option value="0">手术后</option>
-                                            <option value="2">指定日期
-                                            </option>
                                         </select>
                                     </div>
                                 </div>
-                                <div id="btime_type_01">
-                                    <div class="form-group">
-                                        <label for="start_time" class="col-sm-2 control-label">开始</label>
+                                <div class="form-group">
+                                    <label for="start_time" class="col-sm-2 control-label">开始</label>
 
-                                        <div class="col-sm-10">
-                                            <div class="form-inline">
-                                                <input id="start_time" name="start_time" type="number"
-                                                       class="form-control pull-left"
-                                                       placeholder="开始时间"
-                                                       value="@{{=it.start_time}}">
-                                                <select id="start_unit" class="form-control">
-                                                    <option value="0">天</option>
-                                                    <option value="1">周</option>
-                                                    <option value="2">月</option>
-                                                </select>
-                                                <span class="pull-right text-info text-oneline"
-                                                      style="line-height: 30px;">计划的执行不早于开始时间</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="end_time" class="col-sm-2 control-label">结束</label>
-
-                                        <div class="col-sm-10">
-                                            <div class="form-inline">
-                                                <input id="end_time" name="end_time" type="number"
-                                                       class="form-control pull-left"
-                                                       placeholder="结束时间"
-                                                       value="@{{=it.end_time}}">
-                                                <select id="end_unit" class="form-control">
-                                                    <option value="0">天</option>
-                                                    <option value="1">周</option>
-                                                    <option value="2">月</option>
-                                                </select>
-                                                <span class="pull-right text-info text-oneline"
-                                                      style="line-height: 30px;">计划的执行不晚于结束时间</span>
-                                            </div>
+                                    <div class="col-sm-10">
+                                        <div class="form-inline">
+                                            <input id="start_time" name="start_time" type="number"
+                                                   class="form-control pull-left"
+                                                   placeholder="开始时间"
+                                                   value="@{{=it.start_time}}">
+                                            <select id="start_unit" class="form-control">
+                                                <option value="0">天</option>
+                                                <option value="1">周</option>
+                                                <option value="2">月</option>
+                                            </select>
+                                            <span class="pull-right text-info text-oneline" style="line-height: 30px;">计划的执行不早于开始时间</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="btime_type_2" style="display: none;">
-                                    <div class="form-group">
-                                        <label for="start_time" class="col-sm-2 control-label">开始</label>
+                                <div class="form-group">
+                                    <label for="end_time" class="col-sm-2 control-label">结束</label>
 
-                                        <div class="col-sm-10">
-                                            <div class="form-inline">
-                                                <input id="set_date" name="set_date" type="date"
-                                                       class="form-control pull-left"
-                                                       placeholder="指定日期"
-                                                       value="@{{=it.set_date}}">
-                                                <span class="pull-right text-info text-oneline"
-                                                      style="line-height: 30px;">当天将对患者进行计划提醒</span>
-                                            </div>
+                                    <div class="col-sm-10">
+                                        <div class="form-inline">
+                                            <input id="end_time" name="end_time" type="number"
+                                                   class="form-control pull-left"
+                                                   placeholder="结束时间"
+                                                   value="@{{=it.end_time}}">
+                                            <select id="end_unit" class="form-control">
+                                                <option value="0">天</option>
+                                                <option value="1">周</option>
+                                                <option value="2">月</option>
+                                            </select>
+                                            <span class="pull-right text-info text-oneline" style="line-height: 30px;">计划的执行不晚于结束时间</span>
                                         </div>
                                     </div>
                                 </div>
@@ -416,6 +407,7 @@
             kfjhInfo.desc_str = Text2Html(kfjhInfo.desc);
             //整理数据
             for (var i = 0; i < kfjhInfo.jhs.length; i++) {
+                kfjhInfo.jhs[i].name_str = Text2Html(kfjhInfo.jhs[i].name);
                 kfjhInfo.jhs[i].desc_str = Text2Html(kfjhInfo.jhs[i].desc);
                 kfjhInfo.jhs[i].btime_type_str = getBtimeTypeStr(kfjhInfo.jhs[i].btime_type);
                 kfjhInfo.jhs[i].start_unit_str = getTimeUnitStr(kfjhInfo.jhs[i].start_unit);
@@ -434,6 +426,7 @@
             console.log("index index:" + index + " edit_or_add:" + edit_or_add);
             var jhs = kfjhInfo.jhs;
             var jhObj = {
+                name:"0",
                 desc: "",
                 btime_type: "0",
                 start_time: 0,
@@ -448,6 +441,7 @@
             if (edit_or_add == "add") {
 
             } else {        //如果是编辑
+                jhObj.name = nullToEmptyStr(kfjhInfo.jhs[index].name);
                 jhObj.desc = nullToEmptyStr(kfjhInfo.jhs[index].desc);
                 jhObj.start_time = kfjhInfo.jhs[index].start_time;
                 jhObj.start_unit = kfjhInfo.jhs[index].start_unit;
@@ -477,6 +471,7 @@
         //点击保存
         function clickEditJH(index, edit_or_add) {
             var jhObj = {
+                name:$("#name").val(),
                 desc: $("#desc").val(),
                 btime_type: $("#btime_type").val(),
                 start_time: $("#start_time").val(),
@@ -488,6 +483,10 @@
             console.log("jhObj:" + JSON.stringify(jhObj));
 
             //合规校验
+            if (judgeIsNullStr(jhObj.name)) {
+                $("#name").focus();
+                return;
+            }
             if (judgeIsNullStr(jhObj.desc)) {
                 $("#desc").focus();
                 return;
@@ -512,6 +511,7 @@
             if (edit_or_add == "add") {
                 kfjhInfo.jhs.splice(index, 0, jhObj);
             } else {
+                kfjhInfo.jhs[index].name = jhObj.name;
                 kfjhInfo.jhs[index].desc = jhObj.desc;
                 kfjhInfo.jhs[index].btime_type = jhObj.btime_type;
                 kfjhInfo.jhs[index].start_time = jhObj.start_time;

@@ -349,6 +349,7 @@
             return true;
         }
 
+
         //点击新建康复患者信息
         function clickAdd() {
             //清空模态框

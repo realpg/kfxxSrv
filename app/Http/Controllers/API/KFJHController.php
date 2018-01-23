@@ -26,11 +26,16 @@ class KFJHController
 		if ($requestValidationResult !== true) {
 			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
 		}
-		$bl = KFJHManager::getKFJHById($data['id']);
-		if (!$bl) {
+		$kfjhs = KFJHManager::getKFJHById($data['id']);
+		if (!$kfjhs) {
 			return ApiResponse::makeResponse(false, '未找到用户病历信息', ApiResponse::INNER_ERROR);
-		} else
-			return ApiResponse::makeResponse(true, $bl, ApiResponse::SUCCESS_CODE);
+		} else{
+			$bl = KFJHManager::getBLById($data['id']);
+			foreach ($kfjhs as $kfjh){
+				$kfjh->btime_type;
+			}
+		}
+			return ApiResponse::makeResponse(true, $kfjhs, ApiResponse::SUCCESS_CODE);
 	}
 	
 	//根据ID获取病历
