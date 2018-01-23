@@ -326,7 +326,7 @@ class UserManager
      */
     public static function getAllUsers()
     {
-        $users = User::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        $users = User::orderby('id', 'desc')->get();
         return $users;
     }
 
