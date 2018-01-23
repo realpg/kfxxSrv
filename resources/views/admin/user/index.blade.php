@@ -92,7 +92,7 @@
                                     @{{?data.gender == "0" }}保密@{{??data.gender == "1"}}男@{{??data.gender == "2"}}女@{{? }}</span>
                                 </td>
                                 <td>
-                                    <span class="line-height-30">@{{?data.age }}@{{=data.age}}岁@{{?? }}--@{{? }}</span>
+                                    <span class="line-height-30">@{{?data.age || data.age==0}}@{{=data.age}}岁@{{?? }}--@{{? }}</span>
                                 </td>
                                 <td>
                                     <span class="line-height-30">@{{=data.phonenum}}</span>
@@ -266,10 +266,10 @@
         function LoadHtml(LIST) {
             var List = LIST;
             console.log(parseInt(List.length / 10 + 1), List);
+            $("#PageFoot").empty();
             if (List.length > 10) {
 //                $("#pageFoot").html(page);
                 console.log(page);
-                $("#PageFoot").empty();
                 var PageFoot = doT.template($("#PageFoot-content-template").text());
                 $("#PageFoot").html(PageFoot({'page': page, 'length': parseInt(LIST.length / 10 + 1)}));
                 LIST = LIST.slice((page - 1) * 10, page * 10)

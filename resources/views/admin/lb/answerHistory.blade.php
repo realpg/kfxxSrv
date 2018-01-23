@@ -175,9 +175,10 @@
         function loadHtml(List) {
             var LIST = List;
             console.log(parseInt(List.length / 10 + 1));
+            $("#PageFoot").empty();
             if (List.length > 10) {
                 $("#page").html(page);
-                $("#PageFoot").empty();
+
                 var PageFoot = doT.template($("#PageFoot-content-template").text());
                 $("#PageFoot").html(PageFoot({'page': page, 'length': parseInt(List.length / 10 + 1)}));
                 LIST = LIST.slice((page - 1) * 10, page * 10)

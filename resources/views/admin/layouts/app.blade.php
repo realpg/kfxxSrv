@@ -234,7 +234,6 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>全部患者</a></li>
-                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>我的患者</a></li>
                         <li><a href=""><i class="fa fa-circle-o"></i>患者数据管理</a></li>
                         <li><a href=""><i class="fa fa-circle-o"></i>患者综合报表</a></li>
                     </ul>
