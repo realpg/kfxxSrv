@@ -145,7 +145,7 @@
                                 </div>
                             </div>
                             <div class="form-group hidden">
-                                <label for="title" class="col-sm-2 control-label">录入人id</label>
+                                <label for="doctor_id" class="col-sm-2 control-label">录入人id</label>
                                 <div class="col-sm-10">
                                     <input id="doctor_id" name="doctor_id" type="text" class="form-control"
                                            value="{{$admin->id}}">
@@ -258,7 +258,7 @@
         function clickAdd() {
             //清空模态框
             $("#editAD")[0].reset();
-            $("#doctor_id").val("{{$admin->id}}");
+            $("#admin_id").val("{{$admin->id}}")
             $("#pickfiles").attr("src", '{{URL::asset('/img/upload.png')}}');
             $("#addADModal").modal('show');
         }

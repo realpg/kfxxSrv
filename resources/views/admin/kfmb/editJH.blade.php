@@ -148,7 +148,7 @@
 
                                 <div class="col-sm-10">
                                     <input id="name" name="name" class="form-control"
-                                              placeholder="请输入 ..."value="@{{=it.name}}"/>
+                                           placeholder="请输入 ..." value="@{{=it.name}}"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -280,7 +280,7 @@
             console.log("index index:" + index + " edit_or_add:" + edit_or_add);
             var jhs = kfmbInfo.jhs;
             var jhObj = {
-                name:"",
+                name: "",
                 desc: "",
                 start_time: 0,
                 start_unit: 0,
@@ -316,7 +316,7 @@
         //点击保存
         function clickEditJH(index, edit_or_add) {
             var jhObj = {
-                name:$("#name").val(),
+                name: $("#name").val(),
                 desc: $("#desc").val(),
                 btime_type: $("#btime_type").val(),
                 start_time: $("#start_time").val(),
