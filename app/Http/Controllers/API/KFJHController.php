@@ -31,11 +31,24 @@ class KFJHController
 			return ApiResponse::makeResponse(false, '未找到用户病历信息', ApiResponse::INNER_ERROR);
 		} else{
 			$bl = KFJHManager::getBLById($data['id']);
+			$ss_time=strtotime($bl->ss_time);
 			foreach ($kfjhs as $kfjh){
-				$kfjh->btime_type;
+				//手术后
+				if($kfjh->btime_type=='0'){
+					$start_unit=($kfjh->start_unit=='0'?86400:($kfjh->start_unit=='1'?604800:2592000));
+					$kfjh->start_time_stamp=$ss_time+$kfjh->start_time*$start_unit;
+					$end_unit=($kfjh->end_unit='0'?86400:($kfjh->end_unit='1'?604800:2592000));
+					$kfjh->end_time_stamp=$ss_time+$kfjh->end_time*$start_unit;
+				}else{
+					//指定时间
+				}
 			}
 		}
 			return ApiResponse::makeResponse(true, $kfjhs, ApiResponse::SUCCESS_CODE);
+	}
+	public static function test(){
+		$date='2010-11-10';
+		return strtotime($date);
 	}
 	
 	//根据ID获取病历

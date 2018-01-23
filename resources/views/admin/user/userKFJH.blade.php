@@ -145,9 +145,6 @@
         <script id="message-content-template" type="text/x-dot-template">
             <div class="white-bg">
                 <div style="padding: 15px;">
-                    <div class="font-size-16 text-info">
-                        @{{=it.name}}
-                    </div>
                     <div class="margin-top-10 font-size-14 grey-bg">
                         <div style="padding: 10px;">
                             @{{=it.desc_str}}

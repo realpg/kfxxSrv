@@ -98,6 +98,6 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('cjsj/reportCJSJ', 'API\CJSJController@reportCJSJ')->middleware('CheckToken');     //上报采集数据
     Route::get('cjsj/getCJSJsByUserId', 'API\CJSJController@getCJSJsByUserId')->middleware('CheckToken');     //根据用户id获取采集上报数据列表
     Route::get('cjsj/getCJSJsByUserCaseId', 'API\CJSJController@getCJSJsByUserCaseId')->middleware('CheckToken');     //根据用户病例id获取采集上报数据列表
-
-
+	
+	Route::get('test', 'API\KFJHController@test');
 });
