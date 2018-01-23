@@ -144,6 +144,16 @@
 
 
         <script id="message-content-template" type="text/x-dot-template">
+            <div class="white-bg">
+                <div style="padding: 15px;">
+                    <div class="margin-top-10 font-size-14 grey-bg">
+                        <div style="padding: 10px;">
+                            @{{=it.desc_str}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             <!-- row -->
             <div class="row margin-top-10">
                 <div class="col-md-12">
@@ -341,71 +351,6 @@
             </div>
             <!-- /.modal-dialog -->
         </script>
-
-
-        <!--数据采集模板-->
-        <div class="modal fade -m" id="editSJModal" tabindex="-1" role="dialog">
-
-        </div>
-
-
-        <script id="editSJModal-content-template" type="text/x-dot-template">
-            <div class="modal-dialog">
-                <div class="modal-content message_align">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">×</span></button>
-                        <h4 class="modal-title">管理采集数据</h4>
-                    </div>
-                    <form id="editSJ" action="" method="post" class="form-horizontal">
-                        <div class="modal-body">
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label for="sjx_id" class="col-sm-2 control-label">采集数据</label>
-                                    <div class="col-sm-10">
-                                        <select id="sjx_id" name="sjx_id" class="form-control">
-                                            @foreach($sjxs as $sjx)
-                                                <option id="sjx_{{$sjx->id}}" data-name="{{$sjx->name}}"
-                                                        data-unit="{{$sjx->unit}}"
-                                                        value="{{$sjx->id}}">{{$sjx->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="min_value" class="col-sm-2 control-label">最小值*</label>
-
-                                    <div class="col-sm-10">
-                                        <input id="min_value" name="min_value" type="number" class="form-control"
-                                               placeholder="该值为阈值最小值，小于最小值将报警"
-                                               value="@{{=it.min_value}}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="max_value" class="col-sm-2 control-label">最大值*</label>
-
-                                    <div class="col-sm-10">
-                                        <input id="max_value" name="max_value" type="number" class="form-control"
-                                               placeholder="该值为阈值最大值，大于最大值将报警"
-                                               value="@{{=it.max_value}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" data-value="" class="btn btn-success"
-                                    onclick="clickEditSJ(@{{=it.jh_index}},'add');">确定
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </script>
-
 
         <!--提示modal-->
         <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
