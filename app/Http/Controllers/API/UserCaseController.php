@@ -93,12 +93,6 @@ class UserCaseController extends Controller
         }
         $data = $request->all();
         $zxjhs = ZXJHManager::getZXJHByUserIdAndDate($data['user_id'], $data['date']);
-        //如果有执行计划，则补充数据项
-        if ($zxjhs) {
-            foreach ($zxjhs as $zxjh) {
-                $zxjh->jhsjs = ZXJHManager::getZXJHSJsByZXJHId($zxjh->id);
-            }
-        }
         return ApiResponse::makeResponse(true, $zxjhs, ApiResponse::SUCCESS_CODE);
     }
 
@@ -119,10 +113,6 @@ class UserCaseController extends Controller
         }
         $data = $request->all();
         $zxjh = ZXJHManager::getZXJHById($data['id']);
-        //如果有执行计划，则补充数据项
-        if ($zxjh) {
-            $zxjh->jhsjs = ZXJHManager::getZXJHSJsByZXJHId($zxjh->id);
-        }
         return ApiResponse::makeResponse(true, $zxjh, ApiResponse::SUCCESS_CODE);
     }
 
@@ -141,22 +131,8 @@ class UserCaseController extends Controller
         $zxjh = ZXJHManager::setZXJH($zxjh, $data);
         $zxjh->status = "2";  //代表已经执行完成
         $zxjh->save();      //保存执行结果
-        //获取计划数据
-        $new_jhsjs = $data['jhsjs'];
-        foreach ($new_jhsjs as $new_jhsj) {
-            //保存计划数据
-            $zxjhsj = ZXJHManager::getZXJHSJById($new_jhsj['id']);
-            $zxjhsj = ZXJHManager::setZXJHSJ($zxjhsj, $new_jhsj);
-            $zxjhsj->save();
-            //是否超过阈值
-            if ($zxjhsj->value < $zxjhsj->min_value || $zxjhsj->value > $zxjhsj->max_value) {
-                //进行预警，并记录预警信息
-                //预留代码
-            }
-        }
         //返回执行结果
         $zxjh = ZXJHManager::getZXJHById($zxjh->id);
-        $zxjh->jhsjs = ZXJHManager::getZXJHSJsByZXJHId($zxjh->id);
         return ApiResponse::makeResponse(true, $zxjh, ApiResponse::SUCCESS_CODE);
     }
 
