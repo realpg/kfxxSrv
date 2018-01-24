@@ -39,7 +39,8 @@ class KFJHController
 					$kfjh->start_time_stamp=$ss_time+$kfjh->start_time*$start_unit;
 					$end_unit=($kfjh->end_unit='0'?86400:($kfjh->end_unit='1'?604800:2592000));
 					$kfjh->end_time_stamp=$ss_time+$kfjh->end_time*$start_unit;
-				}else{
+				}else if($kfjh->btime_type=='2'){
+					$kfjh->set_date_timestemp=strtotime($kfjh->set_date);
 					//指定时间
 				}
 			}
