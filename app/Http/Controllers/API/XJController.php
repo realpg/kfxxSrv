@@ -91,5 +91,23 @@ class XJController extends Controller
         $xj = XJManager::getXJInfoByLevel($xj, 3);
         return ApiResponse::makeResponse(true, $xj, ApiResponse::SUCCESS_CODE);
     }
+	public function getXJTypes(Request $request)
+	{
+		$hPoss = HposManager::getHPosList();
+		return ApiResponse::makeResponse(true, $hPoss, ApiResponse::SUCCESS_CODE);
+	}
+	public function getXJTypeById(Request $request)
+	{
+		$data = $request->all();
+		//合规校验account_type
+		$requestValidationResult = RequestValidator::validator($request->all(), [
+			'id' => 'required',
+		]);
+		if ($requestValidationResult !== true) {
+			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+		}
+		$hPos = HposManager::getHPosById($data['id']);
+		return ApiResponse::makeResponse(true, $hPos, ApiResponse::SUCCESS_CODE);
+	}
 
 }
