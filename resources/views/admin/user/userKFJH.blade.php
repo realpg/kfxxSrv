@@ -202,7 +202,10 @@
                                 </h3>
                                 <div class="timeline-body">
                                     <div>
-                                        @{{=it.jhs[i].desc_str}}
+                                        名称：@{{=it.jhs[i].name_str}}
+                                    </div>
+                                    <div>
+                                        <div style="display: inline-block">@{{=it.jhs[i].desc_str}}</div>
                                     </div>
                                 </div>
 
@@ -261,10 +264,18 @@
                         <div class="modal-body">
                             <div class="box-body">
                                 <div class="form-group">
+                                    <label for="name" class="col-sm-2 control-label">名称*</label>
+
+                                    <div class="col-sm-10">
+                                        <input id="name" name="name" class="form-control"
+                                               placeholder="请输入 ..."value="@{{=it.name}}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label for="desc" class="col-sm-2 control-label">说明*</label>
 
                                     <div class="col-sm-10">
-                                    <textarea id="desc" name="desc" class="form-control" rows="5"
+                                        <textarea id="desc" name="desc" class="form-control" rows="5"
                                               placeholder="请输入 ...">@{{=it.desc}}</textarea>
                                     </div>
                                 </div>
@@ -424,6 +435,7 @@
             kfjhInfo.desc_str = Text2Html(kfjhInfo.desc);
             //整理数据
             for (var i = 0; i < kfjhInfo.jhs.length; i++) {
+                kfjhInfo.jhs[i].name_str = Text2Html(kfjhInfo.jhs[i].name);
                 kfjhInfo.jhs[i].desc_str = Text2Html(kfjhInfo.jhs[i].desc);
                 kfjhInfo.jhs[i].btime_type_str = getBtimeTypeStr(kfjhInfo.jhs[i].btime_type);
                 kfjhInfo.jhs[i].start_unit_str = getTimeUnitStr(kfjhInfo.jhs[i].start_unit);
@@ -442,6 +454,7 @@
             console.log("index index:" + index + " edit_or_add:" + edit_or_add);
             var jhs = kfjhInfo.jhs;
             var jhObj = {
+                name:"",
                 desc: "",
                 btime_type: "0",
                 start_time: 0,
@@ -457,6 +470,7 @@
             if (edit_or_add == "add") {
 
             } else {        //如果是编辑
+                jhObj.name = nullToEmptyStr(kfjhInfo.jhs[index].name);
                 jhObj.desc = nullToEmptyStr(kfjhInfo.jhs[index].desc);
                 jhObj.start_time = kfjhInfo.jhs[index].start_time;
                 jhObj.start_unit = kfjhInfo.jhs[index].start_unit;
@@ -486,6 +500,7 @@
         //点击保存
         function clickEditJH(index, edit_or_add) {
             var jhObj = {
+                name:$("#name").val(),
                 desc: $("#desc").val(),
                 btime_type: $("#btime_type").val(),
                 start_time: $("#start_time").val(),
@@ -498,6 +513,10 @@
             console.log("jhObj:" + JSON.stringify(jhObj));
 
             //合规校验
+            if (judgeIsNullStr(jhObj.name)) {
+                $("#name").focus();
+                return;
+            }
             if (judgeIsNullStr(jhObj.desc)) {
                 $("#desc").focus();
                 return;
@@ -522,6 +541,7 @@
             if (edit_or_add == "add") {
                 kfjhInfo.jhs.splice(index, 0, jhObj);
             } else {
+                kfjhInfo.jhs[index].name = jhObj.name;
                 kfjhInfo.jhs[index].desc = jhObj.desc;
                 kfjhInfo.jhs[index].btime_type = jhObj.btime_type;
                 kfjhInfo.jhs[index].start_time = jhObj.start_time;
