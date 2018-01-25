@@ -175,7 +175,7 @@
                                         <a href="{{url('/admin/changePassword')}}" class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="col-xs-4 text-center">
-                                        <a href="#" class="btn btn-default btn-flat">修改资料</a>
+                                        <a href="{{url('/admin/editInfo')}}" class="btn btn-default btn-flat">修改资料</a>
                                     </div>
                                     <div class="col-xs-4 text-center">
                                         <a href="{{url('/admin/loginout')}}"
@@ -210,7 +210,7 @@
                 <li>
                     <a href="{{url('/admin/ad/index')}}">
                         <i class="fa fa-photo"></i>
-                        <span>轮播管理</span>
+                        <span>宣传管理</span>
                     </a>
                 </li>
                 <li class="treeview">

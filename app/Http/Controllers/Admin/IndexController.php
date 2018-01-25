@@ -10,7 +10,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Components\DoctorManager;
+use App\Components\UserManager;
+use App\Components\Utils;
 use App\Http\Controllers\ApiResponse;
+use App\Models\Doctor;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 
@@ -51,4 +55,29 @@ class IndexController
 		else
 			return ApiResponse::makeResponse(false, '修改密码失败', ApiResponse::INNER_ERROR);
 	}
+	public function editInfo(Request $request)
+	{
+		$admin = $request->session()->get('admin');
+		return view("admin.admin.editInfo", ['admin' => $admin]);
+	}
+	public function editPost(Request $request)
+	{
+		$data = $request->all();
+//        dd($data);
+		$doctor = new Doctor();
+		//存在id是保存
+		if (array_key_exists('id', $data) && !Utils::isObjNull($data['id'])) {
+			$doctor = DoctorManager::getDoctorById($data['id']);
+		}
+		$doctor = DoctorManager::setDoctor($doctor, $data);
+		//如果不存在id代表新建，则默认设置密码
+		if (!array_key_exists('id', $data) || Utils::isObjNull($data['id'])) {
+			return redirect('/admin/index');
+		}
+		$doctor->save();
+		$request->session()->remove('admin');
+		$request->session()->put('admin', $doctor);
+		return redirect('/admin/editInfo');
+	}
+	
 }
