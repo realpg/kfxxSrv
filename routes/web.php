@@ -24,6 +24,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/', 'Admin\IndexController@index');       //首页
     Route::get('/index', 'Admin\IndexController@index');  //首页
     Route::get('/dashboard/index', 'Admin\IndexController@index');    //首页
+	Route::get('/changePassword', 'Admin\IndexController@changePassword');    //修改密码页面
+	Route::post('/changePassword', 'Admin\IndexController@changePasswordPost');    //修改密码接口
+	
 
     //错误页面
     Route::get('/error/500', 'Admin\IndexController@error');  //错误页面

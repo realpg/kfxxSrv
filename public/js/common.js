@@ -21,6 +21,10 @@ function ajaxRequest(url, param, method, callBack) {
 }
 
 //根据id获取轮播图信息
+function changePassword(url, param, callBack) {
+    ajaxRequest( url + "admin/changePassword?"+param, null, "POST", callBack);
+}
+//根据id获取轮播图信息
 function getADById(url, param, callBack) {
     ajaxRequest(url + "api/ad/getById", param, "GET", callBack);
 }

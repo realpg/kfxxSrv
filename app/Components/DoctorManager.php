@@ -108,6 +108,16 @@ class DoctorManager
         }
         return $doctor;
     }
+	
+	public static function changePassword($doctor, $data)
+	{
+		if (array_key_exists('password', $data)) {
+			$doctor->password = array_get($data, 'password');
+			$doctor->save();
+			return true;
+		}
+		return false;
+	}
 
 
     /*
