@@ -90,7 +90,7 @@ class DoctorController
         if (!array_key_exists('nick_name', $data)) {
             $data['nick_name'] = '';
         }//做什么用的？
-        $doctors = DoctorManager::searchDoctor($search_word);
-        return view('admin.doctor.index', ['admin' => $admin, 'datas' => $doctors]);
+        $doctors = DoctorManager::searchDoctor($search_word);$upload_token = QNManager::uploadToken();
+	    return view('admin.doctor.index', ['admin' => $admin, 'datas' => $doctors, 'upload_token' => $upload_token]);
     }
 }
