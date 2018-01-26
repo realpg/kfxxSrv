@@ -70,7 +70,7 @@ class KFMBManager
      */
     public static function getIndexList($doctor_id)
     {
-        $kfmbs = KFMB::wherein('status', ["1"]);
+        $kfmbs = KFMB::wherein('status', [""]);
         $kfmbs = $kfmbs->where('is_personal', '=', '0')->orwhere('doctor_id', '=', $doctor_id)->paginate(Utils::PAGE_SIZE);
         return $kfmbs;
     }

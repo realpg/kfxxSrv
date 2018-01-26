@@ -175,7 +175,7 @@
                                 {{--//分数可以修改--}}
                                 得分:
                                 <input value="@{{=question.score}}" onchange="changeScore('@{{=index_que}}',this)"
-                                       type="number">
+                                       type="number" min="0">
 
                             </div>
 
