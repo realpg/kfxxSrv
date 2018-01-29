@@ -93,6 +93,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/user/editUserCase', 'Admin\UserController@editUserCasePost');  //编辑患者病例
     Route::get('/user/userKFJH', 'Admin\UserController@userKFJH');  //编辑患者病例页面
     Route::post('/user/editUserCaseKFJH', 'Admin\UserController@editUserCaseKFJH');  //编辑患者病例关联的康复计划
+	Route::get('/user/userCJSJ', 'Admin\UserController@userCJSJ');  //患者采集数据页面
 
 
     //量表相关

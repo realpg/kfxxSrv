@@ -78,6 +78,7 @@ class CJSJManager
     {
         $cjsj->userCase = UserManager::getUserCaseById($cjsj->userCase_id);
         $cjsj->sjx = SJXManager::getSJXById($cjsj->sjx_id);
+        $cjsj->hpos=HposManager::getHPosById($cjsj->sjx->hpos_id);
         return $cjsj;
     }
 

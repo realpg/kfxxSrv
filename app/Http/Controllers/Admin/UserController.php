@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Components\ADManager;
+use App\Components\CJSJManager;
 use App\Components\DateTool;
 use App\Components\DoctorManager;
 use App\Components\HposManager;
@@ -53,6 +54,20 @@ class UserController
 //        dd($users);
         return view('admin.user.index', ['admin' => $admin, 'datas' => $users]);
     }
+	//患者采集数据页面
+	public function userCJSJ(Request $request)
+	{
+		$admin = $request->session()->get('admin');
+		$data=$request->all();
+		$user_id=$data['user_id'];
+		$cjsjs = CJSJManager::getCJSJsByUserId($user_id);
+		
+		foreach ($cjsjs as $cjsj) {
+			$cjsj=CJSJManager::getCJSJByLevel($cjsj,1);
+		}
+//        dd($users);
+		return view('admin.user.userCJSJ', ['admin' => $admin, 'datas' => $cjsjs]);
+	}
 
     //搜索，按照手机号、姓名进行搜索
     public function search(Request $request)
