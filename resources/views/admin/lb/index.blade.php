@@ -194,7 +194,7 @@
                                 <label for="seq" class="col-sm-2 control-label">类型</label>
 
                                 <div class="col-sm-10">
-                                    <select name="type">
+                                    <select name="type" class="form-control">
                                         <option value="0">普通量表</option>
                                         <option value="1">验证量表</option>
                                         <option value="2">随访量表</option>

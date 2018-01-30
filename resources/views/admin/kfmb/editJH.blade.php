@@ -160,6 +160,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="desc" class="col-sm-2 control-label">关联宣教</label>
+                                <div class="col-sm-10">
+                                    <select id="xj_ids" name="xj_ids" class="form-control">
+                                        <option value="0">暂不关联宣教图文</option>
+                                        @{{~it.xjs:xj:xj_index }}
+                                            <option value="@{{=xj.id}}"@{{?xj.id==it.xj_ids }}selected="true"@{{? }}>@{{=xj.title}}</option>
+                                        @{{~ }}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="btime_type" class="col-sm-2 control-label">基线时间</label>
                                 <div class="col-sm-10">
                                     <select id="btime_type" name="btime_type" class="form-control">
@@ -250,6 +261,7 @@
     <script type="application/javascript">
         //康复模板信息
         var kfmbInfo = {}
+        var xjs=[];
 
         //入口函数
         $(document).ready(function () {
@@ -270,6 +282,12 @@
                     if (ret.result == true) {
                         kfmbInfo = ret.ret;
                         loadHtml();
+                    }
+                })
+                getAllXJs("{{URL::asset('')}}",{},function (ret, err) {
+                    //提示保存成功
+                    if (ret.result == true) {
+                        xjs = ret.ret;
                     }
                 })
             }
@@ -295,12 +313,15 @@
             } else {        //如果是编辑
                 jhObj.name = nullToEmptyStr(kfmbInfo.jhs[index].name);
                 jhObj.desc = nullToEmptyStr(kfmbInfo.jhs[index].desc);
+                jhObj.xj_ids = nullToEmptyStr(kfmbInfo.jhs[index].xj_ids);
                 jhObj.start_time = kfmbInfo.jhs[index].start_time;
                 jhObj.start_unit = kfmbInfo.jhs[index].start_unit;
                 jhObj.end_time = kfmbInfo.jhs[index].end_time;
                 jhObj.end_unit = kfmbInfo.jhs[index].end_unit;
                 jhObj.btime_type = kfmbInfo.jhs[index].btime_type;
-            }
+            };
+            jhObj.xjs=xjs;
+
             console.log("jhObj:" + JSON.stringify(jhObj));
             var interText = doT.template($("#editJHModal-content-template").text());
             $("#editJHModal").html(interText(jhObj));
@@ -318,6 +339,7 @@
             var jhObj = {
                 name: $("#name").val(),
                 desc: $("#desc").val(),
+                xj_ids:$("#xj_ids").val(),
                 btime_type: $("#btime_type").val(),
                 start_time: $("#start_time").val(),
                 start_unit: $("#start_unit").val(),
@@ -348,6 +370,7 @@
             } else {
                 kfmbInfo.jhs[index].name = jhObj.name;
                 kfmbInfo.jhs[index].desc = jhObj.desc;
+                kfmbInfo.jhs[index].xj_ids = jhObj.xj_ids;
                 kfmbInfo.jhs[index].btime_type = jhObj.btime_type;
                 kfmbInfo.jhs[index].start_time = jhObj.start_time;
                 kfmbInfo.jhs[index].start_unit = jhObj.start_unit;

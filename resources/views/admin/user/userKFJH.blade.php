@@ -279,6 +279,17 @@
                                               placeholder="请输入 ...">@{{=it.desc}}</textarea>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="desc" class="col-sm-2 control-label">关联宣教</label>
+                                    <div class="col-sm-10">
+                                        <select id="xj_ids" name="xj_ids" class="form-control">
+                                            <option value="0">暂不关联宣教图文</option>
+                                            @{{~it.xjs:xj:xj_index }}
+                                            <option value="@{{=xj.id}}"@{{?xj.id==it.xj_ids }}selected="true"@{{? }}>@{{=xj.title}}</option>
+                                            @{{~ }}
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group" style="margin-top: 15px;">
                                     <label for="btime_type" class="col-sm-2 control-label">基线*</label>
 
@@ -398,6 +409,7 @@
     <script type="application/javascript">
 
         var kfjhInfo = {};
+        var xjs=[];
 
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
@@ -410,6 +422,12 @@
                 kfjhInfo = msgObj;
                 loadHtml();
             });
+            getAllXJs("{{URL::asset('')}}",{},function (ret, err) {
+                //提示保存成功
+                if (ret.result == true) {
+                    xjs = ret.ret;
+                }
+            })
         })
 
         function clickShowCaseInfo() {
@@ -472,6 +490,7 @@
             } else {        //如果是编辑
                 jhObj.name = nullToEmptyStr(kfjhInfo.jhs[index].name);
                 jhObj.desc = nullToEmptyStr(kfjhInfo.jhs[index].desc);
+                jhObj.xj_ids = nullToEmptyStr(kfjhInfo.jhs[index].xj_ids);
                 jhObj.start_time = kfjhInfo.jhs[index].start_time;
                 jhObj.start_unit = kfjhInfo.jhs[index].start_unit;
                 jhObj.end_time = kfjhInfo.jhs[index].end_time;
@@ -479,6 +498,7 @@
                 jhObj.btime_type = kfjhInfo.jhs[index].btime_type;
                 jhObj.set_date = kfjhInfo.jhs[index].set_date;
             }
+            jhObj.xjs=xjs;
             //设置
             console.log("editJH jhObj:" + JSON.stringify(jhObj));
             console.log("jhObj:" + JSON.stringify(jhObj));
@@ -502,6 +522,7 @@
             var jhObj = {
                 name:$("#name").val(),
                 desc: $("#desc").val(),
+                xj_ids: $("#xj_ids").val(),
                 btime_type: $("#btime_type").val(),
                 start_time: $("#start_time").val(),
                 start_unit: $("#start_unit").val(),
@@ -543,6 +564,7 @@
             } else {
                 kfjhInfo.jhs[index].name = jhObj.name;
                 kfjhInfo.jhs[index].desc = jhObj.desc;
+                kfjhInfo.jhs[index].xjs = jhObj.xjs;
                 kfjhInfo.jhs[index].btime_type = jhObj.btime_type;
                 kfjhInfo.jhs[index].start_time = jhObj.start_time;
                 kfjhInfo.jhs[index].start_unit = jhObj.start_unit;

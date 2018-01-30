@@ -26,31 +26,28 @@ class KFJHController
 		if ($requestValidationResult !== true) {
 			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
 		}
-		$kfjhs = KFJHManager::getKFJHById($data['id']);
-		if (!$kfjhs) {
+		$bl = KFJHManager::getUsefulBLById($data['id']);
+		
+		if (!$bl) {
 			return ApiResponse::makeResponse(false, '未找到用户病历信息', ApiResponse::INNER_ERROR);
-		} else {
-			$bl = KFJHManager::getBLById($data['id']);
-			if (!$bl) {
-				return ApiResponse::makeResponse(false, '未找到用户病历信息', ApiResponse::INNER_ERROR);
-			}
-			$ss_time = strtotime($bl->ss_time);
-			foreach ($kfjhs as $kfjh) {
-				//手术后
-				if ($kfjh->btime_type == '0') {
-					$start_unit = ($kfjh->start_unit == '0' ? 86400 : ($kfjh->start_unit == '1' ? 604800 : 2592000));
-					$kfjh->start_time_stamp = $ss_time + $kfjh->start_time * $start_unit;
-					$kfjh->start_date = date("Y-m-d", $kfjh->start_time_stamp);
-					$end_unit = ($kfjh->end_unit = '0' ? 86400 : ($kfjh->end_unit = '1' ? 604800 : 2592000));
-					$kfjh->end_time_stamp = $ss_time + $kfjh->end_time * $end_unit;
-					$kfjh->end_date = date("Y-m-d", $kfjh->end_time_stamp);
-				} else if ($kfjh->btime_type == '2') {
-					$kfjh->set_date_time_stamp = strtotime($kfjh->set_date);
-					//指定时间
-				}
-			}
-			
 		}
+		$ss_time = strtotime($bl->ss_time);
+		$kfjhs = KFJHManager::getKFJHByBLId($bl->id);
+		foreach ($kfjhs as $kfjh) {
+			//手术后
+			if ($kfjh->btime_type == '0') {
+				$start_unit = ($kfjh->start_unit == '0' ? 86400 : ($kfjh->start_unit == '1' ? 604800 : 2592000));
+				$kfjh->start_time_stamp = $ss_time + $kfjh->start_time * $start_unit;
+				$kfjh->start_date = date("Y-m-d", $kfjh->start_time_stamp);
+				$end_unit = ($kfjh->end_unit = '0' ? 86400 : ($kfjh->end_unit = '1' ? 604800 : 2592000));
+				$kfjh->end_time_stamp = $ss_time + $kfjh->end_time * $end_unit;
+				$kfjh->end_date = date("Y-m-d", $kfjh->end_time_stamp);
+			} else if ($kfjh->btime_type == '2') {
+				$kfjh->set_date_time_stamp = strtotime($kfjh->set_date);
+				//指定时间
+			}
+		}
+		
 		return ApiResponse::makeResponse(true, $kfjhs, ApiResponse::SUCCESS_CODE);
 	}
 	

@@ -21,6 +21,12 @@ class KFJHManager
         $kfjh = KFJH::where('user_id', '=', $u_id)->get();
         return $kfjh;
     }
+	///获取康复计划
+	public static function getKFJHByBLId($bl_id)
+	{
+		$kfjh = KFJH::where('userCase_id', '=', $bl_id)->get();
+		return $kfjh;
+	}
 	//根据级别获取病历信息
 	//* 0:最简级别，只带量表基本信息
 	//* 1:普通级别，带病历
@@ -42,6 +48,11 @@ class KFJHManager
         $bl = UserCase::where('user_id', '=', $u_id)->first();
         return $bl;
     }
+	public static function getUsefulBLById($u_id)
+	{
+		$bl = UserCase::where('user_id', '=', $u_id)->where('status', '=', '1')->first();
+		return $bl;
+	}
     //根据级别获取病历信息
     //* 0:最简级别，只带量表基本信息
     //* 1:普通级别，带主治医生和康复医师

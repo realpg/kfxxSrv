@@ -61,8 +61,8 @@
                             <tr>
                                 <th>头像</th>
                                 <th>姓名</th>
-                                <th>部门</th>
-                                <th>职务</th>
+                                {{--<th>部门</th>--}}
+                                {{--<th>职务</th>--}}
                                 <th>角色</th>
                                 <th>手机</th>
                                 <th class="opt-th-width-m">操作</th>
@@ -78,8 +78,8 @@
                                     <td><span class="line-height-30 text-info">
                                             {{$data->name}}
                                         </span></td>
-                                    <td><span class="line-height-30">{{$data->dep}}</span></td>
-                                    <td><span class="line-height-30">{{$data->duty}}</span></td>
+                                    {{--<td><span class="line-height-30">{{$data->dep}}</span></td>--}}
+                                    {{--<td><span class="line-height-30">{{$data->duty}}</span></td>--}}
                                     <td>
                                         <span class="line-height-30">
                                         @if($data->role==='0')
