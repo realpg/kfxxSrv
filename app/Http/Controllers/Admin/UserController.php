@@ -68,6 +68,43 @@ class UserController
 //        dd($users);
 		return view('admin.user.userCJSJ', ['admin' => $admin, 'datas' => $cjsjs]);
 	}
+	//采集数据详情
+	public function getCJSJDetail(Request $request){
+    	$data=$request->all();
+		$requestValidationResult = RequestValidator::validator($data, [
+			'id' => 'required',
+		]);
+		if ($requestValidationResult !== true) {
+			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+		}
+		$CJSJ=CJSJManager::getCJSJById($data['id']);
+		$CJSJ=CJSJManager::getCJSJByLevel($CJSJ,3);
+		return ApiResponse::makeResponse(true, $CJSJ, ApiResponse::SUCCESS_CODE);
+	}
+	public static function setCaseStatus(Request $request){
+		$data=$request->all();
+		$requestValidationResult = RequestValidator::validator($data, [
+			'user_id' => 'required',
+			'case_id' => 'required',
+		]);
+		if ($requestValidationResult !== true) {
+			return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+		}
+		$user_id=$data['user_id'];
+		$case_id=$data['case_id'];
+		$cases=UserManager::getUserCasesByUserId($user_id);
+		foreach ($cases as $case){
+			if($case->id==$case_id){
+				$case->status=1;
+			}
+			else{
+				$case->status=0;
+			}
+			$case->save();
+		}
+		return redirect('/admin/user/userCaseIndex?user_id=' . $user_id);
+		
+	}
 
     //搜索，按照手机号、姓名进行搜索
     public function search(Request $request)

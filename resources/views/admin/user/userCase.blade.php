@@ -71,11 +71,12 @@
                             <thead>
                             <tr>
                                 <th>病例ID</th>
-                                <th class="con-th-width-l">手术名称</th>
+                                <th>手术名称</th>
                                 <th>医师</th>
                                 <th>位置</th>
                                 <th>患侧</th>
                                 <th>手术时间</th>
+                                <th>状态</th>
                                 <th class="opt-th-width">操作</th>
                             </tr>
                             </thead>
@@ -124,8 +125,21 @@
                                             @endif
                                         </span>
                                     </td>
+                                    <td>
+                                        @if($data->status == '0')
+                                            <span class="label label-default line-height-30">失效</span>
+                                        @else
+                                            <span class="label label-success line-height-30">生效</span>
+                                        @endif
+                                    </td>
                                     <td class="opt-th-width">
                                         <span class="line-height-30">
+                                            <a href="{{URL::asset('/admin/user/setCaseStatus/')}}/?user_id={{$user->id}}&case_id={{$data->id}}"
+                                               class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="使该病历生效，其他病历失效">
+                                                <i class="fa fa-eye opt-btn-i-size"></i>
+                                            </a>
                                             <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                   onclick="clickEdit({{$data->id}})"
                                                   data-toggle="tooltip"
@@ -205,7 +219,7 @@
                             <div class="form-group">
                                 <label for="surgery_id" class="col-sm-2 control-label">手术</label>
                                 <div class="col-sm-10">
-                                    <select id="surgery_id" name="surgery_id" class="form-control">
+                                    <select id="surgery_id" name="surgery_id" class="form-control" onchange="changeSurgerys(this)">
                                         @foreach($surgerys as $surgery)
                                             <option value="{{$surgery->id}}">{{$surgery->name}}</option>
                                         @endforeach
@@ -217,7 +231,9 @@
                                 <div class="col-sm-10">
                                     <select id="hpos_id" name="hpos_id" class="form-control">
                                         @foreach($hposs as $hpos)
-                                            <option value="{{$hpos->id}}">{{$hpos->name}}</option>
+                                            <option value="{{$hpos->id}}">
+                                                {{$hpos->name}}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -282,6 +298,7 @@
             $("#doctor_id").val("{{$admin->id}}");
             //展示modal
             $("#addUserCaseModal").modal('show');
+            changeSurgerys($("#surgery_id"));
         }
 
 
@@ -312,6 +329,23 @@
                 return false;
             }
             return true;
+        }
+
+        //改变手术
+        function changeSurgerys(e) {
+            var surgery_id=e.value||e.val();
+            var surgerys="{{$surgerys}}";
+            var str;
+            do{
+                str=surgerys;
+                surgerys=surgerys.replace('&quot;','"')
+            }while (surgerys!=str);
+            surgerys=JSON.parse(surgerys);
+            for(var x in surgerys ){
+                if(surgerys[x].id==surgery_id)
+                $('#hpos_id').val(surgerys[x].hpos_id);
+            }
+            console.log(surgery_id,surgerys);
         }
 
     </script>

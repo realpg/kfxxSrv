@@ -118,7 +118,10 @@ function editHPos(url, param, callBack) {
 function getSurgeryById(url, param, callBack) {
     ajaxRequest(url + "admin/surgery/edit", param, "get", callBack);
 }
-
+//手术信息
+function getCJSJDetailById(url, param, callBack) {
+    ajaxRequest(url + "admin/user/getCJSJDetailById", param, "get", callBack);
+}
 
 //测试接口
 function test(url, param, callBack) {

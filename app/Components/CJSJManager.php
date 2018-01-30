@@ -11,6 +11,7 @@ namespace App\Components;
 
 use App\Models\AD;
 use App\Models\CJSJ;
+use App\Models\UserCase;
 use Qiniu\Auth;
 
 class CJSJManager
@@ -66,8 +67,13 @@ class CJSJManager
         $cjsjs = CJSJ::where('userCase_id', '=', $userCase_id)->orderby('created_at', 'desc')->paginate(Utils::PAGE_SIZE);
         return $cjsjs;
     }
-
-
+	
+	//根据采集数据id获取采集数据
+	public static function getCJSJById($id)
+	{
+		$cjsj = CJSJ::where('id', '=', $id)->first();
+		return $cjsj;
+	}
     /*
      * 设置采集数据的详细值
      *
@@ -79,6 +85,9 @@ class CJSJManager
         $cjsj->userCase = UserManager::getUserCaseById($cjsj->userCase_id);
         $cjsj->sjx = SJXManager::getSJXById($cjsj->sjx_id);
         $cjsj->hpos=HposManager::getHPosById($cjsj->sjx->hpos_id);
+        if($level>=2){
+        	$cjsj->user=UserManager::getUserInfoById($cjsj->user_id);
+        }
         return $cjsj;
     }
 

@@ -284,7 +284,6 @@
             $("#addUserModal").empty();
             var interText = doT.template($("#Modal-content-template").text());
             $("#addUserModal").html(interText(Data));
-
         }
 
         function searchList(e) {
