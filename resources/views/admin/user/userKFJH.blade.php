@@ -474,6 +474,7 @@
             var jhObj = {
                 name:"",
                 desc: "",
+                xj_ids:"0",
                 btime_type: "0",
                 start_time: 0,
                 start_unit: 0,
@@ -564,7 +565,7 @@
             } else {
                 kfjhInfo.jhs[index].name = jhObj.name;
                 kfjhInfo.jhs[index].desc = jhObj.desc;
-                kfjhInfo.jhs[index].xjs = jhObj.xjs;
+                kfjhInfo.jhs[index].xj_ids = jhObj.xj_ids;
                 kfjhInfo.jhs[index].btime_type = jhObj.btime_type;
                 kfjhInfo.jhs[index].start_time = jhObj.start_time;
                 kfjhInfo.jhs[index].start_unit = jhObj.start_unit;
