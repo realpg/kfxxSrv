@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Components\DoctorManager;
+use App\Components\QNManager;
 use App\Components\UserManager;
 use App\Components\Utils;
 use App\Http\Controllers\ApiResponse;
@@ -58,7 +59,8 @@ class IndexController
 	public function editInfo(Request $request)
 	{
 		$admin = $request->session()->get('admin');
-		return view("admin.admin.editInfo", ['admin' => $admin]);
+		$upload_token = QNManager::uploadToken();
+		return view("admin.admin.editInfo", ['admin' => $admin, 'upload_token' => $upload_token]);
 	}
 	public function editPost(Request $request)
 	{

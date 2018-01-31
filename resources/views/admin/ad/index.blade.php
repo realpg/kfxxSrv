@@ -351,7 +351,7 @@
                     },
                     'UploadProgress': function (up, file) {
                         // 每个文件上传时，处理相关的事情
-//                        console.log("UploadProgress up:" + up + " file:" + JSON.stringify(file));
+                        console.log("UploadProgress up:" + up + " file:" + JSON.stringify(file));
                     },
                     'FileUploaded': function (up, file, info) {
                         // 每个文件上传成功后，处理相关的事情
