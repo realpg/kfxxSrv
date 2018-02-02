@@ -203,8 +203,9 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">功能面板</li>
                 <li class="active treeview">
-                    <a href="#">
-                        <i class="fa fa-bar-chart"></i> <span>业务概览</span>
+                    <a href="{{url('/admin/index')}}">
+                        <i class="fa fa-bar-chart"></i>
+                        <span>业务概览</span>
                     </a>
                 </li>
                 <li>

@@ -476,6 +476,7 @@ class UserManager
 		if (array_key_exists('desc', $data)) {
 			$kfjh->desc = array_get($data, 'desc');
 		}
+		
 		if (array_key_exists('important', $data)) {
 			$kfjh->important = array_get($data, 'important');
 		}
@@ -497,14 +498,12 @@ class UserManager
 		if (array_key_exists('end_unit', $data)) {
 			$kfjh->end_unit = array_get($data, 'end_unit');
 		}
+		
 		if (array_key_exists('set_date', $data)) {
 			$kfjh->set_date = array_get($data, 'set_date');
 		}
-		if (array_key_exists('xj_ids', $data)) {
+		if (array_key_exists('xj_ids', $data)&&array_get($data, 'xj_ids')!=null) {
 			$kfjh->xj_ids = array_get($data, 'xj_ids');
-		}
-		if (array_key_exists('status', $data)) {
-			$kfjh->status = array_get($data, 'status');
 		}
 		return $kfjh;
 	}

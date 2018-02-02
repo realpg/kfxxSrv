@@ -126,7 +126,7 @@ class KFMBManager
             $kfmb->doctor = DoctorManager::getDoctorById($kfmb->doctor_id);
         }
         if (strpos($level, '2') !== false) {
-            $kfmb->xj = XJManager::getXJInfoById($kfmb->xj_id, 3);
+//            $kfmb->xj = XJManager::getXJInfoById($kfmb->xj_ids, 3);
         }
         if (strpos($level, '3') !== false) {
             $kfmb->jhs = self::getJHListByKFMBId($kfmb->id);
@@ -171,9 +171,7 @@ class KFMBManager
         if (array_key_exists('is_personal', $data)) {
             $kfmb->is_personal = array_get($data, 'is_personal');
         }
-        if (array_key_exists('xj_id', $data)) {
-            $kfmb->xj_id = array_get($data, 'xj_id');
-        }
+        
         if (array_key_exists('status', $data)) {
             $kfmb->status = array_get($data, 'status');
         }

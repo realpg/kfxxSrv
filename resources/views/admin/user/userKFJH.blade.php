@@ -491,7 +491,7 @@
             } else {        //如果是编辑
                 jhObj.name = nullToEmptyStr(kfjhInfo.jhs[index].name);
                 jhObj.desc = nullToEmptyStr(kfjhInfo.jhs[index].desc);
-                jhObj.xj_ids = nullToEmptyStr(kfjhInfo.jhs[index].xj_ids);
+                jhObj.xj_ids = (kfjhInfo.jhs[index].xj_ids?kfjhInfo.jhs[index].xj_ids:0);
                 jhObj.start_time = kfjhInfo.jhs[index].start_time;
                 jhObj.start_unit = kfjhInfo.jhs[index].start_unit;
                 jhObj.end_time = kfjhInfo.jhs[index].end_time;
