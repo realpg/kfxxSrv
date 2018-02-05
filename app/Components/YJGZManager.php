@@ -21,9 +21,8 @@ class YJGZManager
 		$yjgz=YJGZ::where('id','=',$id)->first();
 		return $yjgz;
 	}
-	public static function getYJGZbySJXid($sj)
+	public static function getYJGZbySJXid($sjx_id)
 	{
-		$sjx_id = $sj->sjx_id;
 		$YJGZs = YJGZ::where('sjx_id', '=', $sjx_id)->get();
 		return $YJGZs;
 	}

@@ -127,6 +127,23 @@ class SJXController
 	    $hposs = HposManager::getHPosList();
 	    return view('admin.yjgz.yjgz', ['admin' => $admin, 'datas' => $yjgzs, 'sjxs' => $sjxs]);
     }
+	public function searchYJGZ(Request $request)
+	{
+		$admin = $request->session()->get('admin');
+		$data = $request->all();
+		$search_sjx_id = $data['sjx_id'];
+		if($search_sjx_id==0){
+			return self::yjgzIndex($request);
+		}
+		$yjgzs= YJGZManager::getYJGZbySJXid($search_sjx_id);
+		foreach ($yjgzs as $yjgz) {
+			$yjgz->created_at_str = DateTool::formateData($yjgz->created_at, 1);
+			//$yjgz->doctor = DoctorManager::getDoctorById($sjx->doctor_id);
+			$yjgz->sjx = SJXManager::getSJXById($yjgz->sjx_id);
+		}
+		$sjxs = SJXManager::getSJXs();
+		return view('admin.yjgz.yjgz', ['admin' => $admin, 'datas' => $yjgzs, 'sjxs' => $sjxs, 'search_sjx_id' => $search_sjx_id]);
+	}
     
 	public static function deleteYJGZ(Request $request){
 		$data = $request->all();

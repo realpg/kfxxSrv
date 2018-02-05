@@ -62,7 +62,7 @@ class CJSJController extends Controller
             $sj->userCase_id = $userCase_id;
             
             //预警规则
-	        $yjgzs=YJGZManager::getYJGZbySJXid($sj);
+	        $yjgzs=YJGZManager::getYJGZbySJXid($sj->sjx_id);
 	        $sj=YJGZManager::getYJ($sj,$yjgzs);
 	        
 	        $sj->save();

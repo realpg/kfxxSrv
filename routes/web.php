@@ -74,6 +74,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 	Route::get('/sjx/editYJGZ', 'Admin\SJXController@editYJGZ');  //新建或编辑预警规则
 	Route::post('/sjx/editYJGZ', 'Admin\SJXController@editYJGZPost');  //新建或编辑预警规则
 	Route::get('/sjx/deleteYJGZ', 'Admin\SJXController@deleteYJGZ');  //新建或编辑预警规则
+	Route::post('/sjx/serachYJGZ', 'Admin\SJXController@searchYJGZ');  //搜索预警规则
 
     //患处位置管理
     Route::get('/hPos/index', 'Admin\HPosController@index');

@@ -27,12 +27,13 @@
                 <!-- Horizontal Form -->
                 <div class="">
                     <!-- form start -->
-                    <form action="{{URL::asset('/admin/sjx/search')}}" method="post" class="form-horizontal">
+                    <form action="{{URL::asset('/admin/sjx/serachYJGZ')}}" method="post" class="form-horizontal">
                         {{csrf_field()}}
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="col-sm-10">
                                     <select name="sjx_id" class="form-control">
+                                            <option value="0">全部</option>
                                         @foreach($sjxs as $sjx)
                                             <option value="{{$sjx->id}}"
                                             @if(isset($search_sjx_id))
