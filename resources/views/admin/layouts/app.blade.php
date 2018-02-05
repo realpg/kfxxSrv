@@ -303,6 +303,11 @@
                                 <small class="label bg-red pull-right">！</small>
                             </a>
                         </li>
+                        <li><a href="{{url('/admin/sjx/yjgz')}}"> <i class="fa fa-circle-o"></i>
+                                预警规则
+                                <small class="label bg-red pull-right">！</small>
+                            </a>
+                        </li>
                         <li><a href="{{url('/admin/hPos/index')}}"> <i class="fa fa-circle-o"></i>
                                 患处位置
                                 <small class="label bg-red pull-right">！</small>

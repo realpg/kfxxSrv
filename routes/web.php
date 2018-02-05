@@ -70,6 +70,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/sjx/search', 'Admin\SJXController@search');  //根据患处位置搜索数据项
     Route::get('/sjx/edit', 'Admin\SJXController@edit');  //新建或编辑数据项
     Route::post('/sjx/edit', 'Admin\SJXController@editPost');  //新建或编辑数据项
+	Route::get('/sjx/yjgz', 'Admin\SJXController@yjgzIndex');  //数据项管理首页
+	Route::get('/sjx/editYJGZ', 'Admin\SJXController@editYJGZ');  //新建或编辑预警规则
+	Route::post('/sjx/editYJGZ', 'Admin\SJXController@editYJGZPost');  //新建或编辑预警规则
+	Route::get('/sjx/deleteYJGZ', 'Admin\SJXController@deleteYJGZ');  //新建或编辑预警规则
 
     //患处位置管理
     Route::get('/hPos/index', 'Admin\HPosController@index');

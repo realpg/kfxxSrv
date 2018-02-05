@@ -12,6 +12,7 @@ use App\Components\ADManager;
 use App\Components\CJSJManager;
 use App\Components\HomeManager;
 use App\Components\UserManager;
+use App\Components\YJGZManager;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
@@ -48,6 +49,9 @@ class CJSJController extends Controller
         $user_id = $data['user_id'];
         $userCase_id = $data['userCase_id'];
         $cjsjs = $data['cjsjs'];
+        
+        
+        $sjs=[];
         //遍历数据进行数据保存
         foreach ($cjsjs as $cjsj) {
             $sj = new CJSJ();
@@ -56,9 +60,16 @@ class CJSJController extends Controller
             $sj = CJSJManager::setCJSJ($sj, $cjsj);
             $sj->user_id = $user_id;
             $sj->userCase_id = $userCase_id;
-            $sj->save();
+            
+            //预警规则
+	        $yjgzs=YJGZManager::getYJGZbySJXid($sj);
+	        $sj=YJGZManager::getYJ($sj,$yjgzs);
+	        
+	        $sj->save();
+	        
+	        array_push($sjs,$sj);
         }
-        return ApiResponse::makeResponse(true, '数据保存成功', ApiResponse::SUCCESS_CODE);
+        return ApiResponse::makeResponse(true, $sjs, ApiResponse::SUCCESS_CODE);
     }
 
 

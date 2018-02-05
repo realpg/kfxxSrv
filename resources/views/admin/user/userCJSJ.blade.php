@@ -65,9 +65,8 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if($data->result)
-                                        <div class="weui-cell__ft">未处理</div>
-                                    @elseif($data->result==0)
+
+                                    @if($data->result==0)
                                         <div class="weui-cell__ft" style="color:green">正常</div>
                                     @elseif($data->result==1)
                                         <div class="weui-cell__ft" style="color:red">异常</div>

@@ -69,6 +69,13 @@ function getDoctorById(url, param, callBack) {
 function getSJXById(url, param, callBack) {
     ajaxRequest(url + "admin/sjx/edit", param, "GET", callBack);
 }
+//根据id获取预警规则
+function getYJGZById(url, param, callBack) {
+    ajaxRequest(url + "admin/sjx/editYJGZ", param, "GET", callBack);
+}
+function deleteYJGZ(url, param, callBack) {
+    ajaxRequest(url + "admin/sjx/deleteYJGZ", param, "GET", callBack);
+}
 
 //获取全部生效宣教信息
 function getAllXJs(url, param, callBack) {
