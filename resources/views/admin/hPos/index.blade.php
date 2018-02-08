@@ -85,7 +85,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理患处位置图</h4>
+                    <h4 class="modal-title">管理患处位置</h4>
                 </div>
                 <form id="editHPos" class="form-horizontal">
                     <div class="modal-body">
@@ -117,7 +117,7 @@
 
                                 <div class="col-sm-10">
                                     <input id="name" name="name" type="text" class="form-control"
-                                           placeholder="患处位置图名称"
+                                           placeholder="患处位置名称"
                                            value="@{{=it.name}}">
                                 </div>
                             </div>

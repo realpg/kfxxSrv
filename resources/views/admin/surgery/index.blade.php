@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-2 control-label">姓名</label>
+                                    <label for="name" class="col-sm-2 control-label">手术名称</label>
                                     <div class="col-sm-10">
                                         <input id="name" name="name" type="text" class="form-control"
                                                placeholder="请输入手术名称"
