@@ -148,6 +148,7 @@
                                            value="@{{=it.author}}">
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="img" class="col-sm-2 control-label">封面*</label>
 
@@ -244,10 +245,34 @@
                                     @{{??}}
                                     <img id="stepPickfiles" src="{{URL::asset('/img/upload.png')}}"
                                          style="width: 260px;">
-
                                     @{{?}}
                                 </div>
-                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片</div>
+                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传260*260尺寸图片</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="video" class="col-sm-2 control-label">视频</label>
+                                <div class="col-sm-10">
+                                    <input id="stepVideo_input" name="video" type="text" class="form-control"
+                                           placeholder="视频网路链接地址"
+                                           value="@{{=it.video}}">
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px;" class="text-center">
+                                <div id="stepVideoContainer " >
+                                    @{{? it.video}}
+                                    <button  id="stepVideoPickfiles">更换视频</button>
+                                    <video id="stepVideo"class="pull-right"src="@{{=it.video}}" controls="controls" width="462px" height="260px"style="border: solid 1px black">
+                                        您的浏览器不支持视频
+                                    </video>
+                                    @{{??}}
+                                    <button id="stepVideoPickfiles">选择视频</button>
+                                    <video id="stepVideo"src="@{{=it.video}}" controls="controls" width="462px" height="260px">
+                                        您的浏览器不支持视频
+                                    </video>
+                                    @{{?}}
+                                </div>
+                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*上传的视频大小<100M,且仅支持Ogg、MPEG4、WebM格式</div>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -314,6 +339,7 @@
             "created_at": getCurrentTime(),
             "doctor_id":{{$admin->id}},
             "img": "",
+            "video": "",
             "hpos_ids": "",
             "show_num": 0,
             "steps": []
@@ -386,6 +412,7 @@
             xjInfo.author = $("#author").val();
             xjInfo.desc = $("#desc").val();
             xjInfo.img = $("#img").val();
+
             xjInfo.hpos_ids = "";
             var hpos_arr = [];
             $('input:checkbox').each(function () {
@@ -424,6 +451,7 @@
             var stepObj = {
                 "text": "",
                 "img": "",
+                "video": "",
                 "index": index,
                 "opt": edit_or_add
             };
@@ -433,12 +461,14 @@
             } else {        //如果是编辑
                 stepObj.text = nullToEmptyStr(xjInfo.steps[index].text);
                 stepObj.img = nullToEmptyStr(xjInfo.steps[index].img);
+                stepObj.video = nullToEmptyStr(xjInfo.steps[index].video);
             }
             console.log("stepObj:" + JSON.stringify(stepObj));
             var interText = doT.template($("#editStepModal-content-template").text());
             $("#editStepModal").html(interText(stepObj));
             //初始化七牛
             initQNUploader('stepContainer', 'stepImg', 'stepPickfiles');
+            initQNUploader_video('stepVideoContainer', 'stepVideo_input','stepVideo' ,'stepVideoPickfiles');
             $("#editStepModal").modal('show');
         }
 
@@ -447,6 +477,7 @@
             var stepObj = {};
             stepObj.text = $("#stepText").val();
             stepObj.img = $("#stepImg").val();
+            stepObj.video = $("#stepVideo_input").val();
             //合规校验
             if (judgeIsNullStr(stepObj.text) && judgeIsNullStr(stepObj.img)) {
                 $("#stepText").focus();
@@ -593,6 +624,99 @@
                         console.log(" input_dom:" + input_dom + " img_dom:" + img_dom + " sourceLink:" + sourceLink);
                         $("#" + input_dom).val(sourceLink);
                         $("#" + img_dom).attr('src', qiniuUrlTool(sourceLink, "ad"));
+                    },
+                    'Error': function (up, err, errTip) {
+                        //上传出错时，处理相关的事情
+                        console.log(err + errTip);
+                    },
+                    'UploadComplete': function () {
+                        //队列文件处理完毕后，处理相关的事情
+                    },
+                    'Key': function (up, file) {
+                        // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                        // 该配置必须要在unique_names: false，save_key: false时才生效
+
+                        var key = "";
+                        // do something with key here
+                        return key
+                    }
+                }
+            });
+        }
+
+        //初始化七牛上传模块
+        function initQNUploader_video(container_dom, input_dom, video_dom,select_dom) {
+            console.log("initQNUploader container_dom:" + container_dom + " input_dom:" + input_dom + " video_dom:" + video_dom+"  select_dom:"+select_dom);
+            var uploader = Qiniu.uploader({
+                runtimes: 'html5,flash,html4',      // 上传模式，依次退化
+                browse_button: select_dom,         // 上传选择的点选按钮，必需
+                container: container_dom,//上传按钮的上级元素ID
+                // 在初始化时，uptoken，uptoken_url，uptoken_func三个参数中必须有一个被设置
+                // 切如果提供了多个，其优先级为uptoken > uptoken_url > uptoken_func
+                // 其中uptoken是直接提供上传凭证，uptoken_url是提供了获取上传凭证的地址，如果需要定制获取uptoken的过程则可以设置uptoken_func
+                uptoken: "{{$upload_token}}", // uptoken是上传凭证，由其他程序生成
+                // uptoken_url: '/uptoken',         // Ajax请求uptoken的Url，强烈建议设置（服务端提供）
+                // uptoken_func: function(file){    // 在需要获取uptoken时，该方法会被调用
+                //    // do something
+                //    return uptoken;
+                // },
+                get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的uptoken
+                // downtoken_url: '/downtoken',
+                // Ajax请求downToken的Url，私有空间时使用，JS-SDK将向该地址POST文件的key和domain，服务端返回的JSON必须包含url字段，url值为该文件的下载地址
+                unique_names: true,              // 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
+                // save_key: true,                  // 默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
+                domain: 'http://twst.isart.me/',     // bucket域名，下载资源时用到，必需
+                max_file_size: '100mb',             // 最大文件体积限制
+                flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入flash，相对路径
+                max_retries: 3,                     // 上传失败最大重试次数
+                dragdrop: true,                     // 开启可拖曳上传
+                drop_element: container_dom,          // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+                chunk_size: '4mb',                  // 分块上传时，每块的体积
+                auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                //x_vars : {
+                //    查看自定义变量
+                //    'time' : function(up,file) {
+                //        var time = (new Date()).getTime();
+                // do something with 'time'
+                //        return time;
+                //    },
+                //    'size' : function(up,file) {
+                //        var size = file.size;
+                // do something with 'size'
+                //        return size;
+                //    }
+                //},
+                init: {
+                    'FilesAdded': function (up, files) {
+                        plupload.each(files, function (file) {
+                            // 文件添加进队列后，处理相关的事情
+//                                            alert(alert(JSON.stringify(file)));
+                        });
+                    },
+                    'BeforeUpload': function (up, file) {
+                        // 每个文件上传前，处理相关的事情
+//                        console.log("BeforeUpload up:" + up + " file:" + JSON.stringify(file));
+                    },
+                    'UploadProgress': function (up, file) {
+                        // 每个文件上传时，处理相关的事情
+//                        console.log("UploadProgress up:" + up + " file:" + JSON.stringify(file));
+                    },
+                    'FileUploaded': function (up, file, info) {
+                        // 每个文件上传成功后，处理相关的事情
+                        // 其中info是文件上传成功后，服务端返回的json，形式如：
+                        // {
+                        //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+                        //    "key": "gogopher.jpg"
+                        //  }
+                        console.log(JSON.stringify(info));
+                        var domain = up.getOption('domain');
+                        var res = JSON.parse(info);
+                        //获取上传成功后的文件的Url
+                        var sourceLink = domain + res.key;
+                        console.log(" input_dom:" + input_dom + " img_dom:" + img_dom + " sourceLink:" + sourceLink);
+                        $("#" + input_dom).val(sourceLink);
+                        $("#" + video_dom).attr('src', qiniuUrlTool(sourceLink, "ad"));
+                        alert("上传成功");
                     },
                     'Error': function (up, err, errTip) {
                         //上传出错时，处理相关的事情

@@ -202,7 +202,7 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">功能面板</li>
-                <li class="active treeview">
+                <li class="treeview">
                     <a href="{{url('/admin/index')}}">
                         <i class="fa fa-bar-chart"></i>
                         <span>业务概览</span>
@@ -255,7 +255,7 @@
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-thermometer-empty"></i> <span>康复模板/数据</span>
+                        <i class="fa fa-thermometer-empty"></i> <span>康复模板</span>
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -328,7 +328,7 @@
     <!-- /.content-wrapper -->
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>版本</b> 1.3.1
+            <b>版本</b> 1.0.0
         </div>
         <strong>Copyright &copy; 2017-2018 <a href="http://www.puh3.net.cn/" target="_blank">北京大学第三医院</a>.</strong> All
         rights

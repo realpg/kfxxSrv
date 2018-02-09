@@ -194,7 +194,7 @@
                                 <label for="seq" class="col-sm-2 control-label">类型</label>
 
                                 <div class="col-sm-10">
-                                    <select name="type" class="form-control">
+                                    <select name="type" class="form-control" id="type">
                                         <option value="0">普通量表</option>
                                         <option value="1">验证量表</option>
                                         <option value="2">随访量表</option>
@@ -295,6 +295,7 @@
                     //对象配置
                     $("#id").val(msgObj.id);
                     $("#name").val(msgObj.name);
+                    $("#type").val(msgObj.type);
                     $("#desc").val(msgObj.desc);
                     //展示modal
                     $("#addADModal").modal('show');

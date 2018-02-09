@@ -38,11 +38,6 @@
                         @{{=it.desc}}
                     </div>
                 </div>
-                <div class="margin-top-10  font-size-14">
-                    点击查看：<a href="{{URL::asset('/admin/xj/editXJ')}}?id=@{{=it.xj_id}}" target="_blank"><span
-                                class="text-aqua">宣教信息<i
-                                    class="fa fa-link margin-left-5"></i></span></a>
-                </div>
             </div>
         </div>
 
