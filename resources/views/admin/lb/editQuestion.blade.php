@@ -120,7 +120,7 @@
                                     @{{~question.options :option:index_opt}}
                                     <tr class="row">
                                         <th>
-                                            @{{=index_opt}}
+                                            @{{=index_opt+1}}
                                         </th>
 
                                         <th>
@@ -485,7 +485,7 @@
         }
 
         function changeOption(index_que, index_opt, e) {
-
+            console.log(e);
             questions[index_que].options[index_opt].option = e.value;
             loadHtml();
         }
@@ -521,6 +521,7 @@
         }
 
         function changePoint0(index_que, index_opt, e) {
+            console.log(e);
             var q = questions[index_que].options[index_opt];
             q.point0 = e.value;
             q.point = q.point0 * questions[index_que].quan;
@@ -537,16 +538,20 @@
 
         function changeType(index_que, e) {
             questions[index_que].type = e.value;
-            if (e.value == 32) {
-                questions[index_que].questions = ["这是问题"];
+            if (e.value == 2) {
+                questions[index_que].question = ["这是问题"];
                 questions[index_que].answer = 0;
             }
-            if (e.value == 3) {
+            else if (e.value == 3) {
                 questions[index_que].questions = ["这是问题"];
                 questions[index_que].options = ["这是选项"];
                 questions[index_que].points = [[0]];
             }
-            //console.log(e.options[e.value], "问题：", questions)
+            else {
+                questions[index_que].options = [{option:"这是选项",point:0,point0:0}];
+                questions[index_que].question="";
+            }
+            console.log(e.options[e.value], "问题：", questions)
             loadHtml();
         }
 
