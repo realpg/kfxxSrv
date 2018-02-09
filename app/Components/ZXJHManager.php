@@ -106,6 +106,9 @@ class ZXJHManager
         if (array_key_exists('zx_desc', $data)) {
             $zxjh->zx_desc = array_get($data, 'zx_desc');
         }
+	    if (array_key_exists('xj_ids', $data)) {
+		    $zxjh->xj_ids = array_get($data, 'xj_ids');
+	    }
         return $zxjh;
     }
 
