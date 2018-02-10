@@ -64,8 +64,7 @@
                  onclick="editStep(0,'add');">
         </div>
         <!--步骤信息-->
-        @{{for(var i=0;i
-        <it.steps.length ;i++){}}
+        @{{for(var i=0;i<it.steps.length ;i++){}}
         <div>
             @{{?it.steps[i].text}}
             <div class="padding-bottom-10">@{{=it.steps[i].text_html}}</div>
@@ -261,13 +260,13 @@
                             <div style="margin-top: 10px;" class="text-center">
                                 <div id="stepVideoContainer" >
                                     @{{? it.video}}
-                                    <button  id="stepVideoPickfiles">更换视频</button>
-                                    <video id="stepVideo"class="pull-right"src="@{{=it.video}}" controls="controls" width="462px" height="260px"style="border: solid 1px black">
+                                    <button  id="stepVideoPickfiles" style="border: solid 1px #2b542c">更换视频</button>
+                                    <video id="stepVideo"class="pull-right"src="@{{=it.video}}" controls="controls" width="462px" height="260px"style="border: solid 1px #d2d6de">
                                         您的浏览器不支持视频
                                     </video>
                                     @{{??}}
-                                    <button id="stepVideoPickfiles">选择视频</button>
-                                    <video id="stepVideo"src="@{{=it.video}}" controls="controls" width="462px" height="260px">
+                                    <button id="stepVideoPickfiles" style="border: solid 1px #2b542c;">选择视频</button>
+                                    <video id="stepVideo"class="pull-right"src="@{{=it.video}}" controls="controls" width="462px" height="260px"style="border: solid 1px #d2d6de">
                                         您的浏览器不支持视频
                                     </video>
                                     @{{?}}
@@ -333,8 +332,8 @@
         //如果没有宣教值，则设置为空值
         var empty_xjInfo = {
             "id": null,
-            "title": "在这里输入宣教标题...",
-            "desc": "输入简要描述...",
+            "title": "在这里输入宣教标题",
+            "desc": "输入简要描述,描述将在宣教列表上显示",
             "author": "北京大学第三医院",
             "created_at": getCurrentTime(),
             "doctor_id":{{$admin->id}},
@@ -343,7 +342,7 @@
             "hpos_ids": "",
             "show_num": 0,
             "steps": []
-        }
+        };
 
 
         //入口函数
@@ -480,7 +479,7 @@
             stepObj.img = $("#stepImg").val();
             stepObj.video = $("#stepVideo_input").val();
             //合规校验
-            if (judgeIsNullStr(stepObj.text) && judgeIsNullStr(stepObj.img)) {
+            if (judgeIsNullStr(stepObj.text) && judgeIsNullStr(stepObj.img)&&judgeIsNullStr(stepObj.video)) {
                 $("#stepText").focus();
                 return;
             }
@@ -714,7 +713,7 @@
                         var res = JSON.parse(info);
                         //获取上传成功后的文件的Url
                         var sourceLink = domain + res.key;
-                        console.log(" input_dom:" + input_dom + " img_dom:" + img_dom + " sourceLink:" + sourceLink);
+                        console.log(" input_dom:" + input_dom + " video_dom:" + video_dom + " sourceLink:" + sourceLink);
                         $("#" + input_dom).val(sourceLink);
                         $("#" + video_dom).attr('src', qiniuUrlTool(sourceLink, "ad"));
                         alert("上传成功");
