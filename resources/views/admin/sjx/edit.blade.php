@@ -91,6 +91,10 @@
     <script src="{{ URL::asset('js/plupload/moxie.js') }}"></script>
     <script type="application/javascript">
 
+        $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(11)").addClass("active");
+            $('[data-toggle="tooltip"]').tooltip()
+        })
         //合规校验
         function checkValid() {
             var name = $("#name").val();

@@ -200,10 +200,10 @@
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
             <!-- sidebar menu: : style can be found in sidebar.less -->
-            <ul class="sidebar-menu" data-widget="tree">
+            <ul class="sidebar-menu" data-widget="tree" id="Menu">
                 <li class="header">功能面板</li>
-                <li class="treeview">
-                    <a href="{{url('/admin/index')}}">
+                <li class="">
+                    <a href="{{url('/admin')}}">
                         <i class="fa fa-bar-chart"></i>
                         <span>业务概览</span>
                     </a>

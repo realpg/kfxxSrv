@@ -295,6 +295,7 @@
         var deleted = [];
         //入口函数
         $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(7)").addClass("active");
             $('[data-toggle="tooltip"]').tooltip();
             var lb_id = getQueryString("id");
             //从url中获取id

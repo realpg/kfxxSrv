@@ -179,7 +179,8 @@
 @section('script')
     <script type="application/javascript">
 
-        $(function () {
+        $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(10)").addClass("active");
             $('[data-toggle="tooltip"]').tooltip()
         })
 

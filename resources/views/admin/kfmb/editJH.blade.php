@@ -265,6 +265,7 @@
 
         //入口函数
         $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(8)").addClass("active");
             $('[data-toggle="tooltip"]').tooltip();
             var kfmb_id = getQueryString("id");
             if (judgeIsNullStr(kfmb_id)) {

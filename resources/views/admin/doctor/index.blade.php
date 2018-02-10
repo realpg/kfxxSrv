@@ -262,6 +262,7 @@
 
         //入口函数
         $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(4)").addClass("active");
             $('[data-toggle="tooltip"]').tooltip()
             //获取七牛token
             initQNUploader();

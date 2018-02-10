@@ -162,6 +162,7 @@
         var newList = [];
         //入口函数
         $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(7)").addClass("active");
             $('[data-toggle="tooltip"]').tooltip()
             var children = $("#datas").children();
             for (var x = 0; x < children.length; x++) {

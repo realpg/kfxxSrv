@@ -82,3 +82,12 @@
         </div>
     </section>
 @endsection
+
+@section('script')
+    <script type="application/javascript">
+        //入口函数
+        $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(2)").addClass("active");
+        });
+    </script>
+@endsection

@@ -264,9 +264,10 @@
     <script type="application/javascript">
 
         //提示
-        $(function () {
+        $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(11)").addClass("active");
             $('[data-toggle="tooltip"]').tooltip()
-        })
+        });
 
         //点击新建数据项
         function clickAdd() {

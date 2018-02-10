@@ -252,6 +252,7 @@
         var list = [];
         var List_view = [];//页面上显示的列表
         $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(6)").addClass("active");
             $('[data-toggle="tooltip"]').tooltip()
             var children = $("#datas").children();
             for (var x = 0; x < children.length; x++) {

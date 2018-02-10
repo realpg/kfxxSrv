@@ -348,6 +348,7 @@
 
         //入口函数
         $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(9)").addClass("active");
             //tooltip
             $('[data-toggle="tooltip"]').tooltip()
             //从url中获取id

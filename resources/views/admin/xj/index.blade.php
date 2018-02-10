@@ -145,6 +145,7 @@
 
         //入口函数
         $(document).ready(function () {
+            $(".sidebar-menu li:nth-child(9)").addClass("active");
             $('[data-toggle="tooltip"]').tooltip()
         });
 
