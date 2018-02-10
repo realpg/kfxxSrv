@@ -97,7 +97,7 @@
         <div class="margin-top-15 margin-bottom-15 text-center">
             <img src="{{URL::asset('/img/add_button_icon.png')}}"
                  style="width: 36px;height: 36px;"
-                 onclick="editStep(@{{=i+1}},'add');">
+                 onclick="editStep(@{{= i+1}},'add');">
         </div>
         @{{}}}
 
@@ -234,7 +234,7 @@
                                 <label for="img" class="col-sm-2 control-label">图片</label>
                                 <div class="col-sm-10">
                                     <input id="stepImg" name="img" type="text" class="form-control"
-                                           placeholder="图片网路链接地址"
+                                           placeholder="图片网络链接地址"
                                            value="@{{=it.img}}">
                                 </div>
                             </div>
@@ -259,7 +259,7 @@
                                 </div>
                             </div>
                             <div style="margin-top: 10px;" class="text-center">
-                                <div id="stepVideoContainer " >
+                                <div id="stepVideoContainer" >
                                     @{{? it.video}}
                                     <button  id="stepVideoPickfiles">更换视频</button>
                                     <video id="stepVideo"class="pull-right"src="@{{=it.video}}" controls="controls" width="462px" height="260px"style="border: solid 1px black">
