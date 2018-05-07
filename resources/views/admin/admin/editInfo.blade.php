@@ -11,9 +11,7 @@
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
-                <button type="button" class="btn btn-primary" onclick="submitForm();">
-                    保存
-                </button>
+
             </div>
         </div>
     </section>
@@ -44,22 +42,22 @@
         <div class="hidden">
             <label for="img" class="col-sm-2 control-label text-right">id</label>
             <div class="col-sm-9">
-                <input id="id" name="id" value="@{{=it.id }}"style="width: 100%">
+                <input id="id" name="id" value="@{{=it.id }}"class="form-control">
             </div>
         </div>
 
-        <div class="row margin-top-10">
+        <div class="form-group">
             <label for="name" class="col-sm-2 control-label text-right">姓名</label>
             <div class="col-sm-9">
-                <input id="name" name="name" value="@{{=it.name }}"style="width: 100%">
+                <input id="name" name="name" value="@{{=it.name }}"class="form-control">
             </div>
         </div>
 
-        <div class="row margin-top-10">
+        <div class="form-group">
             <label for="Img" class="col-sm-2 control-label text-right">头像</label>
             <div class="col-sm-9">
                 <input id="Img" name="avatar" type="text" class="form-control"
-                       placeholder="图片网路链接地址"style="width: 100%"
+                       placeholder="图片网路链接地址"
                        value="@{{=it.avatar}}">
             </div>
         </div>
@@ -75,21 +73,24 @@
             <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传260*260尺寸图片</div>
         </div>
 
-        <div class="row margin-top-10">
+        <div class="form-group">
             <label for="phonenum" class="col-sm-2 control-label text-right">电话</label>
             <div class="col-sm-9">
-                <input id="phonenum" name="phonenum" value="@{{=it.phonenum }}"style="width: 100%">
+                <input id="phonenum" name="phonenum" value="@{{=it.phonenum }}"class="form-control">
             </div>
         </div>
-        <div class="row margin-top-10">
-            <label for="gender" class="col-sm-2 control-label text-right">性别</label>
+        <div class="form-group">
+            <label for="gender" class="col-sm-2 control-label">性别</label>
             <div class="col-sm-9">
-                <select id="gender" name="gender" style="width: 100%">
+                <select id="gender" name="gender" class="form-control">
                     <option value="1" @{{?it.gender=="1" }}selected="true" @{{? }}>男</option>
                     <option value="2" @{{?it.gender=="2" }}selected="true" @{{? }}>女</option>
                 </select>
             </div>
         </div>
+        <button type="button" class="btn btn-info btn-block btn-flat" onclick="submitForm();">
+            保存
+        </button>
 
     </script>
 
@@ -203,6 +204,7 @@
             return true;
         }
         function submitForm() {
+            if(checkValid())
             document.getElementById("editDoctor").submit();
         }
         //初始化七牛上传模块

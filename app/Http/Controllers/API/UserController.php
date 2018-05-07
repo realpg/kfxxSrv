@@ -23,8 +23,8 @@ use Qiniu\Auth;
 class UserController extends Controller
 {
 
-    const APPID = "wx3cd6d8d4b71e14d3";
-    const APPSECRET = "a4826dae40bfd28396d5e6fcc48dee3f";
+    const APPID = "wxb80fea023f91cc4d";
+    const APPSECRET = "ee2c1e1aa1d7024e3b9df34fd9b5d5f7";
 
     /**
      * @param Request $request

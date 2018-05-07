@@ -51,17 +51,20 @@ class IndexController
 	{
 		$data = $request->all();
 		$doctor = DoctorManager::getDoctorById($data['admin_id']);
+		$admin = $request->session()->get('admin');
 		if (DoctorManager::changePassword($doctor, $data))
-			return ApiResponse::makeResponse(true, "修改密码成功", ApiResponse::SUCCESS_CODE);
+			return redirect('/admin/index');
 		else
-			return ApiResponse::makeResponse(false, '修改密码失败', ApiResponse::INNER_ERROR);
+			return view('admin.index.error500', ['msg' => "修改密码成功", 'admin' => $admin]);
 	}
+	
 	public function editInfo(Request $request)
 	{
 		$admin = $request->session()->get('admin');
 		$upload_token = QNManager::uploadToken();
 		return view("admin.admin.editInfo", ['admin' => $admin, 'upload_token' => $upload_token]);
 	}
+	
 	public function editPost(Request $request)
 	{
 		$data = $request->all();
