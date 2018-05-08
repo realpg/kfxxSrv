@@ -43,11 +43,11 @@ class XJController extends Controller
         if (array_key_exists('hpos_ids', $data) && !Utils::isObjNull($data['hpos_ids'])) { //如果不存在hpos
             $hpos_arr = explode(',', $data['hpos_ids']);
         } else {
-            $all_hposs = HposManager::getHPosList();
+//            $all_hposs = HposManager::getHPosList();
             //如果不存在hpos，则获取全部的hpos_ids
-            foreach ($all_hposs as $hpos) {
-                array_push($hpos_arr, $hpos->id);
-            }
+//            foreach ($all_hposs as $hpos) {
+//                array_push($hpos_arr, $hpos->id);
+//            }
         }
         $xjs = XJManager::getXJListByCon($hpos_arr);
         return ApiResponse::makeResponse(true, $xjs, ApiResponse::SUCCESS_CODE);
