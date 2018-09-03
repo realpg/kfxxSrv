@@ -26,8 +26,8 @@
                 <form id="editDoctor" action="{{URL::asset('/admin/edit')}}" method="post"
                       class="form-horizontal"
                       onsubmit="return checkValid();">
-                <div id="message-content" class="white-bg" style="padding: 20px;">
-                </div>
+                    <div id="message-content" class="white-bg" style="padding: 20px;">
+                    </div>
                 </form>
             </div>
             <!--/.col (right) -->
@@ -42,14 +42,14 @@
         <div class="hidden">
             <label for="img" class="col-sm-2 control-label text-right">id</label>
             <div class="col-sm-9">
-                <input id="id" name="id" value="@{{=it.id }}"class="form-control">
+                <input id="id" name="id" value="@{{=it.id }}" class="form-control">
             </div>
         </div>
 
         <div class="form-group">
             <label for="name" class="col-sm-2 control-label text-right">姓名</label>
             <div class="col-sm-9">
-                <input id="name" name="name" value="@{{=it.name }}"class="form-control">
+                <input id="name" name="name" value="@{{=it.name }}" class="form-control">
             </div>
         </div>
 
@@ -76,7 +76,7 @@
         <div class="form-group">
             <label for="phonenum" class="col-sm-2 control-label text-right">电话</label>
             <div class="col-sm-9">
-                <input id="phonenum" name="phonenum" value="@{{=it.phonenum }}"class="form-control">
+                <input id="phonenum" name="phonenum" value="@{{=it.phonenum }}" class="form-control">
             </div>
         </div>
         <div class="form-group">
@@ -122,46 +122,15 @@
 
 @section('script')
     <script type="application/javascript">
-        var upload_token;
-        $(document).ready(function () {
 
-        });
-
-
-        //优化icheck展示
-        function setICheck() {
-            //iCheck for checkbox and radio inputs
-            $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                checkboxClass: 'icheckbox_minimal-blue',
-                radioClass: 'iradio_minimal-blue'
-            })
-        }
-
-        //初始化宣教值
-        var xjInfo = {};
-
-        //如果没有宣教值，则设置为空值
-        var empty_xjInfo = {
-            "id": null,
-            "title": "在这里输入宣教标题...",
-            "desc": "输入简要描述...",
-            "author": "北京大学第三医院",
-            "created_at": getCurrentTime(),
-            "doctor_id":{{$admin->id}},
-            "img": "",
-            "hpos_ids": "",
-            "show_num": 0,
-            "steps": []
-        }
         var doctor_info;
-
 
         //入口函数
         $(document).ready(function () {
             //tooltip
             $('[data-toggle="tooltip"]').tooltip()
             //从url中获取id
-            var id = {{$admin->id}};
+            var id = '{{$admin->id}}';
             var param = {'id': id}
             getDoctorById("{{URL::asset('')}}", param, function (ret, err) {
                 if (ret.result) {
@@ -184,6 +153,7 @@
             var interText = doT.template($("#message-content-template").text());
             $("#message-content").html(interText(doctor_info));
         }
+
         function checkValid() {
             //合规校验
             var name = $("#name").val();
@@ -203,10 +173,13 @@
             }
             return true;
         }
+
+        //提交优化结果
         function submitForm() {
-            if(checkValid())
-            document.getElementById("editDoctor").submit();
+            if (checkValid())
+                document.getElementById("editDoctor").submit();
         }
+
         //初始化七牛上传模块
         function initQNUploader(container_dom, input_dom, img_dom) {
             console.log("initQNUploader container_dom:" + container_dom + " input_dom:" + input_dom + " img_dom:" + img_dom);
@@ -298,7 +271,6 @@
                 }
             });
         }
-
 
 
     </script>

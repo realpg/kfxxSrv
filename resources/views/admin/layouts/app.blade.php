@@ -162,7 +162,6 @@
                             <li class="user-header">
                                 <img src="{{ $admin->avatar ? $admin->avatar.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim': URL::asset('/img/default_headicon.png')}}"
                                      class="img-circle" alt="User Image">
-
                                 <p>
                                     {{$admin->role == "0" ? "管理员":"医师"}}
                                     <small>Tel:{{$admin->phonenum}}</small>
