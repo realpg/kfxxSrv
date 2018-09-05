@@ -56,7 +56,7 @@
         <div class="form-group">
             <label for="Img" class="col-sm-2 control-label text-right">头像</label>
             <div class="col-sm-9">
-                <input id="Img" name="avatar" type="text" class="form-control"
+                <input id="avatar" name="avatar" type="text" class="form-control"
                        placeholder="图片网路链接地址"
                        value="@{{=it.avatar}}">
             </div>
@@ -64,10 +64,10 @@
         <div style="margin-top: 10px;" class="text-center">
             <div id="Container">
                 @{{? it.avatar}}
-                <img id="Pickfiles" src="@{{=it.avatar}}" style="width: 260px;height: 260px">
+                <img id="Pickfiles" src="@{{=it.avatar}}" style="width: 120px;height: 120px">
                 @{{??}}
                 <img id="Pickfiles" src="{{URL::asset('/img/upload.png')}}"
-                     style="width: 260px;">
+                     style="width: 120px;height: 120px">
                 @{{?}}
             </div>
             <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传260*260尺寸图片</div>
@@ -88,9 +88,14 @@
                 </select>
             </div>
         </div>
-        <button type="button" class="btn btn-info btn-block btn-flat" onclick="submitForm();">
-            保存
-        </button>
+        <div class="form-group">
+            <label for="gender" class="col-sm-2 control-label"></label>
+            <div class="col-sm-9">
+                <button type="button" class="btn btn-info btn-block btn-flat" onclick="submitForm();">
+                    保存
+                </button>
+            </div>
+        </div>
 
     </script>
 
@@ -137,12 +142,10 @@
                     doctor_info = ret.ret;
                     console.log(ret);
                     loadHtml();
-                    initQNUploader('Container', 'Img', 'Pickfiles');
+                    initQNUploader('Container', 'avatar', 'Pickfiles');
                 }
             })
-
         });
-
 
         //加载页面
         function loadHtml() {
@@ -158,16 +161,19 @@
             //合规校验
             var name = $("#name").val();
             if (judgeIsNullStr(name)) {
+                console.log("name:" + name);
                 $("#name").focus();
                 return false;
             }
             var phonenum = $("#phonenum").val();
             if (judgeIsNullStr(phonenum) || !isPoneAvailable(phonenum)) {
+                console.log("phonenum:" + phonenum);
                 $("#phonenum").focus();
                 return false;
             }
             var avatar = $("#avatar").val();
             if (judgeIsNullStr(avatar)) {
+                console.log("avatar:" + avatar);
                 $("#avatar").focus();
                 return false;
             }
@@ -176,8 +182,12 @@
 
         //提交优化结果
         function submitForm() {
-            if (checkValid())
+            console.log("click Submit Form");
+            if (checkValid()) {
+                console.log("submit");
                 document.getElementById("editDoctor").submit();
+            }
+
         }
 
         //初始化七牛上传模块

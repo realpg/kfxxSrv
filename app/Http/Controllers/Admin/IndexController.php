@@ -66,10 +66,11 @@ class IndexController
         return view("admin.admin.editInfo", ['admin' => $admin, 'upload_token' => $upload_token]);
     }
 
+    //修改用户信息
     public function editPost(Request $request)
     {
         $data = $request->all();
-        dd($data);
+//        dd($data);
         $doctor = new Doctor();
         //存在id是保存
         if (array_key_exists('id', $data) && !Utils::isObjNull($data['id'])) {

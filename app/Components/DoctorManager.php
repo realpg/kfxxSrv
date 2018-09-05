@@ -79,6 +79,7 @@ class DoctorManager
      */
     public static function setDoctor($doctor, $data)
     {
+//        dd($data);
         if (array_key_exists('name', $data)) {
             $doctor->name = array_get($data, 'name');
         }
@@ -108,16 +109,16 @@ class DoctorManager
         }
         return $doctor;
     }
-	
-	public static function changePassword($doctor, $data)
-	{
-		if (array_key_exists('password', $data)) {
-			$doctor->password = array_get($data, 'password');
-			$doctor->save();
-			return true;
-		}
-		return false;
-	}
+
+    public static function changePassword($doctor, $data)
+    {
+        if (array_key_exists('password', $data)) {
+            $doctor->password = array_get($data, 'password');
+            $doctor->save();
+            return true;
+        }
+        return false;
+    }
 
 
     /*
@@ -141,12 +142,12 @@ class DoctorManager
         }
     }
 
-	
-	public static function searchDoctor($search_word)
-	{
-		$users = Doctor::where('name', 'like', '%' . $search_word . '%')
-			->orwhere('phonenum', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
-		return $users;
-	}
+
+    public static function searchDoctor($search_word)
+    {
+        $users = Doctor::where('name', 'like', '%' . $search_word . '%')
+            ->orwhere('phonenum', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $users;
+    }
 
 }
