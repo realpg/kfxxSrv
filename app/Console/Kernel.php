@@ -36,9 +36,9 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             SechduleManager::autoFinishUserZXJH();
         })->dailyAt('1:00');
-	    $schedule->call(function () {
-		    Log::info("Schedule Running".date('Y/m/d h:i:sa'));
-	    })->everyMinute();
+//	    $schedule->call(function () {
+//		    Log::info("Schedule Running".date('Y/m/d h:i:sa'));
+//	    })->everyMinute();
     }
 
     /**

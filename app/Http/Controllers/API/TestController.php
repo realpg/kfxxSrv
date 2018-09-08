@@ -14,14 +14,14 @@ use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Components\RequestValidator;
+use Illuminate\Support\Facades\Log;
 
 
 class TestController extends Controller
 {
 	public function test(Request $request)
 	{
-		SechduleManager::autoCreateUserZXJH();
-		
-		SechduleManager::autoFinishUserZXJH();
+		Log::info("Schedule Running".date('Y/m/d h:i:sa'));
+		return "Schedule Running".date('Y/m/d h:i:sa');
 	}
 }
