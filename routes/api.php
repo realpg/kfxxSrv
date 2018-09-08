@@ -17,12 +17,13 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
+// 示例接口
+Route::get('test', 'API\TestController@test');
+Route::post('test', 'API\TestController@test');
 
 //用户类路由
 Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
-	// 示例接口
-	Route::get('test', 'API\TestController@test');
-	Route::post('test', 'API\TestController@test');
+	
 	
 	//获取七牛token  完成
 	Route::get('user/getQiniuToken', 'API\UserController@getQiniuToken');
