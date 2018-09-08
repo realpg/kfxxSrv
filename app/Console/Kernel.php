@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Components\SechduleManager;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -35,6 +36,9 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             SechduleManager::autoFinishUserZXJH();
         })->dailyAt('1:00');
+	    $schedule->call(function () {
+		    Log::info("Schedule Running".date('Y/m/d h:i:sa'));
+	    })->everyMinute();
     }
 
     /**
