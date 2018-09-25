@@ -165,7 +165,9 @@
                                     <select id="xj_ids" name="xj_ids" class="form-control">
                                         <option value="0">暂不关联宣教图文</option>
                                         @{{~it.xjs:xj:xj_index }}
-                                            <option value="@{{=xj.id}}"@{{?xj.id==it.xj_ids }}selected="true"@{{? }}>@{{=xj.title}}</option>
+                                        <option value="@{{=xj.id}}" @{{?xj.id==it.xj_ids }}selected="true" @{{? }}>
+                                            @{{=xj.title}}
+                                        </option>
                                         @{{~ }}
                                     </select>
                                 </div>
@@ -261,7 +263,7 @@
     <script type="application/javascript">
         //康复模板信息
         var kfmbInfo = {}
-        var xjs=[];
+        var xjs = [];
 
         //入口函数
         $(document).ready(function () {
@@ -279,13 +281,14 @@
                     level: "03"
                 }
                 getKFMBById("{{URL::asset('')}}", param, function (ret, err) {
+                    console.log("getKFMBById ret:" + JSON.stringify(ret));
                     //提示保存成功
                     if (ret.result == true) {
                         kfmbInfo = ret.ret;
                         loadHtml();
                     }
                 })
-                getAllXJs("{{URL::asset('')}}",{},function (ret, err) {
+                getAllXJs("{{URL::asset('')}}", {}, function (ret, err) {
                     //提示保存成功
                     if (ret.result == true) {
                         xjs = ret.ret;
@@ -320,8 +323,9 @@
                 jhObj.end_time = kfmbInfo.jhs[index].end_time;
                 jhObj.end_unit = kfmbInfo.jhs[index].end_unit;
                 jhObj.btime_type = kfmbInfo.jhs[index].btime_type;
-            };
-            jhObj.xjs=xjs;
+            }
+            ;
+            jhObj.xjs = xjs;
 
             console.log("jhObj:" + JSON.stringify(jhObj));
             var interText = doT.template($("#editJHModal-content-template").text());
@@ -340,7 +344,7 @@
             var jhObj = {
                 name: $("#name").val(),
                 desc: $("#desc").val(),
-                xj_ids:$("#xj_ids").val(),
+                xj_ids: $("#xj_ids").val(),
                 btime_type: $("#btime_type").val(),
                 start_time: $("#start_time").val(),
                 start_unit: $("#start_unit").val(),

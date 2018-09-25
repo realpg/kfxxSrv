@@ -107,7 +107,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>北三</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>康复信息化平台</b></span>
+            <span class="logo-lg"><b>康复云平台</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -171,7 +171,8 @@
                             <li class="user-footer">
                                 <div class="row">
                                     <div class="col-xs-4 text-center">
-                                        <a href="{{url('/admin/changePassword')}}" class="btn btn-default btn-flat">修改密码</a>
+                                        <a href="{{url('/admin/changePassword')}}"
+                                           class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="col-xs-4 text-center">
                                         <a href="{{url('/admin/editInfo')}}" class="btn btn-default btn-flat">修改资料</a>
@@ -335,39 +336,39 @@
     </footer>
 
     <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <!--基本信息-->
-            <div class="row">
-                <div class="col-xs-12 text-center margin-top-10">
-                    该系统提供商为
-                </div>
-                <div class="col-xs-12 text-center margin-top-15 ">
-                    北京万晶海科技有限公司
-                </div>
-                <div class="col-xs-12 text-center margin-top-15">
-                    问题反馈：kf@isart.me
-                </div>
-            </div>
-            <div class="margin-top-10 border-bottom">
-            </div>
-            <!--常用问题解答-->
-            <div class="row">
-                <div class="col-xs-12 margin-top-10 text-oneline">
-                    FAQ
-                </div>
-                <div class="col-xs-12 margin-top-10 text-oneline">
-                    <a href="#">康复云平台功能简述</a>
-                </div>
-                <div class="col-xs-12 margin-top-10 text-oneline">
-                    <a href="#">关于如何建立患者病历及病历如何查看</a>
-                </div>
-            </div>
-        </div>
-    </aside>
+{{--<aside class="control-sidebar control-sidebar-dark">--}}
+{{--<!-- Tab panes -->--}}
+{{--<div class="tab-content">--}}
+{{--<!--基本信息-->--}}
+{{--<div class="row">--}}
+{{--<div class="col-xs-12 text-center margin-top-10">--}}
+{{--该系统提供商为--}}
+{{--</div>--}}
+{{--<div class="col-xs-12 text-center margin-top-15 ">--}}
+{{--北京万晶海科技有限公司--}}
+{{--</div>--}}
+{{--<div class="col-xs-12 text-center margin-top-15">--}}
+{{--问题反馈：kf@isart.me--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--<div class="margin-top-10 border-bottom">--}}
+{{--</div>--}}
+{{--<!--常用问题解答-->--}}
+{{--<div class="row">--}}
+{{--<div class="col-xs-12 margin-top-10 text-oneline">--}}
+{{--FAQ--}}
+{{--</div>--}}
+{{--<div class="col-xs-12 margin-top-10 text-oneline">--}}
+{{--<a href="#">康复云平台功能简述</a>--}}
+{{--</div>--}}
+{{--<div class="col-xs-12 margin-top-10 text-oneline">--}}
+{{--<a href="#">关于如何建立患者病历及病历如何查看</a>--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--</aside>--}}
 
-    <!-- /.control-sidebar -->
+<!-- /.control-sidebar -->
     <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
